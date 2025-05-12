@@ -1,0 +1,1 @@
+export const INPUT_CLASS = "w-full h-14 bg-[#fff] rounded-full px-6 text-black"
