@@ -16,9 +16,11 @@ import {
   PlugInIcon,
   TableIcon,
   UserCircleIcon,
+  Graph
 } from "../icons/index";
 import SidebarWidget from "./SidebarWidget";
 import Logo from '../assets/logo/logo.png'
+import { TbLogout2 } from "react-icons/tb";
 
 type NavItem = {
   name: string;
@@ -29,7 +31,7 @@ type NavItem = {
 
 const navItems: NavItem[] = [
   {
-    icon: <GridIcon />,
+    icon: <Graph />,
     name: "Dashboard",
     // subItems: [{ name: "Ecommerce", path: "/", pro: false }],
     path: "/",
@@ -339,7 +341,7 @@ const AppSidebar: React.FC = () => {
                   }`}
               >
                 {isExpanded || isHovered || isMobileOpen ? (
-                  "Menu"
+                  ""
                 ) : (
                   <HorizontaLDots />
                 )}
@@ -347,7 +349,7 @@ const AppSidebar: React.FC = () => {
               {renderMenuItems(navItems, "main")}
             </div>
 
-            <div className="">
+            {/* <div className="">
               <h2
                 className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${!isExpanded && !isHovered
                   ? "lg:justify-center"
@@ -361,12 +363,17 @@ const AppSidebar: React.FC = () => {
                 )}
               </h2>
               {renderMenuItems(othersItems, "others")}
-            </div>
+            </div> */}
           </div>
         </nav>
         {/* {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null} */}
       </div>
-      <button className="absolute left-1/2 bottom-0">Logout</button>
+      <div className="absolute bottom-4 left-0 w-full px-5 mt-6 border-t">
+  <button className="flex items-center gap-2 text-gray-700 dark:text-white w-full p-5">
+    <TbLogout2 className="w-5 h-5" />
+    {(isExpanded || isHovered || isMobileOpen) && <span>Logout</span>}
+  </button>
+</div>
     </aside>
   );
 };
