@@ -6,17 +6,18 @@ import { useState } from "react";
 import Logo from '../../../../assets/logo/logo.png'
 import { useRouter } from "next/navigation";
 import { BACKEND_API } from "@/api";
+import toast from "react-hot-toast";
 
 export default function CreateAccountPage() {
     const [formData, setFormData] = useState({
         firstName: "",
-        lastName:"",
+        lastName: "",
         email: "",
         password: "",
-        role:""
+        role: ""
     });
     const [loading, setLoading] = useState(false);
-const [error, setError] = useState("");
+    const [error, setError] = useState("");
     const router = useRouter()
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,41 +25,47 @@ const [error, setError] = useState("");
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
-        
+
         console.log("Account data:", formData);
 
 
         e.preventDefault();
         setLoading(true);
         setError("");
-      
+
         try {
-          const res = await fetch(`${BACKEND_API}user/create`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(formData),
-          });
-      
-          const data = await res.json();
-      
-      
-          // Optional: save token or set auth state here
-          if(res.ok){
-            router.push("/signin"); 
+            const res = await fetch(`${BACKEND_API}user/create`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formData),
+            });
 
-          }
-          else{
-            alert("Something went wrong")
-            throw new Error(data.message || "failed");
+            const data = await res.json();
 
-          }
-        
-      
-          // redirect to dashboard or home
+
+            // Optional: save token or set auth state here
+            if (res.ok) {
+                toast.success('Account Created Successfully!')
+
+                setTimeout(() => {
+                    router.push("/signin");
+                }, 2000);
+
+
+
+            }
+            else {
+                alert("Something went wrong")
+                throw new Error(data.message || "failed");
+
+            }
+
+
+            // redirect to dashboard or home
         } catch (err: any) {
-          setError(err.message);
+            setError(err.message);
         } finally {
-          setLoading(false);
+            setLoading(false);
         }
         console.log("Account data:", formData);
     };
@@ -78,6 +85,7 @@ const [error, setError] = useState("");
                     request access to Honeybee Harry.
                 </p>
                 <form onSubmit={handleSubmit} className="space-y-6">
+
                     <div>
                         <label className="block text-xs font-bold text-black mb-1">
                             First name
@@ -88,7 +96,7 @@ const [error, setError] = useState("");
                             value={formData.firstName}
                             onChange={handleChange}
                             placeholder="Catherine Chen"
-                            className={`${INPUT_CLASS}`}
+                            className={`${INPUT_CLASS} focus:outline-[#FFA819]`}
                         />
                     </div>
 
@@ -102,7 +110,7 @@ const [error, setError] = useState("");
                             value={formData.lastName}
                             onChange={handleChange}
                             placeholder="Catherine Chen"
-                            className={`${INPUT_CLASS}`}
+                            className={`${INPUT_CLASS} focus:outline-[#FFA819]`}
                         />
                     </div>
 
@@ -116,7 +124,7 @@ const [error, setError] = useState("");
                             value={formData.email}
                             onChange={handleChange}
                             placeholder="Catherine.chen@honeybeen.com"
-                            className={`${INPUT_CLASS}`}
+                            className={`${INPUT_CLASS} focus:outline-[#FFA819]`}
                         />
                     </div>
 
@@ -130,40 +138,40 @@ const [error, setError] = useState("");
                             value={formData.password}
                             onChange={handleChange}
                             placeholder="Type your password"
-                            className={`${INPUT_CLASS}`}
+                            className={`${INPUT_CLASS} focus:outline-[#FFA819]`}
                         />
                     </div>
                     <div>
-  <label className="block text-xs font-bold text-black mb-2">
-    Select role ?
-  </label>
-  <div className="flex items-center space-x-6">
-    <label className="inline-flex items-center space-x-2">
-      <input
-        type="radio"
-        name="role"
-        value="A_TEAM"
-        checked={formData.role === "A_TEAM"}
-        onChange={handleChange}
-        className="w-4 h-4 text-orange-500 border-gray-300 focus:ring-orange-500"
-      />
-      <span className="text-sm text-gray-700">A team</span>
-    </label>
-    <label className="inline-flex items-center space-x-2">
-      <input
-        type="radio"
-        name="role"
-        value="B_TEAM"
-        checked={formData.role === "B_TEAM"}
-        onChange={handleChange}
-        className="w-4 h-4 text-orange-500 border-gray-300 focus:ring-orange-500"
-      />
-      <span className="text-sm text-gray-700">B team</span>
-    </label>
-  </div>
-</div>
+                        <label className="block text-xs font-bold text-black mb-2">
+                            Select role ?
+                        </label>
+                        <div className="flex items-center space-x-6">
+                            <label className="inline-flex items-center space-x-2">
+                                <input
+                                    type="radio"
+                                    name="role"
+                                    value="A_TEAM"
+                                    checked={formData.role === "A_TEAM"}
+                                    onChange={handleChange}
+                                    className="w-4 h-4 text-orange-500 border-gray-300 focus:ring-orange-500"
+                                />
+                                <span className="text-sm text-gray-700">A team</span>
+                            </label>
+                            <label className="inline-flex items-center space-x-2">
+                                <input
+                                    type="radio"
+                                    name="role"
+                                    value="B_TEAM"
+                                    checked={formData.role === "B_TEAM"}
+                                    onChange={handleChange}
+                                    className="w-4 h-4 text-orange-500 border-gray-300 focus:ring-orange-500"
+                                />
+                                <span className="text-sm text-gray-700">B team</span>
+                            </label>
+                        </div>
+                    </div>
 
-                    
+
 
                     <button
                         type="submit"

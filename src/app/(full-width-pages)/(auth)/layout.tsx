@@ -1,5 +1,6 @@
 import GridShape from "@/components/common/GridShape";
 import ThemeTogglerTwo from "@/components/common/ThemeTogglerTwo";
+import { Toaster } from 'react-hot-toast';
 
 import { ThemeProvider } from "@/context/ThemeContext";
 import Image from "next/image";
@@ -18,7 +19,10 @@ export default function AuthLayout({
     }}>
       <ThemeProvider>
           {children}
-          
+          <Toaster
+  position="top-center"
+  reverseOrder={false}
+/>
          
       </ThemeProvider>
     </div>

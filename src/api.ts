@@ -1,1 +1,1 @@
-export const BACKEND_API ="http://localhost:4000/"
+export const BACKEND_API ="http://192.168.1.44:4000/"
