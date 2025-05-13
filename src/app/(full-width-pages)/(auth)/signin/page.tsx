@@ -5,13 +5,17 @@ import Image from "next/image";
 import { useState } from "react";
 import Logo from '../../../../assets/logo/logo.png'
 import { useRouter } from "next/navigation";
+import { BACKEND_API } from "@/api";
 
 export default function Login() {
     const [formData, setFormData] = useState({
-        fullName: "",
+        
         email: "",
         password: "",
     });
+
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
     const router = useRouter()
 
@@ -19,8 +23,46 @@ export default function Login() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
+    const handleSubmit = async (e: React.FormEvent) => {
+       console.log("Account data:", formData);
+      
+      
+              e.preventDefault();
+              setLoading(true);
+              setError("");
+            
+              try {
+                const res = await fetch(`${BACKEND_API}auth/login`, {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify(formData),
+                });
+            
+                const data = await res.json();
+                console.log("data",data)
+            
+
+                
+                if (!res.ok) {
+                    alert("Email or password did not match.");
+                  throw new Error(data.message || "Login failed");
+                  
+                }
+            
+                // Optional: save token or set auth state here
+                localStorage.setItem('token', data.token);
+            
+                if (data.token) {
+                    
+                    router.push("/");
+                  } else {
+                    alert("Token not received from server.");
+                  } // redirect to dashboard or home
+              } catch (err: any) {
+                setError(err.message);
+              } finally {
+                setLoading(false);
+              }
         console.log("Account data:", formData);
     };
 
