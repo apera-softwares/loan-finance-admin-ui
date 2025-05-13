@@ -16,7 +16,9 @@ import {
   PlugInIcon,
   TableIcon,
   UserCircleIcon,
-  Graph
+  Graph,
+  Send,
+  Users
 } from "../icons/index";
 import SidebarWidget from "./SidebarWidget";
 import Logo from '../assets/logo/logo.png'
@@ -38,13 +40,13 @@ const navItems: NavItem[] = [
 
   },
   {
-    icon: <CalenderIcon />,
-    name: "Calendar",
-    path: "/calendar",
+    icon: <Send />,
+    name: "Landing page and submit referral",
+    path: "/referral",
   },
   {
-    icon: <UserCircleIcon />,
-    name: "User Profile",
+    icon: <Users />,
+    name: "Member",
     path: "/profile",
   },
 
@@ -113,7 +115,7 @@ const AppSidebar: React.FC = () => {
           {nav.subItems ? (
             <button
               onClick={() => handleSubmenuToggle(index, menuType)}
-              className={`menu-item group  ${openSubmenu?.type === menuType && openSubmenu?.index === index
+              className={`menu-item group ${openSubmenu?.type === menuType && openSubmenu?.index === index
                 ? "menu-item-active"
                 : "menu-item-inactive"
                 } cursor-pointer ${!isExpanded && !isHovered
@@ -146,7 +148,7 @@ const AppSidebar: React.FC = () => {
             nav.path && (
               <Link
                 href={nav.path}
-                className={`menu-item group ${isActive(nav.path) ? "menu-item-active" : "menu-item-inactive"
+                className={`menu-item group p-2 ${isActive(nav.path) ? "menu-item-active" : "menu-item-inactive"
                   }`}
               >
                 <span
@@ -369,11 +371,11 @@ const AppSidebar: React.FC = () => {
         {/* {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null} */}
       </div>
       <div className="absolute bottom-4 left-0 w-full px-5 mt-6 border-t">
-  <button className="flex items-center gap-2 text-gray-700 dark:text-white w-full p-5">
-    <TbLogout2 className="w-5 h-5" />
-    {(isExpanded || isHovered || isMobileOpen) && <span>Logout</span>}
-  </button>
-</div>
+        <button className="flex items-center gap-2 text-gray-700 dark:text-white w-full p-5">
+          <TbLogout2 className="w-5 h-5" />
+          {(isExpanded || isHovered || isMobileOpen) && <span>Logout</span>}
+        </button>
+      </div>
     </aside>
   );
 };
