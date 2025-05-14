@@ -49,6 +49,11 @@ const navItems: NavItem[] = [
     name: "Member",
     path: "/profile",
   },
+  {
+    icon: <Users />,
+    name: "A-Team",
+    path: "/a-team",
+  },
 
   {
     name: "Forms",
