@@ -5,8 +5,9 @@ import Image from "next/image";
 import { useState } from "react";
 import Logo from '../../../../assets/logo/logo.png'
 import { useRouter } from "next/navigation";
-import { BACKEND_API } from "@/api";
 import toast from "react-hot-toast";
+import { useAppDispatch } from "@/lib/redux/hooks";
+import { userSignup } from "@/lib/redux/slices/userSlice";
 
 export default function CreateAccountPage() {
     const [formData, setFormData] = useState({
@@ -19,55 +20,31 @@ export default function CreateAccountPage() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const router = useRouter()
+    const dispatch = useAppDispatch()
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
-
     const handleSubmit = async (e: React.FormEvent) => {
-
-        console.log("Account data:", formData);
-
-
         e.preventDefault();
-        setLoading(true);
-        setError("");
-
-        try {
-            const res = await fetch(`${BACKEND_API}user/create`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData),
-            });
-
-            const data = await res.json();
-
-
-            // Optional: save token or set auth state here
-            if (res.ok) {
-                toast.success('Account Created Successfully!')
-
-                setTimeout(() => {
-                    router.push("/signin");
-                }, 2000);
-
-
-
+        setLoading(true)
+        dispatch(userSignup(formData)).then((res: any) => {
+            if (res.meta.requestStatus === "fulfilled") {
+                toast.success("Account Creation successful!");
+                setFormData({
+                    firstName: "",
+                    lastName: "",
+                    email: "",
+                    password: "",
+                    role: ""
+                });
+                router.push("/signin");
+                setLoading(false)
+            } else {
+                toast.error(res.payload || "Login failed. Please try again.");
+                setLoading(false)
             }
-            else {
-                alert("Something went wrong")
-                throw new Error(data.message || "failed");
-
-            }
-
-
-            // redirect to dashboard or home
-        } catch (err: any) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
-        }
-        console.log("Account data:", formData);
+        })
     };
 
     return (

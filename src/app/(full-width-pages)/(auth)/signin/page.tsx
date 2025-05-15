@@ -5,8 +5,9 @@ import Image from "next/image";
 import { useState } from "react";
 import Logo from '../../../../assets/logo/logo.png'
 import { useRouter } from "next/navigation";
-import { BACKEND_API } from "@/api";
 import toast from "react-hot-toast";
+import { loginUser } from "@/lib/redux/slices/userSlice";
+import { useAppDispatch } from "@/lib/redux/hooks";
 
 export default function Login() {
     const [formData, setFormData] = useState({
@@ -17,42 +18,29 @@ export default function Login() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const router = useRouter()
+    const dispatch = useAppDispatch()
+
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("Account data:", formData);
-        setLoading(true);
-        setError("");
 
-        try {
-            const res = await fetch(`${BACKEND_API}auth/login`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData),
-            });
-
-            const data = await res.json();
-            console.log("Signup response:", data);
-
-            if (res.ok) {
-                toast.success('Success Login!')
-
-                setTimeout(() => {
-                    router.push("/");
-                }, 1000);
-
-
-
+        dispatch(loginUser(formData)).then((res: any) => {
+            setLoading(true)
+            if (res.meta.requestStatus === "fulfilled") {
+                toast.success("Login successful!");
+                setFormData({ email: "", password: "" });
+                router.push("/");
+                setLoading(false)
+            } else {
+                toast.error(res.payload || "Login failed. Please try again.");
+                setLoading(false)
             }
-        } catch (err: any) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
-        }
+        });
     };
+
 
     return (
         <div className="flex flex-col md:flex-row min-h-screen">
@@ -68,7 +56,6 @@ export default function Login() {
                     Log in to track your referrals, check commissions, and grow your hive — one buzz at a time.
                 </p>
                 <form onSubmit={handleSubmit} className="space-y-6">
-
 
                     <div>
                         <label className="block text-xs font-bold text-black mb-1">
@@ -118,7 +105,7 @@ export default function Login() {
                         type="submit"
                         className="w-full h-14 text-white bg-gradient-to-b from-orange-500 to-amber-400 rounded-full shadow-lg font-bold hover:cursor-pointer"
                     >
-                        Login
+                        {loading ? "Loading..." : "Login"}
                     </button>
                 </form>
 

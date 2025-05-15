@@ -56,6 +56,12 @@ const navItems: NavItem[] = [
   },
 
   {
+    icon: <Users />,
+    name: "User Management",
+    path: "/user-management",
+  },
+
+  {
     name: "Forms",
     icon: <ListIcon />,
     subItems: [{ name: "Form Elements", path: "/form-elements", pro: false }],
