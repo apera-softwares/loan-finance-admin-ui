@@ -5,66 +5,42 @@ import Image from "next/image";
 import { useState } from "react";
 import Logo from '../../../../assets/logo/logo.png'
 import { useRouter } from "next/navigation";
-import { BACKEND_API } from "@/api";
+import toast from "react-hot-toast";
+import { loginUser } from "@/lib/redux/slices/userSlice";
+import { useAppDispatch } from "@/lib/redux/hooks";
 
 export default function Login() {
     const [formData, setFormData] = useState({
-        
         email: "",
         password: "",
     });
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
-
     const router = useRouter()
+    const dispatch = useAppDispatch()
+
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
-
     const handleSubmit = async (e: React.FormEvent) => {
-       console.log("Account data:", formData);
-      
-      
-              e.preventDefault();
-              setLoading(true);
-              setError("");
-            
-              try {
-                const res = await fetch(`${BACKEND_API}auth/login`, {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify(formData),
-                });
-            
-                const data = await res.json();
-                console.log("data",data)
-            
+        e.preventDefault();
 
-                
-                if (!res.ok) {
-                    alert("Email or password did not match.");
-                  throw new Error(data.message || "Login failed");
-                  
-                }
-            
-                // Optional: save token or set auth state here
-                localStorage.setItem('token', data.token);
-            
-                if (data.token) {
-                    
-                    router.push("/");
-                  } else {
-                    alert("Token not received from server.");
-                  } // redirect to dashboard or home
-              } catch (err: any) {
-                setError(err.message);
-              } finally {
-                setLoading(false);
-              }
-        console.log("Account data:", formData);
+        dispatch(loginUser(formData)).then((res: any) => {
+            setLoading(true)
+            if (res.meta.requestStatus === "fulfilled") {
+                toast.success("Login successful!");
+                setFormData({ email: "", password: "" });
+                router.push("/");
+                setLoading(false)
+            } else {
+                toast.error(res.payload || "Login failed. Please try again.");
+                setLoading(false)
+            }
+        });
     };
+
 
     return (
         <div className="flex flex-col md:flex-row min-h-screen">
@@ -81,7 +57,6 @@ export default function Login() {
                 </p>
                 <form onSubmit={handleSubmit} className="space-y-6">
 
-
                     <div>
                         <label className="block text-xs font-bold text-black mb-1">
                             Email
@@ -92,7 +67,7 @@ export default function Login() {
                             value={formData.email}
                             onChange={handleChange}
                             placeholder="Catherine.chen@honeybeen.com"
-                            className={`${INPUT_CLASS}`}
+                            className={`${INPUT_CLASS} focus:outline-[#FFA819]`}
                         />
                     </div>
 
@@ -106,7 +81,7 @@ export default function Login() {
                             value={formData.password}
                             onChange={handleChange}
                             placeholder="Type your password"
-                            className={`${INPUT_CLASS}`}
+                            className={`${INPUT_CLASS} focus:outline-[#FFA819]`}
                         />
                     </div>
                     <div className="flex items-center justify-between text-sm mt-2">
@@ -130,7 +105,7 @@ export default function Login() {
                         type="submit"
                         className="w-full h-14 text-white bg-gradient-to-b from-orange-500 to-amber-400 rounded-full shadow-lg font-bold hover:cursor-pointer"
                     >
-                        Login
+                        {loading ? "Loading..." : "Login"}
                     </button>
                 </form>
 
