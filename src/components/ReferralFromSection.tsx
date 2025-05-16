@@ -1,9 +1,7 @@
+import { FORM_INPUT_CLASS, REQUIRED_ERROR } from "@/constant/constantClassName";
 import React from "react";
 import { TbArrowNarrowRight } from "react-icons/tb";
-const FORM_INPUT_CLASS =
-  "w-full text-base md:text-lg text-[#717171]  h-10  pb-2 placeholder:pb-4 border-b border-[#B7B7B7]  outline-none focus:border-[#FFAF11] transition-all duration-500";
 
-const REQUIRED_ERROR = "text-sm text-red-500";
 const ReferralFromSection = () => {
   return (
     <div className="w-full max-w-[1500px] bg-white p-8 rounded-xl mb-14 md:mb-20">

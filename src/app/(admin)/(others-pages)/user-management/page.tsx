@@ -1,16 +1,20 @@
 "use client"
-import React from "react";
+import React, { useState } from "react";
 import CommonHeading from "@/components/common/CommonHeading";
-import { UserTable } from "@/components/user/UserTable";
 import { CiSearch } from "react-icons/ci";
 import { HiOutlinePlus } from "react-icons/hi";
+import UserAddEditModal from "@/components/user/UserAddEditModal";
+import UserTable from "@/components/user/UserTable";
+import { Toaster } from "react-hot-toast";
 
 export default function UserManagement() {
-
-
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [SearchInput, setSearchInput] = useState("")
+    const [filterRole, setFilterRole] = useState("")
 
     return (
         <div className="">
+               <Toaster/>
             {/* Top Bar: Left (Heading), Right (Search + Actions) */}
             <div className="flex flex-col lg:flex-row items-start justify-between lg:items-center gap-4">
                 {/* Left: Heading */}
@@ -31,23 +35,30 @@ export default function UserManagement() {
                         <input
                             type="text"
                             placeholder="Search by name, product, date"
+                            name="SearchInput"
+                            value={SearchInput}
+                            onChange={(e) => setSearchInput(e.target.value)}
                             className="pl-10 h-11 pr-4 py-2 border border-gray-300 rounded-md focus:outline-[#FFA819]"
                         />
                     </div>
                     {/* Create User Button */}
 
-                    <button className="border border-[#151D48] w-32 h-11 text-[#151D48] rounded-md text-sm justify-center text-center outline-none flex items-center gap-1">
+                    <button
+                        onClick={() => setIsModalOpen(true)}
+                        className="border border-[#151D48] w-32 h-11 text-[#151D48] rounded-md text-sm justify-center text-center outline-none flex items-center gap-1">
                         <HiOutlinePlus />
                         Create User
                     </button>
 
                     {/* Filter Dropdown */}
-                    <select className="border border-[#151D48] w-32 h-11 text-[#151D48] rounded-md text-sm justify-center text-center outline-none">
+                    <select
+                        value={filterRole}
+                        onChange={(e) => setFilterRole(e.target.value)}
+                        className="border border-[#151D48] w-32 h-11 text-[#151D48] rounded-md text-sm justify-center text-center outline-none">
                         <option value="">Filter By Role</option>
-                        <option value="admin">Admin</option>
-                        <option value="user">User</option>
-                        <option value="team-a">Team A</option>
-                        <option value="team-b">Team B</option>
+                        <option value="ADMIN">Admin</option>
+                        <option value="A_TEAM">Team A</option>
+                        <option value="B_TEAM">Team B</option>
                     </select>
 
 
@@ -63,7 +74,9 @@ export default function UserManagement() {
 
             {/* Table */}
             <div className="mt-6">
-                <UserTable />
+                <UserTable searchText={SearchInput} role={filterRole} />
+                <UserAddEditModal isOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} type="add"/>
+
             </div>
         </div>
     );

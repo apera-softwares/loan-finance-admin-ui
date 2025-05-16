@@ -6,20 +6,49 @@ import { BACKEND_API } from "@/api";
 
 export const fetchUsers = createAsyncThunk(
     "user/fetchUsers",
-    async (_, thunkAPI) => {
+    async (obj: any, thunkAPI) => {
       try {
         const state: any = thunkAPI.getState();
-        const token = state.user?.user?.token; // Assuming token is stored in user slice
-  
-        const response = await axios.get(`${BACKEND_API}admin/users`, {
+        const token = state.user?.user?.token; 
+
+        const {order,role,page,limit,name} = obj
+
+        const response = await axios.get(`${BACKEND_API}admin/users?page=${page}&&role=${role}&&name=${name}&&order=${order}&&limit=${limit}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
   
-        return response.data.data;
+        return response.data;
       } catch (error: any) {
         return thunkAPI.rejectWithValue(error.response?.data?.message || "Failed to fetch users");
+      }
+    }
+  );
+
+  export const UpdateUser = createAsyncThunk(
+    "user/Update",
+    async (obj: any, thunkAPI) => {
+      try {
+        const state: any = thunkAPI.getState();
+        const token = state.user?.user?.token;
+        const { id, ...rest } = obj; // separate id and rest of data
+  
+        const response = await axios.put(
+          `${BACKEND_API}admin/user/${id}`,
+          rest, 
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+  
+        return response.data;
+      } catch (error: any) {
+        return thunkAPI.rejectWithValue(
+          error.response?.data?.message || "Failed to update user"
+        );
       }
     }
   );

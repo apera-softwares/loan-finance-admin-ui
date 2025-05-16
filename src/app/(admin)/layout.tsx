@@ -5,6 +5,7 @@ import AppHeader from "@/layout/AppHeader";
 import AppSidebar from "@/layout/AppSidebar";
 import Backdrop from "@/layout/Backdrop";
 import React from "react";
+import { Toaster } from "react-hot-toast";
 
 export default function AdminLayout({
   children,
@@ -29,6 +30,8 @@ export default function AdminLayout({
       <div
         className={`flex-1 transition-all  duration-300 ease-in-out ${mainContentMargin}`}
       >
+                  <Toaster/>
+
         {/* Header */}
         <AppHeader />
         {/* Page Content */}
