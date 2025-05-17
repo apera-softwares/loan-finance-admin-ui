@@ -1,6 +1,6 @@
 "use client";
 import AuthRigthSidebar from "@/components/AuthRigthSidebar";
-import { INPUT_CLASS } from "@/constant/constantClassName";
+import { INPUT_CLASS,INPUT_REQUIRED_ERROR_CLASS } from "@/constant/constantClassName";
 import Image from "next/image";
 import { useState } from "react";
 import Logo from '../../../../assets/logo/logo.png'
@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { userSignup } from "@/lib/redux/slices/userSlice";
+import Loader from "@/components/ui/loader/Loader";
 
 export default function CreateAccountPage() {
     const [formData, setFormData] = useState({
@@ -18,7 +19,13 @@ export default function CreateAccountPage() {
         role: ""
     });
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
+    const[errors,setErrors] = useState({
+        firstName:  "",
+        lastName: "",
+        email: "",
+        password: "",
+        role: ""
+    })
     const router = useRouter()
     const dispatch = useAppDispatch()
 
@@ -27,6 +34,7 @@ export default function CreateAccountPage() {
     };
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        if(!validateFormData()) return ;
         setLoading(true)
         dispatch(userSignup(formData)).then((res: any) => {
             if (res.meta.requestStatus === "fulfilled") {
@@ -47,6 +55,73 @@ export default function CreateAccountPage() {
         })
     };
 
+
+
+    const validateFormData = () => {
+    let isValidData = true;
+    const tempErrors = { ...errors };
+ 
+    const nameRegex = /^[A-Za-z]+(-[A-Za-z]+)*$/;;
+    // Validate firstName
+    if (formData.firstName.trim() === "") {
+      tempErrors.firstName = "First name is required";
+      isValidData = false;
+    } else if (!nameRegex?.test(formData.firstName)) {
+      tempErrors.firstName = "Please enter valid first name";
+      isValidData = false;
+    } else {
+      tempErrors.firstName = "";
+    }
+
+    // Validate lastName
+    if (formData?.lastName.trim() === "") {
+      tempErrors.lastName= "Last name is required";
+      isValidData = false;
+    } else if (!nameRegex?.test(formData.lastName)) {
+      tempErrors.lastName = "Please enter valid last name";
+      isValidData = false;
+    } else {
+      tempErrors.lastName = "";
+    }
+
+    // Validate email
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (formData.email.trim() === "") {
+      tempErrors.email= "Email is required";
+      isValidData = false;
+    } else if (!emailRegex?.test(formData.email)) {
+      tempErrors.email = "Please enter a valid email";
+      isValidData = false;
+    } else {
+      tempErrors.email = "";
+    }
+
+    //validate password
+   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+    if (formData.password.trim() === "") {
+      tempErrors.password = "Password is required";
+      isValidData = false;
+    } else if (!passwordRegex.test(formData.password)) {
+      tempErrors.password = "Password must be at least 8 characters and include uppercase, lowercase, number, and special character";
+      isValidData = false;
+    } else {
+      tempErrors.password = "";
+    }
+
+    // Validate role
+    if (formData.role.trim() === "") {
+      tempErrors.role= "Role is required";
+      isValidData = false;
+    } else {
+      tempErrors.role = "";
+    }
+
+    setErrors(tempErrors);
+    return isValidData;
+    
+  };
+
     return (
         <div className="flex flex-col md:flex-row min-h-screen">
             {/* Left side - Form */}
@@ -58,14 +133,14 @@ export default function CreateAccountPage() {
                     <h2 className="text-center md:text-start text-2xl sm:text-3xl font-bold text-slate-800 mb-4">
                     Create an account
                 </h2>
-                <p className=" text-lg md:text-start text-slate-800 mb-8">
+                <p className=" text-base  sm:text-lg md:text-start text-slate-800 mb-8">
                     Your account will be activated by an Admin. Fill out the info below to
                     request access to Honeybee Harry.
                 </p>
                 <form onSubmit={handleSubmit} className="space-y-6">
 
                     <div>
-                        <label className="block text-xs font-bold text-black mb-1">
+                        <label className="block text-sm font-bold text-black mb-1">
                             First name
                         </label>
                         <input
@@ -76,10 +151,11 @@ export default function CreateAccountPage() {
                             placeholder="Catherine Chen"
                             className={`${INPUT_CLASS} focus:outline-[#FFA819]`}
                         />
+                        <span className={`${INPUT_REQUIRED_ERROR_CLASS}`}>{errors.firstName||""}</span>
                     </div>
 
                     <div>
-                        <label className="block text-xs font-bold text-black mb-1">
+                        <label className="block text-sm font-bold text-black mb-1">
                             Last name
                         </label>
                         <input
@@ -90,10 +166,11 @@ export default function CreateAccountPage() {
                             placeholder="Catherine Chen"
                             className={`${INPUT_CLASS} focus:outline-[#FFA819]`}
                         />
+                          <span className={`${INPUT_REQUIRED_ERROR_CLASS}`} >{errors.lastName||""}</span>
                     </div>
 
                     <div>
-                        <label className="block text-xs font-bold text-black mb-1">
+                        <label className="block text-sm font-bold text-black mb-1">
                             Email
                         </label>
                         <input
@@ -104,10 +181,11 @@ export default function CreateAccountPage() {
                             placeholder="Catherine.chen@honeybeen.com"
                             className={`${INPUT_CLASS} focus:outline-[#FFA819]`}
                         />
+                          <span className={`${INPUT_REQUIRED_ERROR_CLASS}`} >{errors.email||""}</span>
                     </div>
 
                     <div>
-                        <label className="block text-xs font-bold text-black mb-1">
+                        <label className="block text-sm font-bold text-black mb-1">
                             Password
                         </label>
                         <input
@@ -118,9 +196,10 @@ export default function CreateAccountPage() {
                             placeholder="Type your password"
                             className={`${INPUT_CLASS} focus:outline-[#FFA819]`}
                         />
+                          <span className={`${INPUT_REQUIRED_ERROR_CLASS}`} >{errors.password||""}</span>
                     </div>
                     <div>
-                        <label className="block text-xs font-bold text-black mb-2">
+                        <label className="block textsm font-bold text-black mb-2">
                             Select role ?
                         </label>
                         <div className="flex items-center space-x-6">
@@ -147,15 +226,17 @@ export default function CreateAccountPage() {
                                 <span className="text-sm text-gray-700">B team</span>
                             </label>
                         </div>
+                          <span className={`${INPUT_REQUIRED_ERROR_CLASS}`} >{errors.role||""}</span>
                     </div>
 
 
 
                     <button
                         type="submit"
-                        className="w-full h-14 text-white bg-gradient-to-b from-orange-500 to-amber-400 rounded-full shadow-lg font-bold hover:cursor-pointer"
+                        className="flex justify-center  items-center w-full h-14 text-white bg-gradient-to-b from-orange-500 to-amber-400 rounded-full shadow-lg font-bold hover:cursor-pointer"
                     >
-                        Create account
+                     {loading ? (<Loader/>
+                     ):("Create account")}
                     </button>
                 </form>
 

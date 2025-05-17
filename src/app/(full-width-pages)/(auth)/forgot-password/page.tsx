@@ -1,17 +1,22 @@
 "use client";
 import AuthRigthSidebar from "@/components/AuthRigthSidebar";
-import { INPUT_CLASS } from "@/constant/constantClassName";
+import { INPUT_CLASS,INPUT_REQUIRED_ERROR_CLASS } from "@/constant/constantClassName";
 import Image from "next/image";
 import { useState } from "react";
 import Logo from '../../../../assets/logo/logo.png'
 import { useRouter } from "next/navigation";
 import { IoArrowBackOutline } from "react-icons/io5";
+import Loader from "@/components/ui/loader/Loader";
 
 export default function ForgotPassword() {
     const [formData, setFormData] = useState({
         email: "",
     });
-
+    const[loading,setLoading] = useState<boolean>(false);
+    const [errors, setErrors] = useState({
+        email: "",
+     
+    });
     const router = useRouter()
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,8 +25,34 @@ export default function ForgotPassword() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        if(!validateFormData()) return;
         console.log("Account data:", formData);
+        
     };
+
+        const validateFormData = () => {
+
+    let isValidData = true;
+    const tempErrors = { ...errors };
+
+    // Validate email
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (formData.email.trim() === "") {
+      tempErrors.email= "Email is required";
+      isValidData = false;
+    } else if (!emailRegex?.test(formData.email)) {
+      tempErrors.email = "Please enter a valid email";
+      isValidData = false;
+    } else {
+      tempErrors.email = "";
+    }
+
+
+
+    setErrors(tempErrors);
+    return isValidData;
+    
+  };
 
     return (
         <div className="flex flex-col md:flex-row min-h-screen">
@@ -34,13 +65,13 @@ export default function ForgotPassword() {
          <div className="w-full max-w-[482px] mx-auto  mt-12 sm:mt-24">
                    <h2 className="text-center md:text-start text-2xl md:text-3xl font-bold text-slate-800 mb-4">
                     Forgot password?</h2>
-                <p className="text-center md:text-start text-lg text-slate-800 mb-8">
+                <p className="text-center md:text-start text-base sm:text-lg text-slate-800 mb-8">
                     Enter the email associated with your Honeybee Harry{"'"}s club account, and we’ll send you a password reset link.                </p>
                 <form onSubmit={handleSubmit} className="space-y-6">
 
 
                     <div>
-                        <label className="block text-xs font-bold text-black mb-1">
+                        <label className="block text-sm font-bold text-black mb-1">
                             Email
                         </label>
                         <input
@@ -51,14 +82,17 @@ export default function ForgotPassword() {
                             placeholder="Enter Your Email"
                             className={`${INPUT_CLASS}`}
                         />
+                        <span className={`${INPUT_REQUIRED_ERROR_CLASS}`}>{errors.email||""}</span>
                     </div>
 
 
                     <button
                         type="submit"
-                        className="w-full h-14 text-white bg-gradient-to-b from-orange-500 to-amber-400 rounded-full shadow-lg font-bold hover:cursor-pointer"
+                        className="flex justify-center items-center w-full h-14 text-white bg-gradient-to-b from-orange-500 to-amber-400 rounded-full shadow-lg font-bold hover:cursor-pointer"
                     >
-                        Reset password
+
+                           {loading ? (<Loader/>):("Reset password")}
+                     
                     </button>
                 </form>
 
