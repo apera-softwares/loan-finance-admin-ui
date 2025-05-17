@@ -149,7 +149,7 @@ export default function CreateAccountPage() {
                             value={formData.firstName}
                             onChange={handleChange}
                             placeholder="Catherine Chen"
-                            className={`${INPUT_CLASS} focus:outline-[#FFA819]`}
+                            className={`${INPUT_CLASS} `}
                         />
                         <span className={`${INPUT_REQUIRED_ERROR_CLASS}`}>{errors.firstName||""}</span>
                     </div>
@@ -164,7 +164,7 @@ export default function CreateAccountPage() {
                             value={formData.lastName}
                             onChange={handleChange}
                             placeholder="Catherine Chen"
-                            className={`${INPUT_CLASS} focus:outline-[#FFA819]`}
+                            className={`${INPUT_CLASS}`}
                         />
                           <span className={`${INPUT_REQUIRED_ERROR_CLASS}`} >{errors.lastName||""}</span>
                     </div>
@@ -179,7 +179,7 @@ export default function CreateAccountPage() {
                             value={formData.email}
                             onChange={handleChange}
                             placeholder="Catherine.chen@honeybeen.com"
-                            className={`${INPUT_CLASS} focus:outline-[#FFA819]`}
+                            className={`${INPUT_CLASS}`}
                         />
                           <span className={`${INPUT_REQUIRED_ERROR_CLASS}`} >{errors.email||""}</span>
                     </div>
@@ -194,7 +194,7 @@ export default function CreateAccountPage() {
                             value={formData.password}
                             onChange={handleChange}
                             placeholder="Type your password"
-                            className={`${INPUT_CLASS} focus:outline-[#FFA819]`}
+                            className={`${INPUT_CLASS}`}
                         />
                           <span className={`${INPUT_REQUIRED_ERROR_CLASS}`} >{errors.password||""}</span>
                     </div>
