@@ -54,6 +54,7 @@ import BellIcon from "./bell.svg";
 import Graph from "./Graph.svg";
 import Send from "./Send.svg";
 import Users from "./Users.svg";
+import Users1 from "./Users1.svg";
 
 export {
   DownloadIcon,
@@ -111,5 +112,6 @@ export {
   ChatIcon,
   Graph,
   Send,
-  Users
+  Users,
+  Users1
 };

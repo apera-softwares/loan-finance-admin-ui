@@ -23,11 +23,16 @@ const Checkbox: React.FC<CheckboxProps> = ({
         disabled ? "cursor-not-allowed opacity-60" : ""
       }`}
     >
+      {label && (
+        <span className="text-sm font-medium text-gray-800 dark:text-gray-200">
+          {label}
+        </span>
+      )}
       <div className="relative w-5 h-5">
         <input
           id={id}
           type="checkbox"
-          className={`w-5 h-5 appearance-none cursor-pointer dark:border-gray-700 border border-gray-300 checked:border-transparent rounded-md checked:bg-brand-500 disabled:opacity-60 
+          className={`w-5 h-5 appearance-none cursor-pointer dark:border-gray-700 border border-gray-300 checked:border-transparent rounded-md checked:bg-amber-500 disabled:opacity-60 
           ${className}`}
           checked={checked}
           onChange={(e) => onChange(e.target.checked)}
@@ -70,11 +75,7 @@ const Checkbox: React.FC<CheckboxProps> = ({
           </svg>
         )}
       </div>
-      {label && (
-        <span className="text-sm font-medium text-gray-800 dark:text-gray-200">
-          {label}
-        </span>
-      )}
+      
     </label>
   );
 };
