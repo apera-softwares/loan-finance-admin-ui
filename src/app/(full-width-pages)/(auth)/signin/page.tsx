@@ -46,13 +46,14 @@ export default function Login() {
         <div className="flex flex-col md:flex-row min-h-screen">
             {/* Left side - Form */}
 
-            <div className="w-full md:w-1/2 flex flex-col justify-center px-6 sm:px-10 md:px-24 2xl:px-60 py-10">
-                <div className="hidden md:block absolute top-6 left-6">
+            <div className="w-full md:w-1/2 flex flex-col justify-center items-center   px-3 sm:px-6  py-10 ">
+                <div className="absolute top-8 left-1/2 md:left-8 transform -translate-x-1/2 md:translate-x-0 ">
                     <Image src={Logo} alt="Logo" width={230} height={60} />
                 </div>
-                <h2 className="text-3xl font-bold text-slate-800 mb-4">
+                 <div className="w-full max-w-[482px] mx-auto  mt-12 sm:mt-24  ">
+                        <h2 className=" text-center md:text-start text-2xl md:text-3xl font-bold text-slate-800 mb-4">
                     Login                </h2>
-                <p className="text-lg text-slate-800 mb-8">
+                <p className="text-center md:text-start text-lg text-slate-800 mb-8">
                     Log in to track your referrals, check commissions, and grow your hive — one buzz at a time.
                 </p>
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -116,6 +117,7 @@ export default function Login() {
                         Create now
                     </span>
                 </div>
+                 </div>
             </div>
 
             {/* Right side - Hidden on small screens */}
