@@ -27,9 +27,9 @@ export default function RootLayout({
         }}>
         <ReduxProvider>
           <ThemeProvider>
-            <SidebarProvider>{children}</SidebarProvider>
+            <SidebarProvider> <Toaster/>{children}</SidebarProvider>
           </ThemeProvider>
-          <Toaster/>
+         
         </ReduxProvider>
       </body>
     </html>

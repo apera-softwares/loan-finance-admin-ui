@@ -1,5 +1,5 @@
 import { FORM_INPUT_CLASS } from "@/constant/constantClassName";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 interface Option {
   value: string;
@@ -19,10 +19,16 @@ const Select: React.FC<SelectProps> = ({
   placeholder = "Select an option",
   onChange,
   className = "",
-  defaultValue = "",
+  defaultValue,
 }) => {
-  // Manage the selected value
-  const [selectedValue, setSelectedValue] = useState<string>(defaultValue);
+  const [selectedValue, setSelectedValue] = useState<string>(defaultValue || "");
+
+  // 👇 Update state when defaultValue changes
+  useEffect(() => {
+    if (defaultValue !== undefined) {
+      setSelectedValue(defaultValue);
+    }
+  }, [defaultValue]);
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
@@ -32,16 +38,11 @@ const Select: React.FC<SelectProps> = ({
 
   return (
     <select
-    
-      className={`${FORM_INPUT_CLASS} ${
-        selectedValue
-          ? "text-[#717171] dark:text-white/90"
-          : "text-gray-400 dark:text-gray-400"
-      } ${className}`}
+      className={`${FORM_INPUT_CLASS} ${selectedValue ? "text-[#717171] dark:text-white/90" : "text-gray-400 dark:text-gray-400"
+        } ${className}`}
       value={selectedValue}
       onChange={handleChange}
     >
-      {/* Placeholder option */}
       <option
         value=""
         disabled
@@ -49,7 +50,6 @@ const Select: React.FC<SelectProps> = ({
       >
         {placeholder}
       </option>
-      {/* Map over options */}
       {options.map((option) => (
         <option
           key={option.value}

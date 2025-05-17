@@ -14,14 +14,16 @@ import { fetchUsers } from "@/lib/redux/slices/userManagementSlice";
 import Spinner from "../common/Spinner";
 import Pagination from "../tables/Pagination";
 import UserAddEditModal from "./UserAddEditModal";
+import { Toaster } from "react-hot-toast";
 
 
 interface UserTableProps {
     searchText: string;
     role: string;
+    order: string;
 }
 
-const UserTable: React.FC<UserTableProps> = ({ searchText, role }) => {
+const UserTable: React.FC<UserTableProps> = ({ searchText, role, order }) => {
 
     const dispatch = useDispatch<AppDispatch>();
     const [usersData, setUsersData] = useState<any[]>([]);
@@ -31,13 +33,15 @@ const UserTable: React.FC<UserTableProps> = ({ searchText, role }) => {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [editUserData, setEditUserData] = useState<any>({});
 
+    console.log(totalPages,"total pages")
+
     useEffect(() => {
-        dispatch(fetchUsers({ page: currentPage, limit: 5, name: searchText, role: role, order: "" })).then((res: any) => {
+        dispatch(fetchUsers({ page: currentPage, limit: 5, name: searchText, role: role, order})).then((res: any) => {
             if (res.meta.requestStatus === "fulfilled") {
                 if (res.payload) {
                     setUsersData(res.payload.data || []);
                     console.log(res.payload)
-                    const lastPage = res.payload.lastPage || 1;
+                    const lastPage = res.payload.lastPage;
                     setTotalPages(lastPage);
                 } else {
                     setUsersData([]);
@@ -47,7 +51,7 @@ const UserTable: React.FC<UserTableProps> = ({ searchText, role }) => {
                 console.log("Failed to fetch users:", res.payload || "Unknown error");
             }
         });
-    }, [dispatch, currentPage, searchText, role, isModalOpen]);
+    }, [dispatch, currentPage, searchText, role, isModalOpen, order]);
 
     const handlePageChange = (page: any) => {
         setCurrentPage(page);
@@ -58,6 +62,8 @@ const UserTable: React.FC<UserTableProps> = ({ searchText, role }) => {
     return (
         <div className="overflow-hidden rounded-xl bg-white dark:bg-white/[0.03] shadow-md">
             <div className="max-w-full overflow-x-auto">
+            <Toaster />
+
                 <div className="min-w-[1102px]">
                     {loading ? (
                         <Spinner />

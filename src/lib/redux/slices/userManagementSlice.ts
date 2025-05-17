@@ -26,13 +26,42 @@ export const fetchUsers = createAsyncThunk(
     }
   );
 
+
+
+  export const CreateUser = createAsyncThunk(
+    "user/Create",
+    async (obj: any, thunkAPI) => {
+      try {
+        const state: any = thunkAPI.getState();
+        const token = state.user?.user?.token;
+        const { id, ...rest } = obj;
+  
+        const response = await axios.post(
+          `${BACKEND_API}admin/user`,
+          rest, 
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+  
+        return response.data;
+      } catch (error: any) {
+        return thunkAPI.rejectWithValue(
+          error.response?.data?.message || "Failed to Create user"
+        );
+      }
+    }
+  );
+
   export const UpdateUser = createAsyncThunk(
     "user/Update",
     async (obj: any, thunkAPI) => {
       try {
         const state: any = thunkAPI.getState();
         const token = state.user?.user?.token;
-        const { id, ...rest } = obj; // separate id and rest of data
+        const { id, ...rest } = obj; 
   
         const response = await axios.put(
           `${BACKEND_API}admin/user/${id}`,
@@ -71,6 +100,8 @@ const userManagementSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+
+    //Get Users
     builder
       .addCase(fetchUsers.pending, (state) => {
         state.loading = true;
@@ -85,6 +116,29 @@ const userManagementSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       });
+
+
+      //Create User
+
+
+      //Update User
+      builder
+      .addCase(UpdateUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.users = [];
+      })
+      .addCase(UpdateUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.users = action.payload;
+      })
+      .addCase(UpdateUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
+
+
+
   },
 });
 

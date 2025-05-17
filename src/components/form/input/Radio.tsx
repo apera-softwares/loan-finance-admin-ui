@@ -3,7 +3,7 @@ import React from "react";
 interface RadioProps {
   id: string; // Unique ID for the radio button
   name: string; // Radio group name
-  value: string; // Value of the radio button
+  value: any; // Value of the radio button
   checked: boolean; // Whether the radio button is checked
   label: string; // Label for the radio button
   onChange: (value: string) => void; // Handler for value change

@@ -7,10 +7,10 @@ import { FORM_INPUT_CLASS, REQUIRED_ERROR } from "@/constant/constantClassName";
 import Select from "../form/Select";
 import Radio from "../form/input/Radio";
 import Checkbox from "../form/input/Checkbox";
-import { UpdateUser } from "@/lib/redux/slices/userManagementSlice";
+import { CreateUser, UpdateUser } from "@/lib/redux/slices/userManagementSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/redux/store";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 
 const Role = [
     { value: "ADMIN", label: "Admin" },
@@ -38,9 +38,11 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
         email: "",
         role: "",
         team: "",
-        status: false,
+        status: true,
+        verified: true,
         sendWelcomeEmail: true,
     });
+
     const dispatch = useDispatch<AppDispatch>();
 
     useEffect(() => {
@@ -51,13 +53,15 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                 lastName: userData?.lastName || "",
                 email: userData?.email || "",
                 role: userData?.role || "",
-                team: "",
-                status: userData?.status || "",
-                sendWelcomeEmail: true,
-            })
-        }
+                team: userData?.team || "",
+                status: Boolean(userData?.status),
+                verified: Boolean(userData?.verified),
 
-    }, [userData])
+                sendWelcomeEmail: false,
+            });
+        }
+    }, [userData]);
+
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -75,10 +79,20 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
         }));
     };
 
+
+    const handleVerifiedChange = (value: string) => {
+        setFormData((prev) => ({
+            ...prev,
+            verified: value === "yes",
+        }));
+    };
+
+
+
     console.log(userData, "userData 1")
 
     const handleEdit = () => {
-        console.log("Form Data:", formData);
+        console.log("Form Data: Update User", formData);
 
         dispatch(UpdateUser(formData)).then((res: any) => {
             if (res.meta.requestStatus === "fulfilled") {
@@ -87,27 +101,63 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
 
                     console.log(res.payload)
                     closeModal();
+                    clear()
                 } else {
                 }
             } else {
-                console.log("Failed to fetch users:", res.payload || "Unknown error");
+                console.log("Failed to Update User:", res.payload || "Unknown error");
+                toast.error("Failed to Update user");
+
             }
         });
-
-
     };
 
-
     const handleAddUser = () => {
-        console.log("add user")
+        console.log("Form Data: Add User", formData);
+        dispatch(CreateUser(formData)).then((res: any) => {
+            if (res.meta.requestStatus === "fulfilled") {
+                if (res.payload) {
+                    toast.success("User Created successful!");
+                    console.log("User Created successful!");
+
+                    console.log(res.payload)
+                    closeModal();
+                    clear()
+                } else {
+                }
+            } else {
+                console.log("Failed to Create user:", res.payload || "Unknown error");
+                toast.error("Failed to Create user");
+            }
+        });
     }
+
+    const clear = () => {
+        setFormData({
+            id: "",
+            firstName: "",
+            lastName: "",
+            email: "",
+            role: "",
+            team: "",
+            status: false,
+            sendWelcomeEmail: true,
+            verified: false
+        })
+    }
+    console.log("tyoe", type)
 
     return (
         <Modal
             isOpen={isOpen}
-            onClose={closeModal}
+            onClose={() => {
+                closeModal()
+                clear()
+            }}
             className="max-w-[800px] p-5 lg:p-10"
         >
+            {/* <Toaster /> */}
+
             <div>
                 <div className="flex items-center">
                     <span className="bg-amber-500 p-2 flex justify-center items-center rounded-full">
@@ -172,7 +222,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                             <span className={REQUIRED_ERROR}></span>
                         </div>
 
-                        <div className="w-full my-6">
+                        {/* <div className="w-full my-6">
                             <Select
                                 options={Teams}
                                 defaultValue={formData.team}
@@ -181,11 +231,33 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                                 className="dark:bg-dark-900"
                             />
                             <span className={REQUIRED_ERROR}></span>
+                        </div> */}
+
+                        <div className="flex flex-wrap items-center gap-8 mb-6">
+                            <div className="w-20">Verified:</div>
+                            <Radio
+                                id="radio3"
+                                name="status"
+                                value="yes"
+                                checked={formData.verified === true}
+                                onChange={() => handleVerifiedChange("yes")}
+                                label="Yes"
+                            />
+                            <Radio
+                                id="radio4"
+                                name="status"
+                                value="no"
+                                checked={formData.verified === false}
+                                onChange={() => handleVerifiedChange("no")}
+                                label="No"
+                            />
                         </div>
 
+
+
                         <div className="flex justify-between">
-                            <div className="flex flex-wrap items-center gap-8">
-                                <div>Status</div>
+                            <div className="flex flex-wrap items-center gap-4">
+                                <div className="w-20">Status:</div>
                                 <Radio
                                     id="radio1"
                                     name="status"
@@ -204,13 +276,13 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                                 />
                             </div>
 
-                            <Checkbox
+                          {type == "add" &&  <Checkbox
                                 checked={formData.sendWelcomeEmail}
                                 onChange={(val: boolean) =>
                                     setFormData((prev) => ({ ...prev, sendWelcomeEmail: val }))
                                 }
                                 label="Send Welcome Email"
-                            />
+                            />}
                         </div>
                     </form>
                 </div>
@@ -219,10 +291,14 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                     <Button size="sm" onClick={type == "add" ? handleAddUser : handleEdit}>
                         Save User
                     </Button>
-                    <Button size="sm" variant="outline" onClick={closeModal}>
+                    <Button size="sm" variant="outline" onClick={() => {
+                        closeModal()
+                        clear()
+                    }}>
                         Cancel
                     </Button>
                 </div>
+
             </div>
         </Modal>
     );

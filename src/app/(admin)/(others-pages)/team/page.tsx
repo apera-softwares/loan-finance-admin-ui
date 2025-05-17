@@ -21,8 +21,8 @@ export default function UserManagement() {
                 {/* Left: Heading */}
                 <div className=" w-auto">
                     <CommonHeading
-                        pageTitle="User Management"
-                        description="Manage all users across Bee-Team, A-Team, Managers, and Admins."
+                        pageTitle="Team Management"
+                        description="Manage all Team's manager and members"
                     />
                 </div>
 
@@ -35,7 +35,7 @@ export default function UserManagement() {
                         </span>
                         <input
                             type="text"
-                            placeholder="Search by name, product, date"
+                            placeholder="Search team by name"
                             name="SearchInput"
                             value={SearchInput}
                             onChange={(e) => setSearchInput(e.target.value)}
@@ -46,21 +46,15 @@ export default function UserManagement() {
 
                     <button
                         onClick={() => setIsModalOpen(true)}
-                        className="border border-[#151D48] w-32 h-11 text-[#151D48] rounded-md text-sm justify-center text-center outline-none flex items-center gap-1">
-                        <HiOutlinePlus />
-                        Create User
+                        className="h-11 bg-amber-500 text-white rounded-md text-md px-4 justify-center text-center outline-none flex items-center gap-1 hover:bg-amber-600">
+                        <HiOutlinePlus className="text-white"/>
+                        Create Team
                     </button>
 
-                    {/* Filter Dropdown */}
-                    <select
-                        value={filterRole}
-                        onChange={(e) => setFilterRole(e.target.value)}
-                        className="border border-[#151D48] w-32 h-11 text-[#151D48] rounded-md text-sm justify-center text-center outline-none">
-                        <option value="">Filter By Role</option>
-                        <option value="ADMIN">Admin</option>
-                        <option value="A_TEAM">Team A</option>
-                        <option value="B_TEAM">Team B</option>
-                    </select>
+                     {/* <div className="w-32 h-11 relative rounded-md">
+                        <div className="w-32 h-11 left-0 top-0 absolute bg-amber-500 rounded-md" />
+                        <div className="left-[36px] top-[14.43px] absolute justify-start text-white text-sm font-medium font-['Montserrat']">CSV/PDF</div>
+                    </div> */}
 
                     {/* Filter By Asc Des */}
                     <select

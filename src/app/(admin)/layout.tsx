@@ -23,6 +23,12 @@ export default function AdminLayout({
 
   return (
     <div className="min-h-screen xl:flex ">
+      <div className="z-49">
+        <Toaster
+          position="top-center"
+          reverseOrder={false}
+        />
+      </div>
       {/* Sidebar and Backdrop */}
       <AppSidebar />
       <Backdrop />
@@ -30,13 +36,14 @@ export default function AdminLayout({
       <div
         className={`flex-1 transition-all  duration-300 ease-in-out ${mainContentMargin}`}
       >
-                  <Toaster/>
+
 
         {/* Header */}
         <AppHeader />
         {/* Page Content */}
         <div className="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">{children}</div>
       </div>
+
     </div>
   );
 }
