@@ -27,7 +27,7 @@ export default function UserManagement() {
                 </div>
 
                 {/* Right: Actions */}
-                <div className="flex flex-wrap justify-start lg:justify-end items-center gap-3 w-1/2">
+                <div className="flex flex-wrap justify-start lg:justify-end items-center gap-3 lg:w-1/2 w-full">
                     {/* Search Input */}
                     <div className="relative h-11">
                         <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">

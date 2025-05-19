@@ -16,7 +16,6 @@ import Pagination from "../tables/Pagination";
 import UserAddEditModal from "./UserAddEditModal";
 import { Toaster } from "react-hot-toast";
 
-
 interface UserTableProps {
     searchText: string;
     role: string;
@@ -56,8 +55,6 @@ const UserTable: React.FC<UserTableProps> = ({ searchText, role, order }) => {
     const handlePageChange = (page: any) => {
         setCurrentPage(page);
     };
-
-
 
     return (
         <div className="overflow-hidden rounded-xl bg-white dark:bg-white/[0.03] shadow-md">
@@ -133,7 +130,6 @@ const UserTable: React.FC<UserTableProps> = ({ searchText, role, order }) => {
             </div>
             <div className=" w-full flex lg:justify-end p-4">
                 <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
-
             </div>
             <UserAddEditModal isOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} userData={editUserData} type="update" />
 

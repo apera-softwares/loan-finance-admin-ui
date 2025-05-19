@@ -3,7 +3,7 @@ import axios from "axios";
 import { BACKEND_API } from "@/api";
 
 export const fetchTeams = createAsyncThunk(
-    "user/fetchTeams",
+    "team/fetchTeams",
     async (obj: any, thunkAPI) => {
       try {
         const state: any = thunkAPI.getState();
@@ -19,6 +19,26 @@ export const fetchTeams = createAsyncThunk(
         return response.data;
       } catch (error: any) {
         return thunkAPI.rejectWithValue(error.response?.data?.message || "Failed to fetch Teams");
+      }
+    }
+  );
+
+  export const fetchTeamMembers = createAsyncThunk(
+    "team/fetchTeamMembers",
+    async (obj: any, thunkAPI) => {
+      try {
+        const state: any = thunkAPI.getState();
+        const token = state.user?.user?.token; 
+        const {page,limit, id} = obj
+        const response = await axios.get(`${BACKEND_API}team/members/${id}?page=${page}&&limit=${limit}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+  
+        return response.data;
+      } catch (error: any) {
+        return thunkAPI.rejectWithValue(error.response?.data?.message || "Failed to fetch Team Members");
       }
     }
   );
@@ -76,6 +96,62 @@ export const fetchTeams = createAsyncThunk(
       }
     }
   );
+
+  export const addTeamMember = createAsyncThunk(
+    "add/teamMember",
+    async (obj: any, thunkAPI) => {
+      try {
+        const state: any = thunkAPI.getState();
+        const token = state.user?.user?.token;
+        const { teamId, addUserId } = obj;
+  
+        const response = await axios.post(
+          `${BACKEND_API}team/addMember`,
+          {
+            teamId,
+            addUserId
+          }, 
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+  
+        return response.data;
+      } catch (error: any) {
+        return thunkAPI.rejectWithValue(
+          error.response?.data?.message || "Failed to Add Team Member"
+        );
+      }
+    }
+  );
+
+  export const deleteTeamMember = createAsyncThunk(
+    "team/memberDelete",
+    async (id: any, thunkAPI) => {
+      console.log(id,"delete id")
+      try {
+        const state: any = thunkAPI.getState();
+        const token = state.user?.user?.token;
+  
+        const response = await axios.delete(
+          `${BACKEND_API}team/removeMember/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+  
+        return response.data;
+      } catch (error: any) {
+        return thunkAPI.rejectWithValue(
+          error.response?.data?.message || "Failed to Delete Member"
+        );
+      }
+    }
+  );
   
 
 interface TeamState {
@@ -91,7 +167,7 @@ const initialState: TeamState = {
 };
 
 const teamManagementSlice = createSlice({
-  name: "TeamManagement",
+  name: "teamManagement",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -146,6 +222,55 @@ const teamManagementSlice = createSlice({
         state.error = action.payload as string;
       });
 
+       //Get Team Memebrs
+       builder
+       .addCase(fetchTeamMembers.pending, (state) => {
+         state.loading = true;
+         state.error = null;
+         state.teams = [];
+       })
+       .addCase(fetchTeamMembers.fulfilled, (state, action) => {
+         state.loading = false;
+         state.teams = action.payload;
+       })
+       .addCase(fetchTeamMembers.rejected, (state, action) => {
+         state.loading = false;
+         state.error = action.payload as string;
+       });
+
+
+         //Add Team Memebr
+         builder
+         .addCase(addTeamMember.pending, (state) => {
+           state.loading = true;
+           state.error = null;
+           state.teams = [];
+         })
+         .addCase(addTeamMember.fulfilled, (state, action) => {
+           state.loading = false;
+           state.teams = action.payload;
+         })
+         .addCase(addTeamMember.rejected, (state, action) => {
+           state.loading = false;
+           state.error = action.payload as string;
+         });
+
+
+            //Delete Team Memebr
+            builder
+            .addCase(deleteTeamMember.pending, (state) => {
+              state.loading = true;
+              state.error = null;
+              state.teams = [];
+            })
+            .addCase(deleteTeamMember.fulfilled, (state, action) => {
+              state.loading = false;
+              state.teams = action.payload;
+            })
+            .addCase(deleteTeamMember.rejected, (state, action) => {
+              state.loading = false;
+              state.error = action.payload as string;
+            });
 
 
   },

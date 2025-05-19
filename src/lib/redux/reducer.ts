@@ -1,13 +1,13 @@
 import { combineReducers } from '@reduxjs/toolkit'
 import userReducer from './slices/userSlice'
 import userManagementReducer from './slices/userManagementSlice'
-import teamManageMentReducer from './slices/TeamManagementSlice'
+import teamManagementReducer from './slices/teamManagementSlice'
 
 
 const rootReducer = combineReducers({
   user: userReducer,
   userManagement: userManagementReducer,
-  teamManagement: teamManageMentReducer
+  teamManagement: teamManagementReducer,
 })
 
 export type RootReducer = ReturnType<typeof rootReducer>

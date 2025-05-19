@@ -9,7 +9,7 @@ import { CreateUser, UpdateUser } from "@/lib/redux/slices/userManagementSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/redux/store";
 import toast from "react-hot-toast";
-import { CreateTeam, UpdateTeam } from "@/lib/redux/slices/TeamManagementSlice";
+import { CreateTeam, UpdateTeam } from "@/lib/redux/slices/teamManagementSlice";
 
 interface TeamAddEditProps {
     isOpen: boolean;
@@ -109,7 +109,7 @@ const TeamAddEdit: React.FC<TeamAddEditProps> = ({ isOpen, closeModal, teamData,
                     </span>
                     <div className="ml-4 w-4/5">
                         <h5 className="font-semibold text-gray-800 text-title-sm dark:text-white/90">
-                            {type == "add" ? "Create New Team" : "Edit New Name"}
+                            {type == "add" ? "Create New Team" : "Edit Team Name"}
                         </h5>
                         {/* <span className="text-md">
                             Add a new Team to the Honeybee Hive. add Members, team.
