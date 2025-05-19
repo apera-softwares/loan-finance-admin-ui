@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import {
     Table,
@@ -10,47 +11,54 @@ import Badge from "../ui/badge/Badge";
 import { FiEdit } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/redux/store";
-import { fetchUsers } from "@/lib/redux/slices/userManagementSlice";
+import { fetchProductCatalogs } from "@/lib/redux/slices/productCatalogSlice";
 import Spinner from "../common/Spinner";
 import Pagination from "../tables/Pagination";
 import { Toaster } from "react-hot-toast";
 
-
-interface ProductCatalogTableProps {
-    searchText: string;
-    role: string;
-    order: string;
+interface Filters {
+    searchQuery:string,
+    status:string,
 }
 
-const ProductCatalogTable: React.FC<ProductCatalogTableProps> = ({ searchText, role, order }) => {
+interface ProductCatalogTableProps {
+    filters:Filters,
+    onEdit:(data:any)=>void;
+}
+
+
+const ProductCatalogTable: React.FC<ProductCatalogTableProps> = ({ filters,onEdit, }) => {
+    
+
+ 
 
     const dispatch = useDispatch<AppDispatch>();
-    const [usersData, setUsersData] = useState<any[]>([]);
+   
     const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
-    const { loading, error } = useSelector((state: RootState) => state.UserManagement);
-    const [isModalOpen, setIsModalOpen] = useState(false)
-    const [editUserData, setEditUserData] = useState<any>({});
-
-    console.log(totalPages,"total pages")
+    const [totalPages, setTotalPages] = useState(0);
+    const {productCatalogs, loading, error } = useSelector((state: RootState) => state.productCatalog);
+    const payload = {
+            page:currentPage,
+            limit:5,
+            searchQuery:filters.searchQuery,
+            status:filters.status,
+        }
 
     useEffect(() => {
-        // dispatch(fetchUsers({ page: currentPage, limit: 5, name: searchText, role: role, order})).then((res: any) => {
-        //     if (res.meta.requestStatus === "fulfilled") {
-        //         if (res.payload) {
-        //             setUsersData(res.payload.data || []);
-        //             console.log(res.payload)
-        //             const lastPage = res.payload.lastPage;
-        //             setTotalPages(lastPage);
-        //         } else {
-        //             setUsersData([]);
-        //             setTotalPages(1);
-        //         }
-        //     } else {
-        //         console.log("Failed to fetch users:", res.payload || "Unknown error");
-        //     }
-        // });
-    }, [dispatch, currentPage, searchText, role, isModalOpen, order]);
+
+        getProductCatalogs();
+
+    }, [dispatch, currentPage, filters]);
+
+    const getProductCatalogs = async () => {
+        try {
+            const res = await dispatch(fetchProductCatalogs(payload)).unwrap();
+            setTotalPages(res.lastPage || 0);
+
+        } catch (error: any) {
+            console.log(error?.message || "Failed to fetch products");
+        }
+    };
 
     const handlePageChange = (page: any) => {
         setCurrentPage(page);
@@ -80,16 +88,15 @@ const ProductCatalogTable: React.FC<ProductCatalogTableProps> = ({ searchText, r
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {true ? (
-                                    
-                                        <TableRow >
+                                {productCatalogs && productCatalogs.length > 0 ? (
+                                    productCatalogs.map((product:any)=>(      <TableRow key={product?.id} >
                                             <TableCell className="px-5 py-4 text-start">
                                                 <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
                                                    1
                                                 </span>
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                                Solar Pro Pack
+                                           {product?.name||""}
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                             
@@ -111,11 +118,11 @@ const ProductCatalogTable: React.FC<ProductCatalogTableProps> = ({ searchText, r
                                            Affordable solar bundles for all home sizes.
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                                                <FiEdit className="h-5 w-5 text-orange-300 cursor-pointer" onClick={() => {
-                                                  
-                                                }} />
+                                                <FiEdit className="h-5 w-5 text-orange-300 cursor-pointer" onClick={() =>onEdit(product)} />
                                             </TableCell>
-                                        </TableRow>
+                                        </TableRow>))
+                                    
+                                  
                                   
                                 ) : (
                                     <TableRow>
@@ -129,10 +136,14 @@ const ProductCatalogTable: React.FC<ProductCatalogTableProps> = ({ searchText, r
                     )}
                 </div>
             </div>
-            <div className=" w-full flex lg:justify-end p-4">
+
+        
+               {totalPages > 0 && (    <div className=" w-full flex justify-end p-4">
                 <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
 
-            </div>
+            </div>)}
+            
+        
           
 
         </div>
