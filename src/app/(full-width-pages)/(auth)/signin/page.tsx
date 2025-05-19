@@ -1,6 +1,6 @@
 "use client";
 import AuthRigthSidebar from "@/components/AuthRigthSidebar";
-import { INPUT_CLASS } from "@/constant/constantClassName";
+import { INPUT_CLASS,INPUT_REQUIRED_ERROR_CLASS } from "@/constant/constantClassName";
 import Image from "next/image";
 import { useState } from "react";
 import Logo from '../../../../assets/logo/logo.png'
@@ -8,24 +8,28 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { loginUser } from "@/lib/redux/slices/userSlice";
 import { useAppDispatch } from "@/lib/redux/hooks";
+import Loader from "@/components/ui/loader/Loader";
 
 export default function Login() {
     const [formData, setFormData] = useState({
         email: "",
         password: "",
     });
-
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
+    const [errors, setErrors] = useState({
+        email: "",
+        password: "",
+    });
     const router = useRouter()
     const dispatch = useAppDispatch()
-
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        if(!validateFormData()) return;
 
         dispatch(loginUser(formData)).then((res: any) => {
             setLoading(true)
@@ -41,24 +45,57 @@ export default function Login() {
         });
     };
 
+    const validateFormData = () => {
+
+    let isValidData = true;
+    const tempErrors = { ...errors };
+
+    // Validate email
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (formData.email.trim() === "") {
+      tempErrors.email= "Email is required";
+      isValidData = false;
+    } else if (!emailRegex?.test(formData.email)) {
+      tempErrors.email = "Please enter a valid email";
+      isValidData = false;
+    } else {
+      tempErrors.email = "";
+    }
+
+    //validate password
+    if (formData.password.trim() === "") {
+      tempErrors.password = "Password is required";
+      isValidData = false;
+    }  else {
+      tempErrors.password = "";
+    }
+
+
+    setErrors(tempErrors);
+    return isValidData;
+    
+  };
+
+
 
     return (
         <div className="flex flex-col md:flex-row min-h-screen">
             {/* Left side - Form */}
 
-            <div className="w-full md:w-1/2 flex flex-col justify-center px-6 sm:px-10 md:px-24 2xl:px-60 py-10">
-                <div className="hidden md:block absolute top-6 left-6">
+            <div className="w-full md:w-1/2 flex flex-col justify-center items-center   px-3 sm:px-6  py-10 ">
+                <div className="absolute top-8 left-1/2 md:left-8 transform -translate-x-1/2 md:translate-x-0 ">
                     <Image src={Logo} alt="Logo" width={230} height={60} />
                 </div>
-                <h2 className="text-3xl font-bold text-slate-800 mb-4">
+                 <div className="w-full max-w-[482px] mx-auto  mt-12 sm:mt-24  ">
+                        <h2 className=" text-center md:text-start text-2xl md:text-3xl font-bold text-slate-800 mb-4">
                     Login                </h2>
-                <p className="text-lg text-slate-800 mb-8">
+                <p className="text-center md:text-start text-base sm:text-lg text-slate-800 mb-8">
                     Log in to track your referrals, check commissions, and grow your hive — one buzz at a time.
                 </p>
                 <form onSubmit={handleSubmit} className="space-y-6">
 
                     <div>
-                        <label className="block text-xs font-bold text-black mb-1">
+                        <label className="block text-sm font-bold text-black mb-1">
                             Email
                         </label>
                         <input
@@ -67,12 +104,13 @@ export default function Login() {
                             value={formData.email}
                             onChange={handleChange}
                             placeholder="Catherine.chen@honeybeen.com"
-                            className={`${INPUT_CLASS} focus:outline-[#FFA819]`}
+                            className={`${INPUT_CLASS}`}
                         />
+                          <span className={`${INPUT_REQUIRED_ERROR_CLASS}`}>{errors.email||""}</span>
                     </div>
 
                     <div>
-                        <label className="block text-xs font-bold text-black mb-1">
+                        <label className="block text-sm font-bold text-black mb-1">
                             Password
                         </label>
                         <input
@@ -81,8 +119,9 @@ export default function Login() {
                             value={formData.password}
                             onChange={handleChange}
                             placeholder="Type your password"
-                            className={`${INPUT_CLASS} focus:outline-[#FFA819]`}
+                            className={`${INPUT_CLASS} `}
                         />
+                         <span className={`${INPUT_REQUIRED_ERROR_CLASS}`}>{errors.password||""}</span>
                     </div>
                     <div className="flex items-center justify-between text-sm mt-2">
                         <label className="flex items-center space-x-2">
@@ -103,9 +142,11 @@ export default function Login() {
 
                     <button
                         type="submit"
-                        className="w-full h-14 text-white bg-gradient-to-b from-orange-500 to-amber-400 rounded-full shadow-lg font-bold hover:cursor-pointer"
+                        className="flex justify-center items-center  w-full h-14 text-white bg-gradient-to-b from-orange-500 to-amber-400 rounded-full shadow-lg font-bold hover:cursor-pointer"
                     >
-                        {loading ? "Loading..." : "Login"}
+                    
+
+                        {loading ? (<Loader/>):("Login")}
                     </button>
                 </form>
 
@@ -116,6 +157,7 @@ export default function Login() {
                         Create now
                     </span>
                 </div>
+                 </div>
             </div>
 
             {/* Right side - Hidden on small screens */}
