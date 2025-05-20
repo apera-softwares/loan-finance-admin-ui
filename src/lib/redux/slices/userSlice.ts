@@ -22,7 +22,11 @@ export const userSignup = createAsyncThunk(
   "user/signupUser",
   async (obj: any, thunkAPI) => {
     try {
-      const request = await axios.post(`${BACKEND_API}user/create`, obj);
+      const request = await axios.post(`${BACKEND_API}user/create`, obj, {
+        headers: { 
+       'ngrok-skip-browser-warning': 'true',
+     },
+      });
       const response = request.data;
       console.log(response, "signup response");
       return response;
@@ -37,8 +41,12 @@ export const userSignup = createAsyncThunk(
 export const loginUser = createAsyncThunk(
   "user/loginUser",
   async (obj: any, thunkAPI) => {
-    try {
-      const request = await axios.post(`${BACKEND_API}auth/login`, obj);
+    try {  
+      const request = await axios.post(`${BACKEND_API}auth/login`, obj,  {
+        headers: { 
+       'ngrok-skip-browser-warning': 'true',
+     },
+      });
       const response = request.data;
       console.log(response, "login response");
 

@@ -6,7 +6,6 @@ import { HiOutlinePlus } from "react-icons/hi";
 import { Toaster } from "react-hot-toast";
 import TeamAddEdit from "@/components/team/TeamAddEdit";
 import TeamTable from "@/components/team/TeamTable";
-import TeamDeleteConfirm from "@/components/common/DeleteConfirmationModal";
 
 export default function UserManagement() {
 

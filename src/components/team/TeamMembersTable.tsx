@@ -12,14 +12,10 @@ import { AppDispatch, RootState } from "@/lib/redux/store";
 import Spinner from "../common/Spinner";
 import Pagination from "../tables/Pagination";
 import toast, { Toaster } from "react-hot-toast";
-import TeamAddEdit from "./TeamAddEdit";
-import { deleteTeamMember, fetchTeamMembers, fetchTeams } from "@/lib/redux/slices/teamManagementSlice";
-import { useRouter } from "next/navigation";
+import { deleteTeamMember, fetchTeamMembers } from "@/lib/redux/slices/teamManagementSlice";
 import Badge from "../ui/badge/Badge";
 import TeamDeleteConfirm from "../common/DeleteConfirmationModal";
 import MemberAddModal from "./MemberAddModal";
-
-
 interface TeamMembersTableProps {
     id?: string;
     searchText?: string;
@@ -36,10 +32,11 @@ const TeamMembersTable: React.FC<TeamMembersTableProps> = ({ searchText, role, o
     const { loading, error } = useSelector((state: RootState) => state.TeamManagement);
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [memberId, setMembeId] = useState<any>({});
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false)
 
     useEffect(() => {
         fetcTeamMembers()
-    }, [dispatch, currentPage, searchText, role, isModalOpen, order]);
+    }, [dispatch, currentPage, searchText, role, isModalOpen, isAddModalOpen, order]);
 
     const fetcTeamMembers = () => {
         dispatch(fetchTeamMembers({ id: id, page: currentPage, limit: 5 })).then((res: any) => {
@@ -162,7 +159,10 @@ const TeamMembersTable: React.FC<TeamMembersTableProps> = ({ searchText, role, o
                 setIsModalOpen(false)
                 setMembeId("")
             }} onDeleteConfirm={handleDeleteMember} type="Remove" name="Member" />
-
+            <MemberAddModal isOpen={isAddModalOpen} closeModal={() => {
+                setIsAddModalOpen(false)
+                fetcTeamMembers()
+            }} id={id?.toString()} />
 
         </div>
     );

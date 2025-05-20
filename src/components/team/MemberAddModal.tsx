@@ -4,13 +4,13 @@ import Button from "../ui/button/Button";
 import { Modal } from "../ui/modal";
 import { Users1 } from "../../icons/index";
 import { FORM_INPUT_CLASS, REQUIRED_ERROR } from "@/constant/constantClassName";
-
 import { fetchUsers } from "@/lib/redux/slices/userManagementSlice";
 import { addTeamMember } from "@/lib/redux/slices/teamManagementSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/redux/store";
 import toast from "react-hot-toast";
-import { X } from "lucide-react";
+import { RxCross2 } from "react-icons/rx";
+
 
 interface MemberAddModalProps {
     isOpen: boolean;
@@ -22,6 +22,7 @@ const MemberAddModal: React.FC<MemberAddModalProps> = ({ isOpen, closeModal, id 
     const [formData, setFormData] = useState({
         name: ""
     });
+
     const [userData, setUserData] = useState<any[]>([]);
     const [selectedUser, setSelectedUser] = useState<any | null>(null);
     const dispatch = useDispatch<AppDispatch>();
@@ -65,6 +66,7 @@ const MemberAddModal: React.FC<MemberAddModalProps> = ({ isOpen, closeModal, id 
             } else {
                 toast.error("Failed to add team member.");
                 console.log("Error:", res.payload || "Unknown error");
+                closeModal();
             }
         });
     };
@@ -82,8 +84,7 @@ const MemberAddModal: React.FC<MemberAddModalProps> = ({ isOpen, closeModal, id 
                 closeModal();
                 clear();
             }}
-            className="max-w-[800px] p-5 lg:p-10"
-        >
+            className="max-w-[800px] p-5 lg:p-10">
             <div>
                 <div className="flex items-center">
                     <span className="bg-amber-500 p-2 flex justify-center items-center rounded-full">
@@ -130,23 +131,23 @@ const MemberAddModal: React.FC<MemberAddModalProps> = ({ isOpen, closeModal, id 
                         </div>
                     </form>
                 </div>
-
                 {/* Selected user card */}
                 {selectedUser && (
                     <div className="p-4 border rounded-md bg-gray-50 flex justify-between items-center mb-4">
                         <div>
                             <p className="font-semibold">{selectedUser.firstName} {selectedUser.lastName}</p>
                             <p className="text-sm text-gray-500">{selectedUser.email}</p>
+                            <p className="text-sm text-gray-500">{selectedUser.role}</p>
                         </div>
                         <button
                             className="text-red-500 hover:text-red-700"
                             onClick={() => setSelectedUser(null)}
                         >
-                            <X />
+                            <RxCross2 className="h-6 w-6" />
+
                         </button>
                     </div>
                 )}
-
                 <div className="flex items-center justify-end w-full gap-3 mt-4">
                     <Button size="sm" onClick={handleAddUser}>
                         Save

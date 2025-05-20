@@ -10,10 +10,10 @@ export const fetchTeams = createAsyncThunk(
         const token = state.user?.user?.token; 
         const {page,limit} = obj
 
-        const response = await axios.get(`${BACKEND_API}team?page=${page}&&limit=${limit}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+        const response = await axios.get(`${BACKEND_API}team?page=${page}&&limit=${limit}`,  {
+          headers: { Authorization: `Bearer ${token}`, 
+         'ngrok-skip-browser-warning': 'true',
+       },
         });
   
         return response.data;
@@ -31,9 +31,9 @@ export const fetchTeams = createAsyncThunk(
         const token = state.user?.user?.token; 
         const {page,limit, id} = obj
         const response = await axios.get(`${BACKEND_API}team/members/${id}?page=${page}&&limit=${limit}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}`, 
+         'ngrok-skip-browser-warning': 'true',
+       },
         });
   
         return response.data;
@@ -55,9 +55,9 @@ export const fetchTeams = createAsyncThunk(
           `${BACKEND_API}team`,
           rest, 
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            headers: { Authorization: `Bearer ${token}`, 
+           'ngrok-skip-browser-warning': 'true',
+         },
           }
         );
   
@@ -82,9 +82,9 @@ export const fetchTeams = createAsyncThunk(
           `${BACKEND_API}team/${id}`,
           rest, 
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            headers: { Authorization: `Bearer ${token}`, 
+           'ngrok-skip-browser-warning': 'true',
+         },
           }
         );
   
@@ -96,27 +96,31 @@ export const fetchTeams = createAsyncThunk(
       }
     }
   );
-
+  
   export const addTeamMember = createAsyncThunk(
     "add/teamMember",
     async (obj: any, thunkAPI) => {
       try {
         const state: any = thunkAPI.getState();
         const token = state.user?.user?.token;
-        const { teamId, addUserId } = obj;
+        const { teamId, addUserId, page = 1, limit = 10 } = obj;
   
         const response = await axios.post(
           `${BACKEND_API}team/addMember`,
           {
             teamId,
             addUserId
-          }, 
+          },
           {
             headers: {
               Authorization: `Bearer ${token}`,
+              'ngrok-skip-browser-warning': 'true',
             },
           }
         );
+  
+        // ✅ Trigger fetchTeamMembers after adding successfully
+        thunkAPI.dispatch(fetchTeamMembers({ id: teamId, page, limit }));
   
         return response.data;
       } catch (error: any) {
@@ -126,6 +130,7 @@ export const fetchTeams = createAsyncThunk(
       }
     }
   );
+  
 
   export const deleteTeamMember = createAsyncThunk(
     "team/memberDelete",
@@ -138,9 +143,9 @@ export const fetchTeams = createAsyncThunk(
         const response = await axios.delete(
           `${BACKEND_API}team/removeMember/${id}`,
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            headers: { Authorization: `Bearer ${token}`, 
+           'ngrok-skip-browser-warning': 'true',
+         },
           }
         );
   
@@ -156,12 +161,14 @@ export const fetchTeams = createAsyncThunk(
 
 interface TeamState {
   teams: any[];
+  members: any[];
   loading: boolean;
   error: string | null;
 }
 
 const initialState: TeamState = {
   teams: [],
+  members:[],
   loading: false,
   error: null,
 };
@@ -227,11 +234,11 @@ const teamManagementSlice = createSlice({
        .addCase(fetchTeamMembers.pending, (state) => {
          state.loading = true;
          state.error = null;
-         state.teams = [];
+         state.members = [];
        })
        .addCase(fetchTeamMembers.fulfilled, (state, action) => {
          state.loading = false;
-         state.teams = action.payload;
+         state.members = action.payload;
        })
        .addCase(fetchTeamMembers.rejected, (state, action) => {
          state.loading = false;
@@ -242,13 +249,14 @@ const teamManagementSlice = createSlice({
          //Add Team Memebr
          builder
          .addCase(addTeamMember.pending, (state) => {
-           state.loading = true;
-           state.error = null;
-           state.teams = [];
-         })
+          state.loading = true;
+          state.error = null;
+          // ✅ Don't reset teams here
+        })
+        
          .addCase(addTeamMember.fulfilled, (state, action) => {
            state.loading = false;
-           state.teams = action.payload;
+           state.members = action.payload;
          })
          .addCase(addTeamMember.rejected, (state, action) => {
            state.loading = false;
@@ -261,11 +269,11 @@ const teamManagementSlice = createSlice({
             .addCase(deleteTeamMember.pending, (state) => {
               state.loading = true;
               state.error = null;
-              state.teams = [];
+              state.members = [];
             })
             .addCase(deleteTeamMember.fulfilled, (state, action) => {
               state.loading = false;
-              state.teams = action.payload;
+              state.members = action.payload;
             })
             .addCase(deleteTeamMember.rejected, (state, action) => {
               state.loading = false;

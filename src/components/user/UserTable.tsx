@@ -20,9 +20,10 @@ interface UserTableProps {
     searchText: string;
     role: string;
     order: string;
+    from?: string;
 }
 
-const UserTable: React.FC<UserTableProps> = ({ searchText, role, order }) => {
+const UserTable: React.FC<UserTableProps> = ({ searchText, role, order, from }) => {
 
     const dispatch = useDispatch<AppDispatch>();
     const [usersData, setUsersData] = useState<any[]>([]);
@@ -32,10 +33,9 @@ const UserTable: React.FC<UserTableProps> = ({ searchText, role, order }) => {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [editUserData, setEditUserData] = useState<any>({});
 
-    console.log(totalPages,"total pages")
 
     useEffect(() => {
-        dispatch(fetchUsers({ page: currentPage, limit: 5, name: searchText, role: role, order})).then((res: any) => {
+        dispatch(fetchUsers({ page: currentPage, limit: 5, name: searchText, role: role, order })).then((res: any) => {
             if (res.meta.requestStatus === "fulfilled") {
                 if (res.payload) {
                     setUsersData(res.payload.data || []);
@@ -59,7 +59,7 @@ const UserTable: React.FC<UserTableProps> = ({ searchText, role, order }) => {
     return (
         <div className="overflow-hidden rounded-xl bg-white dark:bg-white/[0.03] shadow-md">
             <div className="max-w-full overflow-x-auto">
-            <Toaster />
+                <Toaster />
 
                 <div className="min-w-[1102px]">
                     {loading ? (
@@ -73,7 +73,7 @@ const UserTable: React.FC<UserTableProps> = ({ searchText, role, order }) => {
                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Email</TableCell>
                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Role</TableCell>
                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Status</TableCell>
-                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Actions</TableCell>
+                                    {from !== "team-a" && <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Actions</TableCell>}
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -108,13 +108,16 @@ const UserTable: React.FC<UserTableProps> = ({ searchText, role, order }) => {
                                                     {user?.verified ? "Verified" : "Not verified"}
                                                 </Badge>
                                             </TableCell>
-                                            <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                                                <FiEdit className="h-5 w-5 text-orange-300 cursor-pointer" onClick={() => {
-                                                    setEditUserData(user)
-                                                    setIsModalOpen(true)
-                                                }} />
-                                            </TableCell>
+                                            {from !== "team-a" &&
+                                                <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+                                                    <FiEdit className="h-5 w-5 text-orange-300 cursor-pointer" onClick={() => {
+                                                        setEditUserData(user)
+                                                        setIsModalOpen(true)
+                                                    }} />
+                                                </TableCell>
+                                            }
                                         </TableRow>
+
                                     ))
                                 ) : (
                                     <TableRow>
