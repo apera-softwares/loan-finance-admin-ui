@@ -9,7 +9,7 @@ export const createProductCatalog = createAsyncThunk(
     try {
       const state: any = thunkAPI.getState();
       const token = state.user?.user?.token;
-      console.log("payload in thunk function",data);
+      console.log("payload to create form data ",data);
 
       const response = await axios.post(`${BACKEND_API}product`, data, {
         headers: { Authorization: `Bearer ${token}`, 
@@ -32,8 +32,6 @@ export const fetchProductCatalogs = createAsyncThunk(
     try {
       const state: any = thunkAPI.getState();
       const token = state.user?.user?.token;
-
-      const { order, role, page, limit, name } = params;
 
       const response = await axios.get(
         `${BACKEND_API}admin/products?limit=5&page=1`,
@@ -85,7 +83,7 @@ export const deleteProductCatalog = createAsyncThunk(
         headers: { Authorization: `Bearer ${token}`,   'ngrok-skip-browser-warning': 'true', },
       });
 
-      return id; // Return deleted id to update state if needed
+      return id ; 
     } catch (error: any) {
       return thunkAPI.rejectWithValue(
         error.response?.data?.message || "Failed to delete product catalog"
@@ -102,7 +100,34 @@ interface ProductCatalogState {
 }
 
 const initialState: ProductCatalogState = {
-  productCatalogs: [],
+  productCatalogs: [{
+        name:"test product catalog 1",
+        status:"true",
+        bulletPoints: "product cataglog 1 point 1,product cataglog 1 point 2,product cataglog 1 point 3",
+        elevatorPitch: "product catalog 1 elevator pitch",
+        stateId:"22",
+       },
+       {
+        name:"test product catalog 2",
+        status:"false",
+        bulletPoints: "product cataglog 1 point 1,product cataglog 1 point 2,product cataglog 1 point 3",
+        elevatorPitch: "product catalog 1 elevator pitch",
+        stateId:"22",
+       },
+       {
+        name:"test product catalog 3",
+        status:"true",
+        bulletPoints: "product cataglog 1 point 1,product cataglog 1 point 2,product cataglog 1 point 3",
+        elevatorPitch: "product catalog 1 elevator pitch",
+        stateId:"22",
+       },
+       {
+        name:"test product catalog 4",
+        status:"true",
+        bulletPoints: "product cataglog 1 point 1,product cataglog 1 point 2,product cataglog 1 point 3",
+        elevatorPitch: "product catalog 1 elevator pitch",
+        stateId:"22",
+       }],
   loading: false,
   error: null,
 };
@@ -135,7 +160,7 @@ const productCatalogSlice = createSlice({
       })
       .addCase(fetchProductCatalogs.fulfilled, (state, action) => {
         state.loading = false;
-        state.productCatalogs = action.payload.data || [];
+        // state.productCatalogs = action.payload.data || [];
       })
       .addCase(fetchProductCatalogs.rejected, (state, action) => {
         state.loading = false;

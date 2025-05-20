@@ -22,9 +22,25 @@ interface FormState {
   status:string;
 }
 
+interface PaginationState {
+    currentPage:number,
+    totalPages:number,
+}
+
+interface FiltersState {
+    searchQuery:string,
+    status:string,
+}
+
+
+
 interface AddEditProductCatalogFormProps {
-  editData:any;
+
+  filters:FiltersState,
+  paginationData:PaginationState,
   onEditSuccess:()=>void;
+  editData:any;
+
 }
 
 
@@ -35,15 +51,16 @@ const Teams = [
     { value: "B_TEAM", label: "Assign To B-Team(s)" },
 ];
 
-const AddEditProductCatalogForm:React.FC<AddEditProductCatalogFormProps> = ({editData,onEditSuccess}) => {
+const AddEditProductCatalogForm:React.FC<AddEditProductCatalogFormProps> = ({filters,paginationData,editData,onEditSuccess}) => {
 
   const dispatch = useDispatch<AppDispatch>();
   const [formData, setFormData] = useState<FormState>({ name: "", bulletPoint1:"",bulletPoint2:"",bulletPoint3:"",elevatorPitch:"",team:"",members:"",status:""});
-  const [filters, setFilters] = useState({ order: "desc", role: "admin", name: "", page: 1, limit: 10 });
+
+  const[loading,setLoading] = useState<boolean>(false);
   const[errors,setErrors] = useState({
      name: "", bulletPoint1:"",bulletPoint2:"",bulletPoint3:"",elevatorPitch:"",team:"",members:"",status:""
     })
-  const[loading,setLoading] = useState<boolean>(false);
+  
 
 
 
@@ -54,11 +71,7 @@ const AddEditProductCatalogForm:React.FC<AddEditProductCatalogFormProps> = ({edi
       setFormData(editData);
      }
   }, [editData]);
-
-
-  useEffect(() => {
-    dispatch(fetchProductCatalogs(filters));
-  }, [dispatch, filters]);
+  
 
     const validateFormData = () => {
     let isValidData = true;
@@ -145,6 +158,7 @@ const AddEditProductCatalogForm:React.FC<AddEditProductCatalogFormProps> = ({edi
 
   const handleClearFormData = ()=>{
     setFormData({ name: "", bulletPoint1:"",bulletPoint2:"",bulletPoint3:"",elevatorPitch:"",team:"",members:"",status:""});
+    onEditSuccess();
   }
 
 
@@ -152,7 +166,7 @@ const AddEditProductCatalogForm:React.FC<AddEditProductCatalogFormProps> = ({edi
    
     try {
 
-      console.log("on submit",formData);
+
       //if(!validateFormData()) return ;
 
       setLoading(true);
@@ -181,16 +195,16 @@ const AddEditProductCatalogForm:React.FC<AddEditProductCatalogFormProps> = ({edi
         
       } else {
         await dispatch(createProductCatalog(payload)).unwrap();
-        console.log("reach here");
+     
         toast.success("Created product catalog successfully");
       }
 
       handleClearFormData();
-      dispatch(fetchProductCatalogs(filters));
+      dispatch(fetchProductCatalogs({...filters,...paginationData}));
   
     } catch (error: any) {
       console.log("error while add edit product catalog",error)
-      toast.error(error || "Something went wrong");
+      toast.error("Something went wrong");
     }
     finally{
       setLoading(false);
@@ -199,23 +213,20 @@ const AddEditProductCatalogForm:React.FC<AddEditProductCatalogFormProps> = ({edi
     }
   };
 
-  // const handleEdit = (data:FormState) => {
-  //   setFormData({ ...data });
-  //   //setEditId();
-  // };
+
 
   const handleDelete = async (id: string) => {
-    if (!window.confirm("Are you sure?")) return;
+   
     try {
       await dispatch(deleteProductCatalog(id)).unwrap();
       toast.success("Deleted successfully");
-      dispatch(fetchProductCatalogs(filters));
+      dispatch(fetchProductCatalogs({...filters,...paginationData}));
     } catch (err: any) {
       toast.error(err || "Failed to delete");
     }
   };
 
-  // console.log("fromData",formData);
+
   return (
     <div className="w-full max-w-[1500px] bg-white px-6 md:px-8 py-8 rounded-xl ">
 
@@ -346,7 +357,7 @@ const AddEditProductCatalogForm:React.FC<AddEditProductCatalogFormProps> = ({edi
         <div className="w-full flex justify-center md:justify-start items-center gap-4  ">
 
           <Button size="md" onClick={handleSubmit}>
-                       {loading?"...loading":"Save Product"} 
+                       {loading?"...loading":(editData ? "Update Product":"Save Product")} 
                     </Button>
                     <Button size="md" variant="outline" onClick={handleClearFormData}>
                         Cancel

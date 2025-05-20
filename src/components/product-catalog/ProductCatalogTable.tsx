@@ -16,44 +16,52 @@ import Spinner from "../common/Spinner";
 import Pagination from "../tables/Pagination";
 import { Toaster } from "react-hot-toast";
 
-interface Filters {
+interface FiltersState {
     searchQuery:string,
     status:string,
 }
 
+interface PaginationState {
+    currentPage:number,
+    totalPages:number,
+}
+
 interface ProductCatalogTableProps {
-    filters:Filters,
+    filters:FiltersState,
+    paginationData:PaginationState,
+    setPaginationData:React.Dispatch<React.SetStateAction<PaginationState>>,
     onEdit:(data:any)=>void;
 }
 
 
-const ProductCatalogTable: React.FC<ProductCatalogTableProps> = ({ filters,onEdit, }) => {
+const ProductCatalogTable: React.FC<ProductCatalogTableProps> = ({ filters,paginationData,setPaginationData,onEdit, }) => {
     
 
  
 
     const dispatch = useDispatch<AppDispatch>();
-   
-    const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(0);
     const {productCatalogs, loading, error } = useSelector((state: RootState) => state.productCatalog);
+
     const payload = {
-            page:currentPage,
-            limit:5,
+           
             searchQuery:filters.searchQuery,
             status:filters.status,
+            page:paginationData.currentPage||1,
+            limit:5,
         }
 
     useEffect(() => {
-
+         console.log("......",payload);
         getProductCatalogs();
 
-    }, [dispatch, currentPage, filters]);
+    }, [filters,paginationData.currentPage]);
+
 
     const getProductCatalogs = async () => {
         try {
             const res = await dispatch(fetchProductCatalogs(payload)).unwrap();
-            setTotalPages(res.lastPage || 0);
+            setPaginationData((prev:PaginationState)=>({...prev,totalPages:res?.lastPage||0}))
+            
 
         } catch (error: any) {
             console.log(error?.message || "Failed to fetch products");
@@ -61,7 +69,7 @@ const ProductCatalogTable: React.FC<ProductCatalogTableProps> = ({ filters,onEdi
     };
 
     const handlePageChange = (page: any) => {
-        setCurrentPage(page);
+        setPaginationData((prev:PaginationState)=>({...prev,currentPage:page}));
     };
 
 
@@ -138,8 +146,8 @@ const ProductCatalogTable: React.FC<ProductCatalogTableProps> = ({ filters,onEdi
             </div>
 
         
-               {totalPages > 0 && (    <div className=" w-full flex justify-end p-4">
-                <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+               {paginationData.totalPages > 0 && (    <div className=" w-full flex justify-end p-4">
+                <Pagination currentPage={paginationData.currentPage} totalPages={paginationData.totalPages} onPageChange={handlePageChange} />
 
             </div>)}
             

@@ -20,22 +20,47 @@ interface FormState {
   status:string;
 }
 
-interface Filters {
+interface FiltersState {
     searchQuery:string,
     status:string,
+    
+}
+
+interface PaginationState {
+    currentPage:number,
+    totalPages:number,
 }
 
 export default function ProductCatalog(){
 
-    const [filters,setFilters] = useState<Filters>({
+    const [filters,setFilters] = useState<FiltersState>({
         searchQuery:"",
         status:"",
     })
+
+   const [paginationData,setPaginationData] = useState<PaginationState>({
+    currentPage:1,
+    totalPages:10,
+   })
+
     const [editProductCatalogData,setEditProductCatalogData] = useState<any|null>(null);
-    const formRef = useRef<HTMLDivElement>(null)
+    const formRef = useRef<HTMLDivElement>(null);
+
 
     const handleEditProductCatalog = (data:any)=>{
-         setEditProductCatalogData(data);
+    
+
+        const bulletPointsArray = data?.bulletPoints
+        ? data.bulletPoints.split(',').map((point: string) => point.trim())
+        : [];
+     
+        const bulletPointsObject: { [key: string]: string } = {};
+        bulletPointsArray.forEach((point: string, index: number) => {
+        bulletPointsObject[`bulletPoint${index + 1}`] = point;
+         });
+
+        setEditProductCatalogData({...data,...bulletPointsObject});
+        handlesScrollFormToTop();
     }
 
 
@@ -73,7 +98,7 @@ export default function ProductCatalog(){
                             placeholder="Search by name, product, date"
                             name="searchQuery"
                             value={filters.searchQuery}
-                            onChange={(e) => setFilters((prevFilters:Filters)=>({...prevFilters,searchQuery:e.target.value}))}
+                            onChange={(e) => setFilters((prevFilters:FiltersState)=>({...prevFilters,searchQuery:e.target.value}))}
                             className="pl-10 h-11 pr-4 py-2 border border-gray-300 rounded-md focus:outline-[#FFA819]"
                         />
                     </div>
@@ -83,7 +108,7 @@ export default function ProductCatalog(){
 
                         className="border border-[#151D48] w-32 h-11 text-[#151D48] rounded-md text-sm justify-center text-center outline-none"
                         value={filters.status}
-                        onChange={(e) => setFilters((prevFilters:Filters)=>({...prevFilters,status:e.target.value}))}
+                        onChange={(e) => setFilters((prevFilters:FiltersState)=>({...prevFilters,status:e.target.value}))}
                         >
                         <option value="">Filter : Status</option>
                         <option value="true">Active</option>
@@ -117,7 +142,7 @@ export default function ProductCatalog(){
             {/* Table */}
             <div className="mb-10">
             
-             <ProductCatalogTable filters={filters}  onEdit={handleEditProductCatalog}  />
+             <ProductCatalogTable filters={filters} paginationData={paginationData} setPaginationData={setPaginationData}  onEdit={handleEditProductCatalog}  />
             </div>
 
 
@@ -135,7 +160,7 @@ export default function ProductCatalog(){
              </button>
             </div>
 
-             <AddEditProductCatalogForm editData={editProductCatalogData} onEditSuccess={()=>setEditProductCatalogData(null)} />
+             <AddEditProductCatalogForm filters={filters} paginationData={paginationData}   editData={editProductCatalogData} onEditSuccess={()=>setEditProductCatalogData(null)} />
 
         </div>
 
