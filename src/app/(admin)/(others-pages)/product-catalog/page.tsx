@@ -85,7 +85,7 @@ export default function ProductCatalog(){
 
     return (  <div className="">
            
-            <Toaster />
+      
 
             {/* Top Bar: Left (Heading), Right (Search + Actions) */}
             <div className="flex flex-col lg:flex-row items-start justify-start lg:justify-between lg:items-center gap-0 lg:gap-4  mb-7 ">
