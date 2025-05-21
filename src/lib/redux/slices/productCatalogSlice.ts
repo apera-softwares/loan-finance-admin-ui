@@ -9,8 +9,6 @@ export const createProductCatalog = createAsyncThunk(
     try {
       const state: any = thunkAPI.getState();
       const token = state.user?.user?.token;
-      console.log("payload to create form data ",data);
-
       const response = await axios.post(`${BACKEND_API}product`, data, {
         headers: { Authorization: `Bearer ${token}`, 
        'ngrok-skip-browser-warning': 'true',
@@ -32,9 +30,24 @@ export const fetchProductCatalogs = createAsyncThunk(
     try {
       const state: any = thunkAPI.getState();
       const token = state.user?.user?.token;
+   
+      const {page,limit,searchQuery,status}= params;
+    
+      const queryParams = new URLSearchParams({
+          page: String(page),
+          limit: String(limit),
+      });
+
+      if (searchQuery) {
+      queryParams.append("name", searchQuery);
+      }
+
+      if (status === "true" || status === "false") {
+      queryParams.append("status", status);
+      }
 
       const response = await axios.get(
-        `${BACKEND_API}admin/products?limit=5&page=1`,
+        `${BACKEND_API}admin/products?${queryParams.toString()}`,
         {
           headers: { Authorization: `Bearer ${token}`,   'ngrok-skip-browser-warning': 'true', },
           
@@ -92,7 +105,7 @@ export const deleteProductCatalog = createAsyncThunk(
   }
 );
 
-// State interface
+
 interface ProductCatalogState {
   productCatalogs: any[];
   loading: boolean;
@@ -100,34 +113,7 @@ interface ProductCatalogState {
 }
 
 const initialState: ProductCatalogState = {
-  productCatalogs: [{
-        name:"test product catalog 1",
-        status:"true",
-        bulletPoints: "product cataglog 1 point 1,product cataglog 1 point 2,product cataglog 1 point 3",
-        elevatorPitch: "product catalog 1 elevator pitch",
-        stateId:"22",
-       },
-       {
-        name:"test product catalog 2",
-        status:"false",
-        bulletPoints: "product cataglog 1 point 1,product cataglog 1 point 2,product cataglog 1 point 3",
-        elevatorPitch: "product catalog 1 elevator pitch",
-        stateId:"22",
-       },
-       {
-        name:"test product catalog 3",
-        status:"true",
-        bulletPoints: "product cataglog 1 point 1,product cataglog 1 point 2,product cataglog 1 point 3",
-        elevatorPitch: "product catalog 1 elevator pitch",
-        stateId:"22",
-       },
-       {
-        name:"test product catalog 4",
-        status:"true",
-        bulletPoints: "product cataglog 1 point 1,product cataglog 1 point 2,product cataglog 1 point 3",
-        elevatorPitch: "product catalog 1 elevator pitch",
-        stateId:"22",
-       }],
+  productCatalogs: [],
   loading: false,
   error: null,
 };
@@ -145,7 +131,7 @@ const productCatalogSlice = createSlice({
       })
       .addCase(createProductCatalog.fulfilled, (state, action) => {
         state.loading = false;
-        // Optionally push or refetch data on UI side
+        //refetch data on UI side
       })
       .addCase(createProductCatalog.rejected, (state, action) => {
         state.loading = false;
@@ -160,7 +146,7 @@ const productCatalogSlice = createSlice({
       })
       .addCase(fetchProductCatalogs.fulfilled, (state, action) => {
         state.loading = false;
-        // state.productCatalogs = action.payload.data || [];
+        state.productCatalogs = action.payload.data || [];
       })
       .addCase(fetchProductCatalogs.rejected, (state, action) => {
         state.loading = false;
@@ -175,7 +161,7 @@ const productCatalogSlice = createSlice({
       })
       .addCase(updateProductCatalog.fulfilled, (state, action) => {
         state.loading = false;
-        // We don't update the state here, refetch on UI side
+        //refetch data on UI side
       })
       .addCase(updateProductCatalog.rejected, (state, action) => {
         state.loading = false;
@@ -190,7 +176,7 @@ const productCatalogSlice = createSlice({
       })
       .addCase(deleteProductCatalog.fulfilled, (state, action) => {
         state.loading = false;
-        // Again, refetch after delete, or you can remove from array here
+        //refetch data on UI side
       })
       .addCase(deleteProductCatalog.rejected, (state, action) => {
         state.loading = false;

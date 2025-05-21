@@ -1,5 +1,5 @@
 "use client"
-import React, { useState,useRef } from "react";
+import React, { useState,useRef,useEffect } from "react";
 import CommonHeading from "@/components/common/CommonHeading";
 import { CiSearch } from "react-icons/ci";
 import { HiOutlinePlus } from "react-icons/hi";
@@ -40,17 +40,26 @@ export default function ProductCatalog(){
 
    const [paginationData,setPaginationData] = useState<PaginationState>({
     currentPage:1,
-    totalPages:10,
+    totalPages:0,
    })
 
     const [editProductCatalogData,setEditProductCatalogData] = useState<any|null>(null);
     const formRef = useRef<HTMLDivElement>(null);
 
+    useEffect(() => {
+
+        setPaginationData({
+            currentPage:1,
+            totalPages:0,
+        })
+
+    }, [filters]);
+
 
     const handleEditProductCatalog = (data:any)=>{
     
-
-        const bulletPointsArray = data?.bulletPoints
+        const {bulletPoints,...rest} = data;
+        const bulletPointsArray = bulletPoints
         ? data.bulletPoints.split(',').map((point: string) => point.trim())
         : [];
      
@@ -59,7 +68,7 @@ export default function ProductCatalog(){
         bulletPointsObject[`bulletPoint${index + 1}`] = point;
          });
 
-        setEditProductCatalogData({...data,...bulletPointsObject});
+        setEditProductCatalogData({...rest,...bulletPointsObject});
         handlesScrollFormToTop();
     }
 
@@ -75,7 +84,9 @@ export default function ProductCatalog(){
     }
 
     return (  <div className="">
+           
             <Toaster />
+
             {/* Top Bar: Left (Heading), Right (Search + Actions) */}
             <div className="flex flex-col lg:flex-row items-start justify-between lg:items-center gap-4  mb-6">
                 {/* Left: Heading */}
@@ -107,7 +118,7 @@ export default function ProductCatalog(){
                     <select
 
                         className="border border-[#151D48] w-32 h-11 text-[#151D48] rounded-md text-sm justify-center text-center outline-none"
-                        value={filters.status}
+                        value={`${filters.status}`}
                         onChange={(e) => setFilters((prevFilters:FiltersState)=>({...prevFilters,status:e.target.value}))}
                         >
                         <option value="">Filter : Status</option>
@@ -160,7 +171,7 @@ export default function ProductCatalog(){
              </button>
             </div>
 
-             <AddEditProductCatalogForm filters={filters} paginationData={paginationData}   editData={editProductCatalogData} onEditSuccess={()=>setEditProductCatalogData(null)} />
+             <AddEditProductCatalogForm filters={filters} paginationData={paginationData} setPaginationData={setPaginationData}    editData={editProductCatalogData} onEditSuccess={()=>setEditProductCatalogData(null)} />
 
         </div>
 

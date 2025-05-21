@@ -1,13 +1,15 @@
 "use client";
 import { FORM_INPUT_CLASS,  REQUIRED_ERROR } from "@/constant/constantClassName";
 import React,{useState,useEffect} from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/lib/redux/store";
+import { useDispatch} from "react-redux";
+import { AppDispatch } from "@/lib/redux/store";
 import { createProductCatalog,fetchProductCatalogs, updateProductCatalog,deleteProductCatalog, } from "@/lib/redux/slices/productCatalogSlice";
+import axios from "axios";
+import { BACKEND_API } from "@/api";
 import toast, { Toaster } from "react-hot-toast";
 import Radio from "../form/input/Radio";
 import Button from "../ui/button/Button";
-import Select from "../form/Select";
+import Loader from "../ui/loader/Loader";
 
 
 
@@ -19,6 +21,7 @@ interface FormState {
   elevatorPitch:string;
   team:string;
   members:string;
+  state:string;
   status:string;
 }
 
@@ -38,6 +41,7 @@ interface AddEditProductCatalogFormProps {
 
   filters:FiltersState,
   paginationData:PaginationState,
+  setPaginationData:React.Dispatch<React.SetStateAction<PaginationState>>,
   onEditSuccess:()=>void;
   editData:any;
 
@@ -51,24 +55,26 @@ const Teams = [
     { value: "B_TEAM", label: "Assign To B-Team(s)" },
 ];
 
-const AddEditProductCatalogForm:React.FC<AddEditProductCatalogFormProps> = ({filters,paginationData,editData,onEditSuccess}) => {
+const AddEditProductCatalogForm:React.FC<AddEditProductCatalogFormProps> = ({filters,paginationData,setPaginationData,editData,onEditSuccess}) => {
 
   const dispatch = useDispatch<AppDispatch>();
-  const [formData, setFormData] = useState<FormState>({ name: "", bulletPoint1:"",bulletPoint2:"",bulletPoint3:"",elevatorPitch:"",team:"",members:"",status:""});
-
+  const [formData, setFormData] = useState<FormState>({ name: "", bulletPoint1:"",bulletPoint2:"",bulletPoint3:"",elevatorPitch:"",team:"",members:"",status:"",state:""});
+  const [states,setStates]=useState<any[]>([]);
   const[loading,setLoading] = useState<boolean>(false);
   const[errors,setErrors] = useState({
-     name: "", bulletPoint1:"",bulletPoint2:"",bulletPoint3:"",elevatorPitch:"",team:"",members:"",status:""
+     name: "", bulletPoint1:"",bulletPoint2:"",bulletPoint3:"",elevatorPitch:"",team:"",members:"",status:"",state:""
     })
   
 
-
+  useEffect(() => {
+      fetchStates()
+  }, []);
 
 
   useEffect(() => {
     if (editData) 
      {
-      setFormData(editData);
+      setFormData({...formData,...editData,status:`${editData.status}`,state:editData?.states?.length > 0 ? `${editData?.states[0]?.stateId}`:""});
      }
   }, [editData]);
   
@@ -121,20 +127,20 @@ const AddEditProductCatalogForm:React.FC<AddEditProductCatalogFormProps> = ({fil
     }
 
     //validate team
-    if (formData.team.trim() === "") {
-      tempErrors.team= "Team is required";
-      isValidData = false;
-    } else {
-      tempErrors.team = "";
-    }
+    // if (formData.team.trim() === "") {
+    //   tempErrors.team= "Team is required";
+    //   isValidData = false;
+    // } else {
+    //   tempErrors.team = "";
+    // }
 
     //validate members 
-    if (formData.members.trim() === "") {
-      tempErrors.members= "Members is required";
-      isValidData = false;
-    } else {
-      tempErrors.members = "";
-    }
+    // if (formData.members.trim() === "") {
+    //   tempErrors.members= "Members is required";
+    //   isValidData = false;
+    // } else {
+    //   tempErrors.members = "";
+    // }
 
     //validate status
     if (formData.status.trim() === "") {
@@ -144,6 +150,14 @@ const AddEditProductCatalogForm:React.FC<AddEditProductCatalogFormProps> = ({fil
       tempErrors.status = "";
     }
 
+    //validate state
+    if (formData.state.trim() === "") {
+      tempErrors.state= "State is required";
+      isValidData = false;
+    } else {
+      tempErrors.state = "";
+    }
+
 
     setErrors(tempErrors);
     return isValidData;
@@ -151,14 +165,14 @@ const AddEditProductCatalogForm:React.FC<AddEditProductCatalogFormProps> = ({fil
   };
 
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleClearFormData = ()=>{
-    setFormData({ name: "", bulletPoint1:"",bulletPoint2:"",bulletPoint3:"",elevatorPitch:"",team:"",members:"",status:""});
-    onEditSuccess();
+    setFormData({ name: "", bulletPoint1:"",bulletPoint2:"",bulletPoint3:"",elevatorPitch:"",team:"",members:"",status:"",state:""});
+  
   }
 
 
@@ -167,31 +181,30 @@ const AddEditProductCatalogForm:React.FC<AddEditProductCatalogFormProps> = ({fil
     try {
 
 
-      //if(!validateFormData()) return ;
+      if(!validateFormData()) return ;
 
       setLoading(true);
 
-      // const payload = {
-      //   name:formData.name,
-      //   bulletPoints:`${formData.bulletPoint1},${formData.bulletPoint2},${formData.bulletPoint3}`,
-      //   elevatorPitch:formData.elevatorPitch,
-      //   status:formData.status,
-      //   stateId:"22",
-
-      // }
-
       const payload = {
-        name:"test product catalog 1",
-        status:true,
-        bulletPoints: "product cataglog 1 point 1,product cataglog 1 point 2,product cataglog 1 point 3",
-        elevatorPitch: "product catalog 1 elevator pitch",
-        stateId:"22",
-       }
+        name:formData.name,
+        bulletPoints:`${formData.bulletPoint1},${formData.bulletPoint2},${formData.bulletPoint3}`,
+        elevatorPitch:formData.elevatorPitch,
+        status: formData.status==="true" ? true:false,
+        stateId:formData.state,
+      }
+
+      const params = {
+        searchQuery:filters.searchQuery,
+        status : filters.status === "" ? "" : filters.status === "true" ? "true" : "false" ,
+        page:paginationData.currentPage,
+        limit:5,
+      }
 
       if (editData) {
-        await dispatch(updateProductCatalog({ id: editData?.id, ...formData })).unwrap();
+        await dispatch(updateProductCatalog({ id: editData?.id,...payload })).unwrap();
 
         toast.success("Updated product catalog successfully");
+        onEditSuccess();
         
       } else {
         await dispatch(createProductCatalog(payload)).unwrap();
@@ -200,7 +213,9 @@ const AddEditProductCatalogForm:React.FC<AddEditProductCatalogFormProps> = ({fil
       }
 
       handleClearFormData();
-      dispatch(fetchProductCatalogs({...filters,...paginationData}));
+
+      const res = await dispatch(fetchProductCatalogs(params)).unwrap();
+       setPaginationData((prev:PaginationState)=>({...prev,totalPages:res?.lastPage||0}))
   
     } catch (error: any) {
       console.log("error while add edit product catalog",error)
@@ -226,6 +241,31 @@ const AddEditProductCatalogForm:React.FC<AddEditProductCatalogFormProps> = ({fil
     }
   };
 
+  const fetchStates = async ()=>{
+
+    try{
+
+       const response = await axios.get(
+        `${BACKEND_API}state`,
+        {
+          headers: {  'ngrok-skip-browser-warning': 'true', },
+        }
+      );
+      
+      setStates(response?.data?.data||[]);
+      console.log("reponse of state",response);
+
+    }
+    catch(error){
+      console.log("error while fetching state");
+
+    }
+    finally{
+
+    }
+  
+
+  }
 
   return (
     <div className="w-full max-w-[1500px] bg-white px-6 md:px-8 py-8 rounded-xl ">
@@ -301,25 +341,30 @@ const AddEditProductCatalogForm:React.FC<AddEditProductCatalogFormProps> = ({fil
             <div className="w-full ">
 
 
-                      <Select
+                      {/* <Select
                                 options={Teams}
                                 defaultValue={formData.team}
                                 placeholder="Select Team"
                                 onChange={(value: string) => setFormData((prevData:FormState)=>({...prevData,team:value}))}
                                 className="dark:bg-dark-900"
-                            />
-              <span className={`${REQUIRED_ERROR}`}>{errors.team||""}</span>
-            </div>
-            <div className="w-full ">
-              <input
-                type="text"
-                name="members"
-                placeholder={`Assign To member's`}
-                className={`${FORM_INPUT_CLASS} ${TEXT_SIZE}`}
-                value={formData.members}
-                onChange={handleInputChange}
-              />
-              <span className={`${REQUIRED_ERROR}`}>{errors.members||""}</span>
+                            /> */}
+
+                        <select
+                        name="state"
+                        className={`${FORM_INPUT_CLASS}`}
+                        value={`${formData.state}`}
+                        onChange={handleInputChange}
+                        >
+                          <option value="">Select state</option>
+                
+
+                        {
+                          states && states.length > 0 ? ( states.map((state:any ,index)=>( <option key={state?.id} value={`${state?.id}`}>{state?.name||""}</option>))):(<option value="">No state found</option>)
+                        }
+                       
+                      
+                    </select>
+              <span className={`${REQUIRED_ERROR}`}>{errors.state||""}</span>
             </div>
             <div className="w-full ">
              <div className="flex items-center  gap-6 ">
@@ -329,8 +374,8 @@ const AddEditProductCatalogForm:React.FC<AddEditProductCatalogFormProps> = ({fil
                                     id="radio1"
                                     label="Active"
                                     name="status"
-                                    value="active"
-                                    checked={formData.status === "active"}
+                                    value="true"
+                                    checked={formData.status === "true"}
                                     onChange={(value) => {setFormData((prev:FormState)=>({...prev,status:value}))}}
                                    
                                 />
@@ -338,8 +383,8 @@ const AddEditProductCatalogForm:React.FC<AddEditProductCatalogFormProps> = ({fil
                                     id="radio2"
                                     label="Inactive"
                                     name="status"
-                                    value="inactive"
-                                    checked={formData.status === "inactive"}
+                                    value="false"
+                                    checked={formData.status === "false"}
                                     onChange={(value) => {setFormData((prev:FormState)=>({...prev,status:value}))}}
                                   
                                 />
@@ -357,9 +402,12 @@ const AddEditProductCatalogForm:React.FC<AddEditProductCatalogFormProps> = ({fil
         <div className="w-full flex justify-center md:justify-start items-center gap-4  ">
 
           <Button size="md" onClick={handleSubmit}>
-                       {loading?"...loading":(editData ? "Update Product":"Save Product")} 
+                       {loading? (<Loader/>):(editData ? "Update Product":"Save Product")} 
                     </Button>
-                    <Button size="md" variant="outline" onClick={handleClearFormData}>
+                    <Button size="md" variant="outline" onClick={()=>{
+                      handleClearFormData();
+                      onEditSuccess();
+                    }}>
                         Cancel
                     </Button>
 

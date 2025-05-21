@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
     Table,
     TableBody,
@@ -45,14 +45,15 @@ const ProductCatalogTable: React.FC<ProductCatalogTableProps> = ({ filters,pagin
     const payload = {
            
             searchQuery:filters.searchQuery,
-            status:filters.status,
+            status:filters.status === "" ? "" : filters.status==="true" ? "true" : "false",
             page:paginationData.currentPage||1,
             limit:5,
         }
 
     useEffect(() => {
-         console.log("......",payload);
+
         getProductCatalogs();
+       
 
     }, [filters,paginationData.currentPage]);
 
@@ -86,11 +87,9 @@ const ProductCatalogTable: React.FC<ProductCatalogTableProps> = ({ filters,pagin
                         <Table>
                             <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
                                 <TableRow>
-                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Product</TableCell>
+                                  
                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Name</TableCell>
                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Status</TableCell>
-                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Assigned Teams</TableCell>
-                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Assigend Members</TableCell>
                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Elevator Pitch</TableCell>
                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Actions</TableCell>
                                 </TableRow>
@@ -98,32 +97,27 @@ const ProductCatalogTable: React.FC<ProductCatalogTableProps> = ({ filters,pagin
                             <TableBody>
                                 {productCatalogs && productCatalogs.length > 0 ? (
                                     productCatalogs.map((product:any)=>(      <TableRow key={product?.id} >
-                                            <TableCell className="px-5 py-4 text-start">
-                                                <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                                                   1
-                                                </span>
-                                            </TableCell>
+                                          
                                             <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                            {product?.name||""}
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                             
                                                 <Badge
-                                                    size="sm"
-                                                    color={"success"
-                                                    }
+                                                    size="md"
+                                                    color={ product?.status ? "success":"warning" }
                                                 >
-                                                    Active
+                                                    {product?.status? "Active" : "Inactive" }
                                                 </Badge>
                                             </TableCell>
-                                            <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                                               A-Team Aplpha , Bravo
-                                            </TableCell>
+                                         
                                             <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                             Sarah , tom r 
-                                            </TableCell>
-                                            <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                           Affordable solar bundles for all home sizes.
+                                          {product?.elevatorPitch && (
+                                            product.elevatorPitch?.length > 40
+                                            ? `${product.elevatorPitch.slice(0, 40)}...`
+                                            : product.elevatorPitch
+                                            )}
+
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                                                 <FiEdit className="h-5 w-5 text-orange-300 cursor-pointer" onClick={() =>onEdit(product)} />
@@ -147,7 +141,7 @@ const ProductCatalogTable: React.FC<ProductCatalogTableProps> = ({ filters,pagin
 
         
                {paginationData.totalPages > 0 && (    <div className=" w-full flex justify-end p-4">
-                <Pagination currentPage={paginationData.currentPage} totalPages={paginationData.totalPages} onPageChange={handlePageChange} />
+                <Pagination currentPage={paginationData.currentPage} totalPages={paginationData.totalPages } onPageChange={handlePageChange} />
 
             </div>)}
             
