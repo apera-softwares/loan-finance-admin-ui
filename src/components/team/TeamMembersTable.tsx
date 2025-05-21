@@ -6,55 +6,77 @@ import {
     TableHeader,
     TableRow,
 } from "../ui/table";
-import Badge from "../ui/badge/Badge";
-import { FiEdit } from "react-icons/fi";
+import { RiDeleteBin6Line } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/redux/store";
-import { fetchUsers } from "@/lib/redux/slices/userManagementSlice";
 import Spinner from "../common/Spinner";
 import Pagination from "../tables/Pagination";
-import UserAddEditModal from "./UserAddEditModal";
-import { Toaster } from "react-hot-toast";
-
-interface UserTableProps {
-    searchText: string;
-    role: string;
-    order: string;
-    from?: string;
+import toast, { Toaster } from "react-hot-toast";
+import { deleteTeamMember, fetchTeamMembers } from "@/lib/redux/slices/teamManagementSlice";
+import Badge from "../ui/badge/Badge";
+import TeamDeleteConfirm from "../common/DeleteConfirmationModal";
+import MemberAddModal from "./MemberAddModal";
+interface TeamMembersTableProps {
+    id?: string;
+    searchText?: string;
+    role?: string;
+    order?: string;
 }
 
-const UserTable: React.FC<UserTableProps> = ({ searchText, role, order, from }) => {
+const TeamMembersTable: React.FC<TeamMembersTableProps> = ({ searchText, role, order, id }) => {
 
     const dispatch = useDispatch<AppDispatch>();
-    const [usersData, setUsersData] = useState<any[]>([]);
+    const [teamDataMembers, setTeamDataMembers] = useState<any[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const { loading, error } = useSelector((state: RootState) => state.UserManagement);
+    const { loading, error } = useSelector((state: RootState) => state.TeamManagement);
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const [editUserData, setEditUserData] = useState<any>({});
-
+    const [memberId, setMembeId] = useState<any>({});
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false)
 
     useEffect(() => {
-        dispatch(fetchUsers({ page: currentPage, limit: 5, name: searchText, role: role, order })).then((res: any) => {
+        fetcTeamMembers()
+    }, [dispatch, currentPage, searchText, role, isModalOpen, isAddModalOpen, order]);
+
+    const fetcTeamMembers = () => {
+        dispatch(fetchTeamMembers({ id: id, page: currentPage, limit: 5 })).then((res: any) => {
             if (res.meta.requestStatus === "fulfilled") {
                 if (res.payload) {
-                    setUsersData(res.payload.data || []);
-                    console.log(res.payload)
+                    setTeamDataMembers(res.payload.data || []);
+                    console.log(res.payload, "team memebers data")
                     const lastPage = res.payload.lastPage;
                     setTotalPages(lastPage);
                 } else {
-                    setUsersData([]);
+                    setTeamDataMembers([]);
                     setTotalPages(1);
                 }
             } else {
-                console.log("Failed to fetch users:", res.payload || "Unknown error");
+                console.log("Failed to fetch Team Members:", res.payload || "Unknown error");
             }
         });
-    }, [dispatch, currentPage, searchText, role, isModalOpen, order]);
+    }
 
     const handlePageChange = (page: any) => {
         setCurrentPage(page);
     };
+
+    const handleDeleteMember = () => {
+        dispatch(deleteTeamMember(memberId)).then((res: any) => {
+            if (res.meta.requestStatus === "fulfilled") {
+                if (res.payload) {
+                    setTeamDataMembers(res.payload.data || []);
+                    fetcTeamMembers()
+                    toast.success("Team Member Deleted successful!");
+
+                    console.log(res.payload, "Member Deleted")
+                }
+            } else {
+                console.log("Failed to Delete Team Member:", res.payload || "Unknown error");
+                toast.error("Error in delete Team Member!");
+
+            }
+        });
+    }
 
     return (
         <div className="overflow-hidden rounded-xl bg-white dark:bg-white/[0.03] shadow-md">
@@ -72,52 +94,51 @@ const UserTable: React.FC<UserTableProps> = ({ searchText, role, order, from }) 
                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Name</TableCell>
                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Email</TableCell>
                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Role</TableCell>
-                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Status</TableCell>
-                                    {from !== "team-a" && <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Actions</TableCell>}
+                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Verified</TableCell>
+                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Actions</TableCell>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {usersData.length > 0 ? (
-                                    usersData.map((user: any, index) => (
-                                        <TableRow key={user?.id}>
+                                {teamDataMembers.length > 0 ? (
+                                    teamDataMembers.map((member: any, index) => (
+                                        <TableRow key={member?.id}>
                                             <TableCell className="px-5 py-4 text-start">
                                                 <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
                                                     {index + 1}
                                                 </span>
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                                {user?.firstName} {user?.lastName}
+                                                {member?.user?.firstName}  {member?.user?.lastName}
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                                {user?.email}
+                                                {member?.user?.email}
                                             </TableCell>
-                                            <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                                                {user?.role}
+                                            <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                                                {member?.user?.role}
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                                 <Badge
                                                     size="sm"
                                                     color={
-                                                        user?.verified
+                                                        member?.user?.verified
                                                             ? "success"
-                                                            : !user?.verified
+                                                            : !member?.user?.verified
                                                                 ? "warning"
                                                                 : "error"
-                                                    }
-                                                >
-                                                    {user?.verified ? "Verified" : "Not verified"}
+                                                    }>
+                                                    {member?.user?.verified ? "Verified" : "Not verified"}
                                                 </Badge>
                                             </TableCell>
-                                            {from !== "team-a" &&
-                                                <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                                                    <FiEdit className="h-5 w-5 text-orange-300 cursor-pointer" onClick={() => {
-                                                        setEditUserData(user)
-                                                        setIsModalOpen(true)
-                                                    }} />
-                                                </TableCell>
-                                            }
-                                        </TableRow>
+                                            <TableCell className="px-4 py-3 text-red-500 text-theme-sm dark:text-gray-400">
+                                                <div className="flex items-center gap-1 cursor-pointer" onClick={() => {
+                                                    setMembeId(member?.id)
+                                                    setIsModalOpen(true)
+                                                }}>
+                                                    <RiDeleteBin6Line className="h-5 w-5 text-red-500 cursor-pointer" />Remove
+                                                </div>
+                                            </TableCell>
 
+                                        </TableRow>
                                     ))
                                 ) : (
                                     <TableRow>
@@ -134,11 +155,18 @@ const UserTable: React.FC<UserTableProps> = ({ searchText, role, order, from }) 
             <div className=" w-full flex lg:justify-end p-4">
                 <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
             </div>
-            <UserAddEditModal isOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} userData={editUserData} type="update" />
+            <TeamDeleteConfirm isOpen={isModalOpen} closeModal={() => {
+                setIsModalOpen(false)
+                setMembeId("")
+            }} onDeleteConfirm={handleDeleteMember} type="Remove" name="Member" />
+            <MemberAddModal isOpen={isAddModalOpen} closeModal={() => {
+                setIsAddModalOpen(false)
+                fetcTeamMembers()
+            }} id={id?.toString()} />
 
         </div>
     );
 };
 
 
-export default UserTable
+export default TeamMembersTable

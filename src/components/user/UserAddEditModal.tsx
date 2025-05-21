@@ -10,7 +10,7 @@ import Checkbox from "../form/input/Checkbox";
 import { CreateUser, UpdateUser } from "@/lib/redux/slices/userManagementSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/redux/store";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 const Role = [
     { value: "ADMIN", label: "Admin" },
@@ -42,6 +42,13 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
         verified: true,
         sendWelcomeEmail: true,
     });
+
+    const [errors, setErrors] = useState({
+        firstName: "",
+        lastName: "",
+        email: "",
+        role: ""
+    })
 
     const dispatch = useDispatch<AppDispatch>();
 
@@ -87,13 +94,63 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
         }));
     };
 
+    const validateFormData = () => {
+        let isValidData = true;
+        const tempErrors = { ...errors };
 
+        const nameRegex = /^[A-Za-z]+(-[A-Za-z]+)*$/;;
+        // Validate firstName
+        if (formData.firstName.trim() === "") {
+            tempErrors.firstName = "First name is required";
+            isValidData = false;
+        } else if (!nameRegex?.test(formData.firstName)) {
+            tempErrors.firstName = "Please enter valid first name";
+            isValidData = false;
+        } else {
+            tempErrors.firstName = "";
+        }
+
+        // Validate lastName
+        if (formData?.lastName.trim() === "") {
+            tempErrors.lastName = "Last name is required";
+            isValidData = false;
+        } else if (!nameRegex?.test(formData.lastName)) {
+            tempErrors.lastName = "Please enter valid last name";
+            isValidData = false;
+        } else {
+            tempErrors.lastName = "";
+        }
+
+        // Validate email
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (formData.email.trim() === "") {
+            tempErrors.email = "Email is required";
+            isValidData = false;
+        } else if (!emailRegex?.test(formData.email)) {
+            tempErrors.email = "Please enter a valid email";
+            isValidData = false;
+        } else {
+            tempErrors.email = "";
+        }
+
+        // Validate role
+        if (formData.role.trim() === "") {
+            tempErrors.role = "Role is required";
+            isValidData = false;
+        } else {
+            tempErrors.role = "";
+        }
+
+        setErrors(tempErrors);
+        return isValidData;
+
+    };
 
     console.log(userData, "userData 1")
 
     const handleEdit = () => {
         console.log("Form Data: Update User", formData);
-
+        if (!validateFormData()) return
         dispatch(UpdateUser(formData)).then((res: any) => {
             if (res.meta.requestStatus === "fulfilled") {
                 if (res.payload) {
@@ -114,6 +171,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
 
     const handleAddUser = () => {
         console.log("Form Data: Add User", formData);
+        if (!validateFormData()) return
         dispatch(CreateUser(formData)).then((res: any) => {
             if (res.meta.requestStatus === "fulfilled") {
                 if (res.payload) {
@@ -165,16 +223,16 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                     </span>
                     <div className="ml-4 w-4/5">
                         <h5 className="font-semibold text-gray-800 text-title-sm dark:text-white/90">
-                            Create New User/Edit User
+                            {type == "add" ? "Create New User" : "Edit User"}
                         </h5>
                         <span className="text-md">
-                            Add a new user to the Honeybee Hive. Assign their role, team, and send a welcome email to get them started.
+                            {type == "add" && "Add a new user to the Honeybee Hive. Assign their role, team, and send a welcome email to get them started."}
                         </span>
                     </div>
                 </div>
 
                 <div className="p-2">
-                    <form>
+                    <div>
                         <div className="w-full my-6">
                             <input
                                 type="text"
@@ -184,7 +242,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                                 onChange={handleInputChange}
                                 className={FORM_INPUT_CLASS}
                             />
-                            <span className={REQUIRED_ERROR}></span>
+                            <span className={REQUIRED_ERROR}>{errors.firstName || ""}</span>
                         </div>
 
                         <div className="w-full my-6">
@@ -196,7 +254,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                                 onChange={handleInputChange}
                                 className={FORM_INPUT_CLASS}
                             />
-                            <span className={REQUIRED_ERROR}></span>
+                            <span className={REQUIRED_ERROR}>{errors.lastName || ""}</span>
                         </div>
 
                         <div className="w-full my-6">
@@ -208,7 +266,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                                 onChange={handleInputChange}
                                 className={FORM_INPUT_CLASS}
                             />
-                            <span className={REQUIRED_ERROR}></span>
+                            <span className={REQUIRED_ERROR}>{errors.email || ""}</span>
                         </div>
 
                         <div className="w-full my-6">
@@ -219,7 +277,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                                 onChange={(value: string) => handleSelectChange("role", value)}
                                 className="dark:bg-dark-900"
                             />
-                            <span className={REQUIRED_ERROR}></span>
+                            <span className={REQUIRED_ERROR}>{errors.role || ""}</span>
                         </div>
 
                         {/* <div className="w-full my-6">
@@ -276,7 +334,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                                 />
                             </div>
 
-                          {type == "add" &&  <Checkbox
+                            {type == "add" && <Checkbox
                                 checked={formData.sendWelcomeEmail}
                                 onChange={(val: boolean) =>
                                     setFormData((prev) => ({ ...prev, sendWelcomeEmail: val }))
@@ -284,7 +342,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                                 label="Send Welcome Email"
                             />}
                         </div>
-                    </form>
+                    </div>
                 </div>
 
                 <div className="flex items-center justify-end w-full gap-3 mt-8">

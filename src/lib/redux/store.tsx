@@ -3,12 +3,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./slices/userSlice";
 import userManagementReducer from "./slices/userManagementSlice";
+import teamManagementReducer from "./slices/teamManagementSlice";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       user: userReducer,
       UserManagement: userManagementReducer,
+      TeamManagement: teamManagementReducer
     },
   });
 };

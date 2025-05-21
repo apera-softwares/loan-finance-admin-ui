@@ -1,1 +1,1 @@
-export const BACKEND_API ="http://192.168.1.44:4000/"
+export const BACKEND_API ="https://c4ed-103-136-92-11.ngrok-free.app/"
