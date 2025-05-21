@@ -1,10 +1,12 @@
+"use client"
 import { Outfit } from 'next/font/google';
 import './globals.css';
-
 import { SidebarProvider } from '@/context/SidebarContext';
 import { ThemeProvider } from '@/context/ThemeContext';
 import ReduxProvider from '@/lib/redux/provider';
 import { Toaster } from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -15,6 +17,13 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+const router = useRouter()
+
+useEffect(()=>{
+router.push("/signin")
+},[])
+
   return (
     <html lang="en">
       <body className={`${outfit.className} dark:bg-gray-900`}
