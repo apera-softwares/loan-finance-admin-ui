@@ -49,7 +49,7 @@ export default function CreateAccountPage() {
                 router.push("/signin");
                 setLoading(false)
             } else {
-                toast.error(res.payload || "Login failed. Please try again.");
+                toast.error(res.payload || "Account Creation failed. Please try again.");
                 setLoading(false)
             }
         })

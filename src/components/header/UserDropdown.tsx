@@ -1,17 +1,30 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Dropdown } from "../ui/dropdown/Dropdown";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
-import { useSelector } from "react-redux";
-import { RootState } from "@/lib/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/lib/redux/store";
+import { getUserProfile } from "@/lib/redux/slices/loginPersonProfile";
 
 export default function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
-  const { user, loading, error } = useSelector((state: RootState) => state.user);
+  const { loading, error, userProfile } = useSelector((state: RootState) => state.userProfile);
+  const dispatch = useDispatch<AppDispatch>();
 
-  console.log(user, "user pofile")
+  console.log(userProfile, "user pofile")
+
+
+  useEffect(() => {
+
+    const getUserProfileData = () => {
+      dispatch(getUserProfile())
+    }
+
+    getUserProfileData()
+
+  }, [])
 
   function toggleDropdown(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.stopPropagation();
@@ -35,7 +48,7 @@ export default function UserDropdown() {
         </span>
         <div className="">
           <div className="flex items-center w-full">
-            <span className="block mr-1 font-medium text-theme-sm">Catherine</span>
+            <span className="block mr-1 font-medium text-theme-sm">{userProfile?.firstName}</span>
             <svg
               className={`stroke-gray-500 dark:stroke-gray-400 transition-transform duration-200 ${isOpen ? "rotate-180" : ""
                 }`}
@@ -52,7 +65,7 @@ export default function UserDropdown() {
                 strokeLinejoin="round" />
             </svg>
           </div>
-          <span className="text-theme-xs text-start  w-full flex justify-start">Admin</span>
+          <span className="text-theme-xs text-start  w-full flex justify-start">{userProfile?.role}</span>
         </div>
 
       </button>
@@ -64,9 +77,9 @@ export default function UserDropdown() {
       >
         <div>
           <span className="block font-medium text-gray-700 text-theme-sm dark:text-gray-400">
-            Catherine          </span>
+            {userProfile?.firstName} {userProfile?.lastName}        </span>
           <span className="mt-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">
-            catherine@pimjo.com
+            {userProfile?.email}
           </span>
         </div>
 
