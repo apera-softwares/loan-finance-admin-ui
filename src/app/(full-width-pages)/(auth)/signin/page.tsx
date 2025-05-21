@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import { loginUser } from "@/lib/redux/slices/userSlice";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import Loader from "@/components/ui/loader/Loader";
+import { getUserProfile } from "@/lib/redux/slices/loginPersonProfile";
 
 export default function Login() {
     const [formData, setFormData] = useState({
@@ -34,6 +35,7 @@ export default function Login() {
         dispatch(loginUser(formData)).then((res: any) => {
             setLoading(true)
             if (res.meta.requestStatus === "fulfilled") {
+                dispatch(getUserProfile())
                 toast.success("Login successful!");
                 setFormData({ email: "", password: "" });
                 router.push("/");
