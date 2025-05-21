@@ -1,6 +1,8 @@
 "use client";
 // import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
+import { IoChevronDownSharp } from "react-icons/io5";
+import { IoChevronUpSharp } from "react-icons/io5";
 
 import dynamic from "next/dynamic";
 import { Dropdown } from "../ui/dropdown/Dropdown";
@@ -77,16 +79,23 @@ export default function MonthlyTarget() {
       <div className="px-5 pt-5 bg-white shadow-default rounded-2xl pb-11 dark:bg-gray-900 sm:px-6 sm:pt-6">
         <div className="flex justify-between">
           <div>
-            <h3 className="text-lg font-semibold text-gray-800 dark:text-white/90">
+            {/* <h3 className="text-lg font-semibold text-gray-800 dark:text-white/90">
               Monthly Target
             </h3>
             <p className="mt-1 font-normal text-gray-500 text-theme-sm dark:text-gray-400">
               Target you’ve set for each month
-            </p>
+            </p> */}
+            <span className="text-lg text-gray-700 dark:text-white/90">
+            Referral pipeline
+          </span>
+            
           </div>
           <div className="relative inline-block">
-            <button onClick={toggleDropdown} className="dropdown-toggle">
-              <MoreDotIcon className="text-gray-400 hover:text-gray-700 dark:hover:text-gray-300" />
+            <button onClick={toggleDropdown} className="dropdown-toggle flex gap-2 items-center justify-between border border-black p-1 px-3 rounded">
+              {/* <MoreDotIcon className="text-gray-400 hover:text-gray-700 dark:hover:text-gray-300" /> */}
+              This Month {isOpen ? <IoChevronUpSharp />
+                : <IoChevronDownSharp />}
+
             </button>
             <Dropdown
               isOpen={isOpen}

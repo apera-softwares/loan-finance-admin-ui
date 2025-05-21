@@ -1,6 +1,5 @@
 import { FORM_INPUT_CLASS, REQUIRED_ERROR } from "@/constant/constantClassName";
 import React from "react";
-import { TbArrowNarrowRight } from "react-icons/tb";
 
 const ReferralFromSection = () => {
   return (
@@ -101,8 +100,8 @@ const ReferralFromSection = () => {
             </div>
           </div>
         </div>
-        <div className="w-full flex justify-between mb-8 md:mb-12 ">
-          <p className=" text-sm font-medium w-[60%]">
+        <div className="w-full lg:flex justify-between mb-8 md:mb-12 ">
+          <p className=" text-sm font-medium lg:w-[60%]">
             <input
               type="checkbox"
               name=""
@@ -114,7 +113,7 @@ const ReferralFromSection = () => {
             Message & data rates may apply. You can reply STOP to unsubscribe at
             any time.
           </p>
-          <button className="p-2 px-8 bg-orange-400 text-white rounded-md">Send Referral</button>
+          <button className="p-2 px-8 bg-orange-400 text-white rounded-md my-2 w-full lg:w-auto">Send Referral</button>
         </div>
 
       </div>

@@ -14,9 +14,9 @@ export const fetchUsers = createAsyncThunk(
         const {order,role,page,limit,name} = obj
 
         const response = await axios.get(`${BACKEND_API}admin/users?page=${page}&&role=${role}&&name=${name}&&order=${order}&&limit=${limit}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}`, 
+         'ngrok-skip-browser-warning': 'true',
+       },
         });
   
         return response.data;
@@ -40,9 +40,9 @@ export const fetchUsers = createAsyncThunk(
           `${BACKEND_API}admin/user`,
           rest, 
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            headers: { Authorization: `Bearer ${token}`, 
+           'ngrok-skip-browser-warning': 'true',
+         },
           }
         );
   
@@ -67,9 +67,9 @@ export const fetchUsers = createAsyncThunk(
           `${BACKEND_API}admin/user/${id}`,
           rest, 
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            headers: { Authorization: `Bearer ${token}`, 
+           'ngrok-skip-browser-warning': 'true',
+         },
           }
         );
   
@@ -119,7 +119,20 @@ const userManagementSlice = createSlice({
 
 
       //Create User
-
+      builder
+      .addCase(CreateUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.users = [];
+      })
+      .addCase(CreateUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.users = action.payload;
+      })
+      .addCase(CreateUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
 
       //Update User
       builder

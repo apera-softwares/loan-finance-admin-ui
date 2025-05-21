@@ -4,9 +4,14 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { Dropdown } from "../ui/dropdown/Dropdown";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/redux/store";
 
 export default function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
+  const { user, loading, error } = useSelector((state: RootState) => state.user);
+
+  console.log(user, "user pofile")
 
   function toggleDropdown(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.stopPropagation();
@@ -20,15 +25,13 @@ export default function UserDropdown() {
     <div className="relative">
       <button
         onClick={toggleDropdown}
-        className="flex items-center text-gray-700 dark:text-gray-400 dropdown-toggle"
-      >
+        className="flex items-center text-gray-700 dark:text-gray-400 dropdown-toggle">
         <span className="mr-3 overflow-hidden rounded-full h-11 w-11">
           <Image
             width={44}
             height={44}
             src="/images/user/useradmin.png"
-            alt="User"
-          />
+            alt="User" />
         </span>
         <div className="">
           <div className="flex items-center w-full">
@@ -40,19 +43,16 @@ export default function UserDropdown() {
               height="20"
               viewBox="0 0 18 20"
               fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+              xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M4.3125 8.65625L9 13.3437L13.6875 8.65625"
                 stroke="currentColor"
                 strokeWidth="1.5"
                 strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+                strokeLinejoin="round" />
             </svg>
           </div>
           <span className="text-theme-xs text-start  w-full flex justify-start">Admin</span>
-
         </div>
 
       </button>

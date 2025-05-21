@@ -4,6 +4,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./slices/userSlice";
 import userManagementReducer from "./slices/userManagementSlice";
 import productCatalogReducer from "./slices/productCatalogSlice";
+import teamManagementReducer from "./slices/teamManagementSlice";
 
 export const makeStore = () => {
   return configureStore({
@@ -11,6 +12,7 @@ export const makeStore = () => {
       user: userReducer,
       UserManagement: userManagementReducer,
       productCatalog: productCatalogReducer,
+      TeamManagement: teamManagementReducer
     },
   });
 };
