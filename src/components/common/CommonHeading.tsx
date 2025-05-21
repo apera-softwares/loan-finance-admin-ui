@@ -11,11 +11,11 @@ const CommonHeading: React.FC<CommonHeadingProps> = ({ pageTitle, description, s
   return (
     <div className="mb-6">
     <h1
-        className="text-3xl font-semibold text-gray-800 dark:text-white/90"
+        className="text-2xl sm:text-3xl font-semibold text-gray-800 dark:text-white/90"
         x-text="pageName"
     >
         {pageTitle}      </h1>
-    <div className="text-md text-[#1F1C3B]">
+    <div className=" font-medium text-[#1F1C3B]">
         {description}
     </div>
 </div>
