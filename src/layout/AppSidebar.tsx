@@ -18,7 +18,10 @@ import {
   UserCircleIcon,
   Graph,
   Send,
-  Users
+  Users,
+  CoinHand,
+  Substract,
+  AudioSetting,
 } from "../icons/index";
 import SidebarWidget from "./SidebarWidget";
 import Logo from '../assets/logo/logo.png'
@@ -50,7 +53,7 @@ const navItems: NavItem[] = [
     path: "/profile",
   },
   {
-    icon: <Users />,
+    icon: <CoinHand />,
     name: "A-Team",
     path: "/a-team",
   },
@@ -62,7 +65,7 @@ const navItems: NavItem[] = [
   },
 
   {
-    icon: <Users />,
+    icon: <AudioSetting />,
     name: "User Management",
     path: "/user-management",
   },

@@ -55,6 +55,9 @@ import Graph from "./Graph.svg";
 import Send from "./Send.svg";
 import Users from "./Users.svg";
 import Users1 from "./Users1.svg";
+import CoinHand from "./coin-hand.svg"
+import Substract from "./Subtract.svg"
+import AudioSetting from "./audio-settings.svg"
 
 export {
   DownloadIcon,
@@ -113,5 +116,8 @@ export {
   Graph,
   Send,
   Users,
-  Users1
+  Users1,
+  CoinHand,
+  Substract,
+  AudioSetting,
 };
