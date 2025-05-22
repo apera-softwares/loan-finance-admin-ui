@@ -45,6 +45,12 @@ const userProfileSlice = createSlice({
   name: "userProfile",
   initialState,
   reducers: {
+
+    resetUserProfile(state) {
+      state.userProfile = null;
+      state.loading = false;
+      state.error = null;
+    },
     
   },
   extraReducers: (builder) => {
@@ -73,5 +79,5 @@ const userProfileSlice = createSlice({
    
 });
 
-
+export const {resetUserProfile} = userProfileSlice.actions
 export default userProfileSlice.reducer;
