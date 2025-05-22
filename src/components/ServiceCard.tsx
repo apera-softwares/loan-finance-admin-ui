@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import React, { useState } from "react";
 import { TbArrowNarrowLeft, TbArrowNarrowRight } from "react-icons/tb";
 
@@ -30,7 +31,7 @@ const ServiceCard: React.FC<ISectionCardProps> = ({
     <div className="lg:flex flex-col lg:flex-row items-center lg:items-stretch gap-4 p-6 lg:p-2 max-w-6xl bg-white rounded-3xl shadow-md w-full">
       {/* Left: Image Carousel */}
       <div className="w-full lg:w-[40%] aspect-square relative rounded-xl overflow-hidden">
-        <img
+        <Image
           src={images[current]}
           alt={title}
           className="lg:w-[200px] lg:h-[200px] w-full  object-cover object-center rounded-xl"

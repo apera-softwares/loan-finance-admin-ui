@@ -18,11 +18,6 @@ const Role = [
     { value: "B_TEAM", label: "Team B" },
 ];
 
-const Teams = [
-    { value: "A_TEAM", label: "Team A" },
-    { value: "B_TEAM", label: "Team B" },
-];
-
 interface UserAddEditModalProps {
     isOpen: boolean;
     closeModal: () => void;

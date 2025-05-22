@@ -34,11 +34,10 @@ export const fetchUsers = createAsyncThunk(
       try {
         const state: any = thunkAPI.getState();
         const token = state.user?.user?.token;
-        const { id, ...rest } = obj;
   
         const response = await axios.post(
           `${BACKEND_API}admin/user`,
-          rest, 
+          obj, 
           {
             headers: { Authorization: `Bearer ${token}`, 
            'ngrok-skip-browser-warning': 'true',

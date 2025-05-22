@@ -11,8 +11,6 @@ import { SERVICES } from "@/data/services";
 export default function UserManagement() {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [SearchInput, setSearchInput] = useState("")
-    const [filterRole, setFilterRole] = useState("")
-    const [order, setOrder] = useState("")
 
     return (
         <div className="">
@@ -83,10 +81,10 @@ export default function UserManagement() {
             </div>
             {/* Table */}
             <div className="mt-6">
-                <UserTable searchText={SearchInput} role="A_TEAM" order={order} from="team-a" />
+                <UserTable searchText={SearchInput} role="A_TEAM" order="" from="team-a" />
                 <div className="w-full max-w-[1500px] grid grid-cols-1  lg:grid-cols-3 justify-center gap-10  lg:gap-6 my-4">
                     {SERVICES && SERVICES?.length > 0 ? (
-                        SERVICES?.map((serviceItems: any, index: number) => (
+                        SERVICES?.map((serviceItems: any) => (
                             <ServiceCard
                                 key={serviceItems?.id}
                                 title={serviceItems?.title}

@@ -23,22 +23,19 @@ import Spinner from '@/components/common/Spinner';
 
 export default function UserManagement() {
 
-    const [SearchInput, setSearchInput] = useState("")
-    const [filterRole, setFilterRole] = useState("")
-    const [order, setOrder] = useState("")
     const { teamId } = useParams()
     const dispatch = useDispatch<AppDispatch>();
     const [teamDataMembers, setTeamDataMembers] = useState<any[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const { loading, error } = useSelector((state: RootState) => state.TeamManagement);
+    const { loading } = useSelector((state: RootState) => state.TeamManagement);
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [memberId, setMembeId] = useState<any>({});
     const [isAddModalOpen, setIsAddModalOpen] = useState(false)
 
     useEffect(() => {
         fetcTeamMembers()
-    }, [dispatch, currentPage, SearchInput, filterRole, isModalOpen, isAddModalOpen, order]);
+    }, [dispatch, currentPage, isModalOpen, isAddModalOpen]);
 
     const fetcTeamMembers = () => {
         dispatch(fetchTeamMembers({ id: teamId, page: currentPage, limit: 5 })).then((res: any) => {

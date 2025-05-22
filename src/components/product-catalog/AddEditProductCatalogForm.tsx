@@ -1,12 +1,12 @@
 "use client";
-import { FORM_INPUT_CLASS,  REQUIRED_ERROR } from "@/constant/constantClassName";
-import React,{useState,useEffect} from "react";
-import { useDispatch} from "react-redux";
+import { FORM_INPUT_CLASS, REQUIRED_ERROR } from "@/constant/constantClassName";
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/redux/store";
-import { createProductCatalog,fetchProductCatalogs, updateProductCatalog,deleteProductCatalog, } from "@/lib/redux/slices/productCatalogSlice";
+import { createProductCatalog, fetchProductCatalogs, updateProductCatalog } from "@/lib/redux/slices/productCatalogSlice";
 import axios from "axios";
 import { BACKEND_API } from "@/api";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import Radio from "../form/input/Radio";
 import Button from "../ui/button/Button";
 import Loader from "../ui/loader/Loader";
@@ -15,79 +15,73 @@ import Loader from "../ui/loader/Loader";
 
 interface FormState {
   name: string;
-  bulletPoint1:string;
-  bulletPoint2:string;
-  bulletPoint3:string;
-  elevatorPitch:string;
-  team:string;
-  members:string;
-  state:string;
-  status:string;
+  bulletPoint1: string;
+  bulletPoint2: string;
+  bulletPoint3: string;
+  elevatorPitch: string;
+  team: string;
+  members: string;
+  state: string;
+  status: string;
 }
 
 interface PaginationState {
-    currentPage:number,
-    totalPages:number,
+  currentPage: number,
+  totalPages: number,
 }
 
 interface FiltersState {
-    searchQuery:string,
-    status:string,
+  searchQuery: string,
+  status: string,
 }
 
 
 
 interface AddEditProductCatalogFormProps {
 
-  filters:FiltersState,
-  paginationData:PaginationState,
-  setPaginationData:React.Dispatch<React.SetStateAction<PaginationState>>,
-  onEditSuccess:()=>void;
-  editData:any;
+  filters: FiltersState,
+  paginationData: PaginationState,
+  setPaginationData: React.Dispatch<React.SetStateAction<PaginationState>>,
+  onEditSuccess: () => void;
+  editData: any;
 
 }
 
 
 const TEXT_SIZE = "text-base";
 
-const Teams = [
-    { value: "A_TEAM", label: "Assign To A-Team(s)" },
-    { value: "B_TEAM", label: "Assign To B-Team(s)" },
-];
 
-const AddEditProductCatalogForm:React.FC<AddEditProductCatalogFormProps> = ({filters,paginationData,setPaginationData,editData,onEditSuccess}) => {
+const AddEditProductCatalogForm: React.FC<AddEditProductCatalogFormProps> = ({ filters, paginationData, setPaginationData, editData, onEditSuccess }) => {
 
   const dispatch = useDispatch<AppDispatch>();
-  const [formData, setFormData] = useState<FormState>({ name: "", bulletPoint1:"",bulletPoint2:"",bulletPoint3:"",elevatorPitch:"",team:"",members:"",status:"",state:""});
-  const [states,setStates]=useState<any[]>([]);
-  const[loading,setLoading] = useState<boolean>(false);
-  const[errors,setErrors] = useState({
-     name: "", bulletPoint1:"",bulletPoint2:"",bulletPoint3:"",elevatorPitch:"",team:"",members:"",status:"",state:""
-    })
-  
+  const [formData, setFormData] = useState<FormState>({ name: "", bulletPoint1: "", bulletPoint2: "", bulletPoint3: "", elevatorPitch: "", team: "", members: "", status: "", state: "" });
+  const [states, setStates] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [errors, setErrors] = useState({
+    name: "", bulletPoint1: "", bulletPoint2: "", bulletPoint3: "", elevatorPitch: "", team: "", members: "", status: "", state: ""
+  })
+
 
   useEffect(() => {
-      fetchStates()
+    fetchStates()
   }, []);
 
 
   useEffect(() => {
-    if (editData) 
-     {
-      setFormData({...formData,...editData,status:`${editData.status}`,state:editData?.states?.length > 0 ? `${editData?.states[0]?.stateId}`:""});
-     }
+    if (editData) {
+      setFormData({ ...formData, ...editData, status: `${editData.status}`, state: editData?.states?.length > 0 ? `${editData?.states[0]?.stateId}` : "" });
+    }
   }, [editData]);
-  
 
-    const validateFormData = () => {
+
+  const validateFormData = () => {
     let isValidData = true;
     const tempErrors = { ...errors };
- 
-    const nameRegex = /^[A-Za-z]+(-[A-Za-z]+)*$/;;
-  
+
+
     //validate name 
     if (formData.name.trim() === "") {
-      tempErrors.name= "Name is required";
+      tempErrors.name = "Name is required";
       isValidData = false;
     } else {
       tempErrors.name = "";
@@ -97,21 +91,21 @@ const AddEditProductCatalogForm:React.FC<AddEditProductCatalogFormProps> = ({fil
     //validate  bullet points
 
     if (formData.bulletPoint1.trim() === "") {
-      tempErrors.bulletPoint1= "Bullet point1 is required";
+      tempErrors.bulletPoint1 = "Bullet point1 is required";
       isValidData = false;
     } else {
       tempErrors.bulletPoint1 = "";
     }
 
     if (formData.bulletPoint2.trim() === "") {
-      tempErrors.bulletPoint2= "Bullet point2 is required";
+      tempErrors.bulletPoint2 = "Bullet point2 is required";
       isValidData = false;
     } else {
       tempErrors.bulletPoint2 = "";
     }
 
     if (formData.bulletPoint3.trim() === "") {
-      tempErrors.bulletPoint3= "Bullet point3 is required";
+      tempErrors.bulletPoint3 = "Bullet point3 is required";
       isValidData = false;
     } else {
       tempErrors.bulletPoint3 = "";
@@ -120,7 +114,7 @@ const AddEditProductCatalogForm:React.FC<AddEditProductCatalogFormProps> = ({fil
 
     //validate elevatorPitch
     if (formData.elevatorPitch.trim() === "") {
-      tempErrors.elevatorPitch= "Elevator Pitch is required";
+      tempErrors.elevatorPitch = "Elevator Pitch is required";
       isValidData = false;
     } else {
       tempErrors.elevatorPitch = "";
@@ -144,7 +138,7 @@ const AddEditProductCatalogForm:React.FC<AddEditProductCatalogFormProps> = ({fil
 
     //validate status
     if (formData.status.trim() === "") {
-      tempErrors.status= "Status is required";
+      tempErrors.status = "Status is required";
       isValidData = false;
     } else {
       tempErrors.status = "";
@@ -152,7 +146,7 @@ const AddEditProductCatalogForm:React.FC<AddEditProductCatalogFormProps> = ({fil
 
     //validate state
     if (formData.state.trim() === "") {
-      tempErrors.state= "State is required";
+      tempErrors.state = "State is required";
       isValidData = false;
     } else {
       tempErrors.state = "";
@@ -161,109 +155,107 @@ const AddEditProductCatalogForm:React.FC<AddEditProductCatalogFormProps> = ({fil
 
     setErrors(tempErrors);
     return isValidData;
-    
+
   };
 
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleClearFormData = ()=>{
-    setFormData({ name: "", bulletPoint1:"",bulletPoint2:"",bulletPoint3:"",elevatorPitch:"",team:"",members:"",status:"",state:""});
-  
+  const handleClearFormData = () => {
+    setFormData({ name: "", bulletPoint1: "", bulletPoint2: "", bulletPoint3: "", elevatorPitch: "", team: "", members: "", status: "", state: "" });
+
   }
 
 
   const handleSubmit = async () => {
-   
+
     try {
 
 
-      if(!validateFormData()) return ;
+      if (!validateFormData()) return;
 
       setLoading(true);
 
       const payload = {
-        name:formData.name,
-        bulletPoints:`${formData.bulletPoint1},${formData.bulletPoint2},${formData.bulletPoint3}`,
-        elevatorPitch:formData.elevatorPitch,
-        status: formData.status==="true" ? true:false,
-        stateId:formData.state,
+        name: formData.name,
+        bulletPoints: `${formData.bulletPoint1},${formData.bulletPoint2},${formData.bulletPoint3}`,
+        elevatorPitch: formData.elevatorPitch,
+        status: formData.status === "true" ? true : false,
+        stateId: formData.state,
       }
 
       const params = {
-        searchQuery:filters.searchQuery,
-        status : filters.status === "" ? "" : filters.status === "true" ? "true" : "false" ,
-        page:paginationData.currentPage,
-        limit:5,
+        searchQuery: filters.searchQuery,
+        status: filters.status === "" ? "" : filters.status === "true" ? "true" : "false",
+        page: paginationData.currentPage,
+        limit: 5,
       }
 
       if (editData) {
-        await dispatch(updateProductCatalog({ id: editData?.id,...payload })).unwrap();
+        await dispatch(updateProductCatalog({ id: editData?.id, ...payload })).unwrap();
 
         toast.success("Updated product catalog successfully");
         onEditSuccess();
-        
+
       } else {
         await dispatch(createProductCatalog(payload)).unwrap();
-     
+
         toast.success("Created product catalog successfully");
       }
 
       handleClearFormData();
 
       const res = await dispatch(fetchProductCatalogs(params)).unwrap();
-       setPaginationData((prev:PaginationState)=>({...prev,totalPages:res?.lastPage||0}))
-  
+      setPaginationData((prev: PaginationState) => ({ ...prev, totalPages: res?.lastPage || 0 }))
+
     } catch (error: any) {
-      console.log("error while add edit product catalog",error)
+      console.log("error while add edit product catalog", error)
       toast.error("Something went wrong");
     }
-    finally{
+    finally {
       setLoading(false);
-    
-      
+
+
     }
   };
 
 
 
-  const handleDelete = async (id: string) => {
-   
+  // const handleDelete = async (id: string) => {
+
+  //   try {
+  //     await dispatch(deleteProductCatalog(id)).unwrap();
+  //     toast.success("Deleted successfully");
+  //     dispatch(fetchProductCatalogs({...filters,...paginationData}));
+  //   } catch (err: any) {
+  //     toast.error(err || "Failed to delete");
+  //   }
+  // };
+
+  const fetchStates = async () => {
+
     try {
-      await dispatch(deleteProductCatalog(id)).unwrap();
-      toast.success("Deleted successfully");
-      dispatch(fetchProductCatalogs({...filters,...paginationData}));
-    } catch (err: any) {
-      toast.error(err || "Failed to delete");
-    }
-  };
 
-  const fetchStates = async ()=>{
-
-    try{
-
-       const response = await axios.get(
+      const response = await axios.get(
         `${BACKEND_API}state`,
         {
-          headers: {  'ngrok-skip-browser-warning': 'true', },
+          headers: { 'ngrok-skip-browser-warning': 'true', },
         }
       );
-      
-      setStates(response?.data?.data||[]);
-      console.log("reponse of state",response);
+
+      setStates(response?.data?.data || []);
+      console.log("reponse of state", response);
 
     }
-    catch(error){
-      console.log("error while fetching state");
+    catch (error) {
+      console.log("error while fetching state", error);
 
     }
-    finally{
 
-    }
-  
+
 
   }
 
@@ -282,9 +274,9 @@ const AddEditProductCatalogForm:React.FC<AddEditProductCatalogFormProps> = ({fil
                 value={formData.name}
                 onChange={handleInputChange}
               />
-              <span className={`${REQUIRED_ERROR}`}>{errors.name||""}</span>
+              <span className={`${REQUIRED_ERROR}`}>{errors.name || ""}</span>
             </div>
-         
+
           </div>
 
           <div className="w-full grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-10 lg:gap-12 ">
@@ -297,7 +289,7 @@ const AddEditProductCatalogForm:React.FC<AddEditProductCatalogFormProps> = ({fil
                 value={formData.bulletPoint1}
                 onChange={handleInputChange}
               />
-              <span className={`${REQUIRED_ERROR}`}>{errors.bulletPoint1||""}</span>
+              <span className={`${REQUIRED_ERROR}`}>{errors.bulletPoint1 || ""}</span>
             </div>
             <div className="w-full">
               <input
@@ -308,7 +300,7 @@ const AddEditProductCatalogForm:React.FC<AddEditProductCatalogFormProps> = ({fil
                 value={formData.bulletPoint2}
                 onChange={handleInputChange}
               />
-              <span className={`${REQUIRED_ERROR}`}>{errors.bulletPoint2||""}</span>
+              <span className={`${REQUIRED_ERROR}`}>{errors.bulletPoint2 || ""}</span>
             </div>
             <div className="w-full">
               <input
@@ -319,10 +311,10 @@ const AddEditProductCatalogForm:React.FC<AddEditProductCatalogFormProps> = ({fil
                 value={formData.bulletPoint3}
                 onChange={handleInputChange}
               />
-              <span className={`${REQUIRED_ERROR}`}>{errors.bulletPoint3||""}</span>
+              <span className={`${REQUIRED_ERROR}`}>{errors.bulletPoint3 || ""}</span>
             </div>
           </div>
-              <div className="w-full grid grid-cols-1 ">
+          <div className="w-full grid grid-cols-1 ">
             <div className="w-full">
               <textarea
                 placeholder="Write an elevator pitch"
@@ -332,16 +324,16 @@ const AddEditProductCatalogForm:React.FC<AddEditProductCatalogFormProps> = ({fil
                 onChange={handleInputChange}
 
               />
-              <span className="text-sm text-red-500">{errors.elevatorPitch||""}</span>
+              <span className="text-sm text-red-500">{errors.elevatorPitch || ""}</span>
             </div>
           </div>
 
           <div className="w-full grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-10 lg:gap-12 ">
-           
+
             <div className="w-full ">
 
 
-                      {/* <Select
+              {/* <Select
                                 options={Teams}
                                 defaultValue={formData.team}
                                 placeholder="Select Team"
@@ -349,67 +341,67 @@ const AddEditProductCatalogForm:React.FC<AddEditProductCatalogFormProps> = ({fil
                                 className="dark:bg-dark-900"
                             /> */}
 
-                        <select
-                        name="state"
-                        className={`${FORM_INPUT_CLASS}`}
-                        value={`${formData.state}`}
-                        onChange={handleInputChange}
-                        >
-                          <option value="">Select state</option>
-                
+              <select
+                name="state"
+                className={`${FORM_INPUT_CLASS}`}
+                value={`${formData.state}`}
+                onChange={handleInputChange}
+              >
+                <option value="">Select state</option>
 
-                        {
-                          states && states.length > 0 ? ( states.map((state:any ,index)=>( <option key={state?.id} value={`${state?.id}`}>{state?.name||""}</option>))):(<option value="">No state found</option>)
-                        }
-                       
-                      
-                    </select>
-              <span className={`${REQUIRED_ERROR}`}>{errors.state||""}</span>
+
+                {
+                  states && states.length > 0 ? (states.map((state: any) => (<option key={state?.id} value={`${state?.id}`}>{state?.name || ""}</option>))) : (<option value="">No state found</option>)
+                }
+
+
+              </select>
+              <span className={`${REQUIRED_ERROR}`}>{errors.state || ""}</span>
             </div>
             <div className="w-full ">
-             <div className="flex items-center  gap-6 ">
-              <label className="block text-base font-medium text-gray-700  ">Status</label>
-                  <div className="flex items-center flex-wrap space-x-6  ">
-                      <Radio
-                                    id="radio1"
-                                    label="Active"
-                                    name="status"
-                                    value="true"
-                                    checked={formData.status === "true"}
-                                    onChange={(value) => {setFormData((prev:FormState)=>({...prev,status:value}))}}
-                                   
-                                />
-                                <Radio
-                                    id="radio2"
-                                    label="Inactive"
-                                    name="status"
-                                    value="false"
-                                    checked={formData.status === "false"}
-                                    onChange={(value) => {setFormData((prev:FormState)=>({...prev,status:value}))}}
-                                  
-                                />
+              <div className="flex items-center  gap-6 ">
+                <label className="block text-base font-medium text-gray-700  ">Status</label>
+                <div className="flex items-center flex-wrap space-x-6  ">
+                  <Radio
+                    id="radio1"
+                    label="Active"
+                    name="status"
+                    value="true"
+                    checked={formData.status === "true"}
+                    onChange={(value) => { setFormData((prev: FormState) => ({ ...prev, status: value })) }}
 
-  </div>
-</div>
+                  />
+                  <Radio
+                    id="radio2"
+                    label="Inactive"
+                    name="status"
+                    value="false"
+                    checked={formData.status === "false"}
+                    onChange={(value) => { setFormData((prev: FormState) => ({ ...prev, status: value })) }}
 
-              <span className={`${REQUIRED_ERROR}`}>{errors.status||""}</span>
+                  />
+
+                </div>
+              </div>
+
+              <span className={`${REQUIRED_ERROR}`}>{errors.status || ""}</span>
             </div>
           </div>
-          
 
-      
+
+
         </div>
         <div className="w-full flex justify-center md:justify-start items-center gap-4  ">
 
           <Button size="md" onClick={handleSubmit}>
-                       {loading? (<Loader/>):(editData ? "Update Product":"Save Product")} 
-                    </Button>
-                    <Button size="md" variant="outline" onClick={()=>{
-                      handleClearFormData();
-                      onEditSuccess();
-                    }}>
-                        Cancel
-                    </Button>
+            {loading ? (<Loader />) : (editData ? "Update Product" : "Save Product")}
+          </Button>
+          <Button size="md" variant="outline" onClick={() => {
+            handleClearFormData();
+            onEditSuccess();
+          }}>
+            Cancel
+          </Button>
 
         </div>
 

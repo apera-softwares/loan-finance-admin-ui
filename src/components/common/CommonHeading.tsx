@@ -1,4 +1,3 @@
-import Link from "next/link";
 import React from "react";
 
 interface CommonHeadingProps {
@@ -7,7 +6,7 @@ interface CommonHeadingProps {
   sideDescription?: string;
 }
 
-const CommonHeading: React.FC<CommonHeadingProps> = ({ pageTitle, description, sideDescription }) => {
+const CommonHeading: React.FC<CommonHeadingProps> = ({ pageTitle, description }) => {
   return (
     <div className="mb-6">
     <h1

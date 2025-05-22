@@ -22,7 +22,7 @@ export default function RootLayout({
 const router = useRouter()
 
 useEffect(()=>{
-//router.push("/signin")
+router.push("/signin")
 },[])
 
   return (

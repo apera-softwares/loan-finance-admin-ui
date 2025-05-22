@@ -5,7 +5,6 @@ import { Modal } from "../ui/modal";
 import { Users1 } from "../../icons/index";
 import { FORM_INPUT_CLASS, REQUIRED_ERROR } from "@/constant/constantClassName";
 
-import { CreateUser, UpdateUser } from "@/lib/redux/slices/userManagementSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/redux/store";
 import toast from "react-hot-toast";

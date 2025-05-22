@@ -6,13 +6,12 @@ import { useState } from "react";
 import Logo from '../../../../assets/logo/logo.png'
 import { useRouter } from "next/navigation";
 import { IoArrowBackOutline } from "react-icons/io5";
-import Loader from "@/components/ui/loader/Loader";
+// import Loader from "@/components/ui/loader/Loader";
 
 export default function ForgotPassword() {
     const [formData, setFormData] = useState({
         email: "",
     });
-    const[loading,setLoading] = useState<boolean>(false);
     const [errors, setErrors] = useState({
         email: "",
      
@@ -91,7 +90,8 @@ export default function ForgotPassword() {
                         className="flex justify-center items-center w-full h-14 text-white bg-gradient-to-b from-orange-500 to-amber-400 rounded-full shadow-lg font-bold hover:cursor-pointer"
                     >
 
-                           {loading ? (<Loader/>):("Reset password")}
+                           {/* {loading ? (<Loader/>):("Reset password")} */}
+                           Reset password
                      
                     </button>
                 </form>

@@ -29,7 +29,7 @@ const UserTable: React.FC<UserTableProps> = ({ searchText, role, order, from }) 
     const [usersData, setUsersData] = useState<any[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const { loading, error } = useSelector((state: RootState) => state.UserManagement);
+    const { loading } = useSelector((state: RootState) => state.UserManagement);
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [editUserData, setEditUserData] = useState<any>({});
 
