@@ -28,7 +28,7 @@ export default function ForgotPassword() {
     }
     }, [loggedInUser]);
 
-    if (loggedInUser) return null;
+    // if (loggedInUser) return null;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });

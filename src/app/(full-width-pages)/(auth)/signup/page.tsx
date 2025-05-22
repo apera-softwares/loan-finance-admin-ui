@@ -38,7 +38,7 @@ export default function CreateAccountPage() {
         }
     }, [loggedInUser]);
 
-    if (loggedInUser) return null;
+    // if (loggedInUser) return null;
 
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

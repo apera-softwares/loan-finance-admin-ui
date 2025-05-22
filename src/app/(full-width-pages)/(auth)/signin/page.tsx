@@ -34,7 +34,7 @@ export default function Login() {
     }
     }, [loggedInUser]);
 
-    if (loggedInUser) return null;
+    // if (loggedInUser) return null;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -47,11 +47,18 @@ export default function Login() {
         dispatch(loginUser(formData)).then((res: any) => {
             setLoading(true)
             if (res.meta.requestStatus === "fulfilled") {
+                if( !res.payload ){
+                    toast.error("User not verified");
+                    setFormData({ email: "", password: "" });
+                    setLoading(false);
+                    return;
+                }else {
                 dispatch(getUserProfile())
                 toast.success("Login successful!");
                 setFormData({ email: "", password: "" });
                 router.push("/");
                 setLoading(false)
+                }  
             } else {
                 toast.error(res.payload || "Login failed. Please try again.");
                 setLoading(false)
