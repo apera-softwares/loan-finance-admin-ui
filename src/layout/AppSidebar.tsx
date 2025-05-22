@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname,useRouter } from "next/navigation";
 import { useSidebar } from "../context/SidebarContext";
 import {
   BoxCubeIcon,
@@ -22,6 +22,10 @@ import {
 } from "../icons/index";
 import Logo from '../assets/logo/logo.png'
 import { TbLogout2 } from "react-icons/tb";
+import { useAppDispatch } from "@/lib/redux/hooks";
+import { logout } from "@/lib/redux/slices/userSlice";
+import { resetUserProfile } from "@/lib/redux/slices/loginPersonProfile";
+// import LogoutConfirmationModal from "@/components/common/LogoutConfirmationModal";
 
 type NavItem = {
   name: string;
@@ -124,7 +128,10 @@ const othersItems: NavItem[] = [
 
 const AppSidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
+  // const [isLogoutConfirmModalOpen,setIsLogoutConfirmModalOpen] = useState<boolean>(false);
+  const router = useRouter();
   const pathname = usePathname();
+  const dispatch = useAppDispatch();
 
   const renderMenuItems = (
     navItems: NavItem[],
@@ -307,6 +314,17 @@ const AppSidebar: React.FC = () => {
     });
   };
 
+
+  const handleLogout = ()=>{
+  
+    localStorage.removeItem("user");
+    dispatch(logout());
+    dispatch(resetUserProfile());
+    router.replace("/")
+
+   
+  }
+
   return (
     <aside
       className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 left-0 bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200 
@@ -392,11 +410,15 @@ const AppSidebar: React.FC = () => {
         {/* {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null} */}
       </div>
       <div className="absolute bottom-4 left-0 w-full px-5 mt-6 border-t">
-        <button className="flex items-center gap-2 text-gray-700 dark:text-white w-full p-5">
+        <button className="flex items-center gap-2 text-gray-700 dark:text-white w-full p-5  cursor-pointer " onClick={handleLogout}>
           <TbLogout2 className="w-5 h-5" />
           {(isExpanded || isHovered || isMobileOpen) && <span>Logout</span>}
         </button>
       </div>
+          {/* <LogoutConfirmationModal isOpen={isLogoutConfirmModalOpen} closeModal={() => {
+                      setIsLogoutConfirmModalOpen(false);
+                       
+                    }} onLogoutConfirm={()=>{}} type="Remove" name="Member" /> */}
     </aside>
   );
 };
