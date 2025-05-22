@@ -1,5 +1,5 @@
 "use client"
-import { Outfit } from 'next/font/google';
+import { Montserrat } from 'next/font/google';
 import './globals.css';
 import { SidebarProvider } from '@/context/SidebarContext';
 import { ThemeProvider } from '@/context/ThemeContext';
@@ -8,7 +8,8 @@ import { Toaster } from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
-const outfit = Outfit({
+
+const montserrat = Montserrat({
   subsets: ["latin"],
 });
 
@@ -21,12 +22,12 @@ export default function RootLayout({
 const router = useRouter()
 
 useEffect(()=>{
-router.push("/signin")
+//router.push("/signin")
 },[])
 
   return (
     <html lang="en">
-      <body className={`${outfit.className} dark:bg-gray-900`}
+      <body className={`${montserrat.className} dark:bg-gray-900`}
         data-new-gr-c-s-check-loaded="14.1235.0"
         data-gr-ext-installed=""
         cz-shortcut-listen="true"
