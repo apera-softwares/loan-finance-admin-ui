@@ -6,6 +6,7 @@ import AppSidebar from "@/layout/AppSidebar";
 import Backdrop from "@/layout/Backdrop";
 import React from "react";
 import { Toaster } from "react-hot-toast";
+import AuthGuard from "@/components/auth/AuthGuard";
 
 export default function AdminLayout({
   children,
@@ -22,7 +23,8 @@ export default function AdminLayout({
       : "lg:ml-[90px]";
 
   return (
-    <div className="min-h-screen xl:flex ">
+    <AuthGuard>
+        <div className="min-h-screen xl:flex ">
       <div className="z-49">
         <Toaster
           position="top-center"
@@ -45,5 +47,6 @@ export default function AdminLayout({
       </div>
 
     </div>
+    </AuthGuard>
   );
 }
