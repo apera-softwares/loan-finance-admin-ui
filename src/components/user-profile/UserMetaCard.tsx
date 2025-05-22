@@ -17,7 +17,7 @@ export default function UserMetaCard() {
     console.log("Saving changes...");
     closeModal();
   };
-    const { loading, error, userProfile } = useSelector((state: RootState) => state.userProfile);
+    const { userProfile } = useSelector((state: RootState) => state.userProfile);
   
   return (
     <>

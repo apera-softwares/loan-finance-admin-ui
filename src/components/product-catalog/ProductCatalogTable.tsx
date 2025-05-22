@@ -40,7 +40,7 @@ const ProductCatalogTable: React.FC<ProductCatalogTableProps> = ({ filters,pagin
  
 
     const dispatch = useDispatch<AppDispatch>();
-    const {productCatalogs, loading, error } = useSelector((state: RootState) => state.productCatalog);
+    const {productCatalogs, loading } = useSelector((state: RootState) => state.productCatalog);
 
     const payload = {
            

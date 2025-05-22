@@ -95,6 +95,7 @@ export const deleteProductCatalog = createAsyncThunk(
       const response = await axios.delete(`${BACKEND_API}product/${id}`, {
         headers: { Authorization: `Bearer ${token}`,   'ngrok-skip-browser-warning': 'true', },
       });
+      console.log(response,"delete response")
 
       return id ; 
     } catch (error: any) {
@@ -129,7 +130,7 @@ const productCatalogSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(createProductCatalog.fulfilled, (state, action) => {
+      .addCase(createProductCatalog.fulfilled, (state) => {
         state.loading = false;
         //refetch data on UI side
       })
@@ -159,7 +160,7 @@ const productCatalogSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(updateProductCatalog.fulfilled, (state, action) => {
+      .addCase(updateProductCatalog.fulfilled, (state) => {
         state.loading = false;
         //refetch data on UI side
       })
@@ -174,7 +175,7 @@ const productCatalogSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(deleteProductCatalog.fulfilled, (state, action) => {
+      .addCase(deleteProductCatalog.fulfilled, (state) => {
         state.loading = false;
         //refetch data on UI side
       })

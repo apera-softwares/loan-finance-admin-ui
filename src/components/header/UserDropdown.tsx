@@ -10,7 +10,7 @@ import { getUserProfile } from "@/lib/redux/slices/loginPersonProfile";
 
 export default function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
-  const { loading, error, userProfile } = useSelector((state: RootState) => state.userProfile);
+  const { userProfile } = useSelector((state: RootState) => state.userProfile);
   const dispatch = useDispatch<AppDispatch>();
 
   console.log(userProfile, "user pofile")

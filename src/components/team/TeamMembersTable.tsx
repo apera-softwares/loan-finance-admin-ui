@@ -29,7 +29,7 @@ const TeamMembersTable: React.FC<TeamMembersTableProps> = ({ searchText, role, o
     const [teamDataMembers, setTeamDataMembers] = useState<any[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const { loading, error } = useSelector((state: RootState) => state.TeamManagement);
+    const { loading } = useSelector((state: RootState) => state.TeamManagement);
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [memberId, setMembeId] = useState<any>({});
     const [isAddModalOpen, setIsAddModalOpen] = useState(false)

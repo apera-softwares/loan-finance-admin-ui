@@ -24,7 +24,7 @@ export default function BlankPage() {
             </div>
             <div className="w-full max-w-[1500px] grid grid-cols-1  lg:grid-cols-3 justify-center gap-10  lg:gap-6 my-4">
                 {SERVICES && SERVICES?.length > 0 ? (
-                    SERVICES?.map((serviceItems: any, index: number) => (
+                    SERVICES?.map((serviceItems: any) => (
                         <ServiceCard
                             key={serviceItems?.id}
                             title={serviceItems?.title}
@@ -40,8 +40,8 @@ export default function BlankPage() {
             <div className="mb-4 mt-10">
                 <h1 className="text-3xl font-semibold text-gray-800 dark:text-white/90"
                     x-text="pageName">
-                    Referral Submission Form              
-               </h1>
+                    Referral Submission Form
+                </h1>
 
             </div>
             <ReferralFromSection />

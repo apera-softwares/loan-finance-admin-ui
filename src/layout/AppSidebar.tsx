@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { useSidebar } from "../context/SidebarContext";
 import {
   BoxCubeIcon,
-  CalenderIcon,
   ChevronDownIcon,
   GridIcon,
   HorizontaLDots,
@@ -15,15 +14,12 @@ import {
   PieChartIcon,
   PlugInIcon,
   TableIcon,
-  UserCircleIcon,
   Graph,
   Send,
   Users,
   CoinHand,
-  Substract,
   AudioSetting,
 } from "../icons/index";
-import SidebarWidget from "./SidebarWidget";
 import Logo from '../assets/logo/logo.png'
 import { TbLogout2 } from "react-icons/tb";
 

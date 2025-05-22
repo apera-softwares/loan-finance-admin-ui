@@ -30,7 +30,7 @@ const TeamTable: React.FC<TeamTableProps> = ({ searchText, role, order }) => {
     const [teamData, setTeamData] = useState<any[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const { loading, error } = useSelector((state: RootState) => state.TeamManagement);
+    const { loading } = useSelector((state: RootState) => state.TeamManagement);
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [editTeamData, setEditTeamData] = useState<any>({});
 

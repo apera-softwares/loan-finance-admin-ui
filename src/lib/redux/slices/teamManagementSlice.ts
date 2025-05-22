@@ -49,11 +49,10 @@ export const fetchTeams = createAsyncThunk(
       try {
         const state: any = thunkAPI.getState();
         const token = state.user?.user?.token;
-        const { id, ...rest } = obj;
   
         const response = await axios.post(
           `${BACKEND_API}team`,
-          rest, 
+          obj, 
           {
             headers: { Authorization: `Bearer ${token}`, 
            'ngrok-skip-browser-warning': 'true',

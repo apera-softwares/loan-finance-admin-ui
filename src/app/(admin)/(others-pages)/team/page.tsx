@@ -11,7 +11,6 @@ export default function UserManagement() {
 
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [SearchInput, setSearchInput] = useState("")
-    const [filterRole, setFilterRole] = useState("")
     const [order, setOrder] = useState("")
 
     return (
@@ -71,7 +70,7 @@ export default function UserManagement() {
 
             {/* Table */}
             <div className="mt-6">
-                <TeamTable searchText={SearchInput} role={filterRole} order={order} />
+                <TeamTable searchText={SearchInput} role="" order={order} />
                 <TeamAddEdit isOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} type="add" />
 
             </div>
