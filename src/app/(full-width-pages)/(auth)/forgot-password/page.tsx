@@ -2,11 +2,12 @@
 import AuthRigthSidebar from "@/components/AuthRigthSidebar";
 import { INPUT_CLASS,INPUT_REQUIRED_ERROR_CLASS } from "@/constant/constantClassName";
 import Image from "next/image";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import Logo from '../../../../assets/logo/logo.png'
 import { useRouter } from "next/navigation";
 import { IoArrowBackOutline } from "react-icons/io5";
 // import Loader from "@/components/ui/loader/Loader";
+import { useAppSelector } from "@/lib/redux/hooks";
 
 export default function ForgotPassword() {
     const [formData, setFormData] = useState({
@@ -17,6 +18,17 @@ export default function ForgotPassword() {
      
     });
     const router = useRouter()
+
+    const loggedInUser = useAppSelector((state) => state.user.user);
+
+    useEffect(() => {
+
+    if (loggedInUser) {
+      router.replace("/")
+    }
+    }, [loggedInUser]);
+
+    // if (loggedInUser) return null;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
