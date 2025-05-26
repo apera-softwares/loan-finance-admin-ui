@@ -34,7 +34,8 @@ const ServiceCard: React.FC<ISectionCardProps> = ({
         <Image
           src={images[current]}
           alt={title}
-          className="lg:w-[200px] lg:h-[200px] w-full  object-cover object-center rounded-xl"
+          fill
+          className=" lg:w-[200px] lg:h-[200px] w-full  object-cover object-center rounded-xl"
         />
 
         {/* Left Arrow */}
@@ -82,7 +83,7 @@ const ServiceCard: React.FC<ISectionCardProps> = ({
             </li>
           ))}
         </ul>
-        <button className="text-[#FF7403] font-semibold text-sm hover:underline text-left">
+        <button className="text-primary font-semibold text-sm hover:underline text-left">
           Learn More
         </button>
       </div>

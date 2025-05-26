@@ -111,7 +111,7 @@ export default function UserManagement() {
 
                     <button
                         onClick={() => setIsAddModalOpen(true)}
-                        className="h-11 bg-amber-500 text-white rounded-md text-md px-4 justify-center text-center outline-none flex items-center gap-1 hover:bg-amber-600">
+                        className="h-11 bg-primary text-white rounded-md text-md px-4 justify-center text-center outline-none flex items-center gap-1 hover:bg-primary-hover ">
                         <HiOutlinePlus className="text-white" />
                         Add Member
                     </button>

@@ -213,7 +213,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
 
             <div>
                 <div className="flex items-center">
-                    <span className="bg-amber-500 p-2 flex justify-center items-center rounded-full">
+                    <span className="bg-primary p-2 flex justify-center items-center rounded-full">
                         <Users1 />
                     </span>
                     <div className="ml-4 w-4/5">
