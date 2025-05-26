@@ -16,7 +16,7 @@ import {
     fetchTeamMembers,
 } from "@/lib/redux/slices/teamManagementSlice";
 import { fetchProductCatalogs } from "@/lib/redux/slices/productCatalogSlice";
-import { createMember } from "@/lib/redux/slices/membersSlice";
+import { createMember, fetchAssignedMembers } from "@/lib/redux/slices/membersSlice";
 
 interface MemberAddModalProps {
     isOpen: boolean;
@@ -36,7 +36,6 @@ const MemberAddAssignProductModal: React.FC<MemberAddModalProps> = ({
     const [products, setProducts] = useState<any[]>([]);
     const [selectedProduct, setSelectedProduct] = useState<string>("");
 
-    console.log(selectedTeam, "selectedTeam")
 
     useEffect(() => {
         dispatch(fetchTeams({ page: 1, limit: 50 })).then((res: any) => {
@@ -51,7 +50,6 @@ const MemberAddAssignProductModal: React.FC<MemberAddModalProps> = ({
             setMembers([]);
             return;
         }
-
 
 
         const timeout = setTimeout(() => {
@@ -91,7 +89,7 @@ const MemberAddAssignProductModal: React.FC<MemberAddModalProps> = ({
 
         dispatch(
             createMember({
-                userId: selectedMember.id,
+                teamMemberId: selectedMember.id,
                 productId: selectedProduct,
             })
         ).then((res: any) => {
@@ -99,8 +97,11 @@ const MemberAddAssignProductModal: React.FC<MemberAddModalProps> = ({
                 toast.success("Product assigned to member successfully.");
                 clear();
                 closeModal();
+
+                dispatch(fetchAssignedMembers({}));
             } else {
-                toast.error("Failed to assign product.");
+                closeModal();
+                toast.error(res.payload || "Failed to assign product.");
             }
         });
     };
@@ -120,8 +121,7 @@ const MemberAddAssignProductModal: React.FC<MemberAddModalProps> = ({
                 closeModal();
                 clear();
             }}
-            className="max-w-[700px] p-5 lg:p-10"
-        >
+            className="max-w-[700px] p-5 lg:p-10">
             <div>
                 <div className="flex items-center mb-6">
                     <span className="bg-amber-500 p-2 rounded-full">

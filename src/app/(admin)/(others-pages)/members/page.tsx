@@ -4,8 +4,8 @@ import CommonHeading from "@/components/common/CommonHeading";
 import { CiSearch } from "react-icons/ci";
 import { HiOutlinePlus } from "react-icons/hi";
 import { Toaster } from "react-hot-toast";
-import TeamTable from "@/components/team/TeamTable";
 import MemberAddAssignProductModal from "@/components/members/MemebrAddAsignProductModal";
+import AssignedMembersTable from "@/components/members/MembersTable";
 
 export default function memberManagement() {
 
@@ -22,7 +22,7 @@ export default function memberManagement() {
                 <div className=" w-auto">
                     <CommonHeading
                         pageTitle="Members Management"
-                        description="Manage all Team's members"/>
+                        description="Manage all Team's members" />
                 </div>
 
                 {/* Right: Actions */}
@@ -46,11 +46,11 @@ export default function memberManagement() {
                     <button
                         onClick={() => setIsModalOpen(true)}
                         className="h-11 bg-amber-500 text-white rounded-md text-md px-4 justify-center text-center outline-none flex items-center gap-1 hover:bg-amber-600">
-                        <HiOutlinePlus className="text-white"/>
+                        <HiOutlinePlus className="text-white" />
                         Asign Product Team member
                     </button>
 
-                     {/* <div className="w-32 h-11 relative rounded-md">
+                    {/* <div className="w-32 h-11 relative rounded-md">
                         <div className="w-32 h-11 left-0 top-0 absolute bg-amber-500 rounded-md" />
                         <div className="left-[36px] top-[14.43px] absolute justify-start text-white text-sm font-medium font-['Montserrat']">CSV/PDF</div>
                     </div> */}
@@ -70,7 +70,7 @@ export default function memberManagement() {
 
             {/* Table */}
             <div className="mt-6">
-                <TeamTable searchText={SearchInput} role="" order={order} />
+                <AssignedMembersTable searchText={SearchInput} role="" order={order} />
                 <MemberAddAssignProductModal isOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} />
 
             </div>

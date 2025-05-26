@@ -23,19 +23,18 @@ export const createMember = createAsyncThunk(
   }
 );
 
-// Fetch Product Catalogs with filters (pagination, sorting, search)
-export const fetchMembers = createAsyncThunk(
-  "members/fetchMembers",
+// Fetch Assigned Memebrs
+export const fetchAssignedMembers = createAsyncThunk(
+  "members/fetchAssignedMembers",
   async (obj: any, thunkAPI) => {
     try {
       const state: any = thunkAPI.getState();
       const token = state.user?.user?.token;
    
-      const {page,limit}= obj;
-    
+      const {page,limit, name}= obj;
     
       const response = await axios.get(
-        `${BACKEND_API}team/members?limit=${limit}&&page=${page}`,
+        `${BACKEND_API}product/members?name=${name}&&limit=${limit}&&page=${page}`,
         {
           headers: { Authorization: `Bearer ${token}`,   'ngrok-skip-browser-warning': 'true', },
           
@@ -43,36 +42,17 @@ export const fetchMembers = createAsyncThunk(
       );
 
 
-      console.log(response.data,"team memerss")
+      console.log(response.data,"assigend members")
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(
-        error.response?.data?.message || "Failed to fetch Members"
+        error.response?.data?.message || "Failed to assigned Members"
       );
     }
   }
 );
 
-// Update Product
-// export const updateProductCatalog = createAsyncThunk(
-//   "productCatalog/updateProductCatalog",
-//   async ({ id, ...data }: any, thunkAPI) => {
-//     try {
-//       const state: any = thunkAPI.getState();
-//       const token = state.user?.user?.token;
 
-//       const response = await axios.put(`${BACKEND_API}product/${id}`, data, {
-//         headers: { Authorization: `Bearer ${token}`,  'ngrok-skip-browser-warning': 'true', },
-//       });
-
-//       return response.data;
-//     } catch (error: any) {
-//       return thunkAPI.rejectWithValue(
-//         error.response?.data?.message || "Failed to update product catalog"
-//       );
-//     }
-//   }
-// );
 
 // Delete Product
 // export const deleteProductCatalog = createAsyncThunk(
@@ -129,17 +109,17 @@ const memberManagementSlice = createSlice({
         state.error = action.payload as string;
       });
 
-    // Fetch
+    // Fetch Assigned Members
     builder
-      .addCase(fetchMembers.pending, (state) => {
+      .addCase(fetchAssignedMembers.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchMembers.fulfilled, (state, action) => {
+      .addCase(fetchAssignedMembers.fulfilled, (state, action) => {
         state.loading = false;
         state.members = action.payload.data || [];
       })
-      .addCase(fetchMembers.rejected, (state, action) => {
+      .addCase(fetchAssignedMembers.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });
