@@ -10,6 +10,7 @@ import { loginUser } from "@/lib/redux/slices/userSlice";
 import { useAppDispatch,useAppSelector } from "@/lib/redux/hooks";
 import Loader from "@/components/ui/loader/Loader";
 import { getUserProfile } from "@/lib/redux/slices/loginPersonProfile";
+import Checkbox from "@/components/form/input/Checkbox";
 
 export default function Login() {
     const [formData, setFormData] = useState({
@@ -144,12 +145,10 @@ export default function Login() {
                         />
                          <span className={`${INPUT_REQUIRED_ERROR_CLASS}`}>{errors.password||""}</span>
                     </div>
-                    <div className="flex items-center justify-between text-sm mt-2">
+                    <div className="flex items-center justify-between gap-3 text-sm mt-2">
                         <label className="flex items-center space-x-2">
-                            <input
-                                type="checkbox"
-                                className="w-4 h-4 rounded bg-yellow-400 border-yellow-400 focus:ring-yellow-400 text-yellow-500"
-                            />
+                        
+                               <Checkbox checked={true} onChange={()=>{}} />
                             <span className="text-slate-800 font-bold">Remember Me</span>
                         </label>
                         <span
@@ -163,7 +162,7 @@ export default function Login() {
 
                     <button
                         type="submit"
-                        className="flex justify-center items-center  w-full h-14 text-white bg-gradient-to-b from-orange-500 to-amber-400 rounded-full shadow-lg font-bold hover:cursor-pointer"
+                        className="flex justify-center items-center  w-full h-14 text-white bg-gradient-to-r from-gradient-start to-gradient-end rounded-full shadow-lg font-bold hover:cursor-pointer"
                     >
                     
 

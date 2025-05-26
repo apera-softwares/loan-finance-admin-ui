@@ -106,19 +106,19 @@ const TeamTable: React.FC<TeamTableProps> = ({ searchText, role, order }) => {
                                                     {user?.verified ? "Verified" : "Not verified"}
                                                 </Badge>
                                             </TableCell> */}
-                                            <TableCell className="px-4 py-3 flex text-orange-400 text-theme-sm dark:text-gray-400">
-                                                <div className="flex items-center gap-1 bg-[#F8E4C8] p-2 px-4 rounded-full cursor-pointer" onClick={() => {
+                                            <TableCell className="px-4 py-3 flex text-primary text-theme-sm dark:text-gray-400">
+                                                <div className="flex items-center gap-1 bg-primary/30 p-2 px-4 rounded-full cursor-pointer" onClick={() => {
                                                     router.push(`/team/${user.id}/members`)
                                                 }}>
-                                                    <MdRemoveRedEye className="h-5 w-5 text-orange-400 cursor-pointer" />Members
+                                                    <MdRemoveRedEye className="h-5 w-5 text-primary cursor-pointer" />Members
                                                 </div>
                                             </TableCell>
-                                            <TableCell className="px-4 py-3 text-orange-400 text-theme-sm dark:text-gray-400">
+                                            <TableCell className="px-4 py-3 text-primary text-theme-sm dark:text-gray-400">
                                                 <div className="flex items-center gap-1" onClick={() => {
                                                     setEditTeamData(user)
                                                     setIsModalOpen(true)
                                                 }}>
-                                                    <FiEdit className="h-5 w-5 text-orange-400 cursor-pointer" />Edit
+                                                    <FiEdit className="h-5 w-5 text-primary cursor-pointer" />Edit
                                                 </div>
                                             </TableCell>
 

@@ -1,17 +1,22 @@
 "use client";
 import Image from "next/image";
-import Link from "next/link";
+// import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Dropdown } from "../ui/dropdown/Dropdown";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/lib/redux/store";
 import { getUserProfile } from "@/lib/redux/slices/loginPersonProfile";
+import { useAppDispatch,useAppSelector } from "@/lib/redux/hooks";
+import { logout } from "@/lib/redux/slices/userSlice";
+import { resetUserProfile } from "@/lib/redux/slices/loginPersonProfile";
+import LogoutConfirmationModal from "@/components/common/LogoutConfirmationModal";
 
 export default function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
-  const { userProfile } = useSelector((state: RootState) => state.userProfile);
-  const dispatch = useDispatch<AppDispatch>();
+  const [isLogoutConfirmModalOpen,setIsLogoutConfirmModalOpen] = useState<boolean>(false);
+  const router = useRouter();
+  const { userProfile } = useAppSelector((state) => state.userProfile);
+  const dispatch = useAppDispatch();
 
   console.log(userProfile, "user pofile")
 
@@ -33,6 +38,19 @@ export default function UserDropdown() {
 
   function closeDropdown() {
     setIsOpen(false);
+  }
+
+  const handleOpenLogoutConfirmationModal = ()=>{
+    closeDropdown();
+    setIsLogoutConfirmModalOpen(true);
+  }
+
+  const handleLogout = ()=>{
+    localStorage.removeItem("user");
+    dispatch(logout());
+    dispatch(resetUserProfile());
+    router.replace("/")
+  
   }
   return (
     <div className="relative">
@@ -160,9 +178,10 @@ export default function UserDropdown() {
             </DropdownItem>
           </li>
         </ul>
-        <Link
-          href="/signin"
-          className="flex items-center gap-3 px-3 py-2 mt-3 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
+        <button
+          
+          className="flex items-center gap-3 px-3 py-2 mt-3 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300 "
+          onClick={handleOpenLogoutConfirmationModal}
         >
           <svg
             className="fill-gray-500 group-hover:fill-gray-700 dark:group-hover:fill-gray-300"
@@ -180,8 +199,13 @@ export default function UserDropdown() {
             />
           </svg>
           Sign out
-        </Link>
+        </button>
       </Dropdown>
+         <LogoutConfirmationModal isOpen={isLogoutConfirmModalOpen} 
+            closeModal={() => {
+                      setIsLogoutConfirmModalOpen(false);
+                      }} 
+            onLogoutConfirm={handleLogout}  />
     </div>
   );
 }

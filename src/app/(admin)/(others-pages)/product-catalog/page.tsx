@@ -4,7 +4,7 @@ import CommonHeading from "@/components/common/CommonHeading";
 import { CiSearch } from "react-icons/ci";
 import { HiOutlinePlus } from "react-icons/hi";
 import ProductCatalogTable from "@/components/product-catalog/ProductCatalogTable";
-import { FiEdit } from "react-icons/fi";
+// import { FiEdit } from "react-icons/fi";
 import AddEditProductCatalogForm from "@/components/product-catalog/AddEditProductCatalogForm";
 
 interface FiltersState {
@@ -88,7 +88,7 @@ export default function ProductCatalog() {
                 {/* Search Input */}
                 <div className="relative h-11">
                     <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                        <CiSearch />
+                        <CiSearch className="text-lg " />
                     </span>
                     <input
                         type="text"
@@ -96,7 +96,7 @@ export default function ProductCatalog() {
                         name="searchQuery"
                         value={filters.searchQuery}
                         onChange={(e) => setFilters((prevFilters: FiltersState) => ({ ...prevFilters, searchQuery: e.target.value }))}
-                        className="pl-10 h-11 pr-4 py-2 border border-gray-300 rounded-md focus:outline-[#FFA819]"
+                        className="pl-10 h-11 pr-4 py-2 border border-gray-300 rounded-md outline-primary "
                     />
                 </div>
 
@@ -115,7 +115,7 @@ export default function ProductCatalog() {
 
                 <button
                     onClick={handlesScrollFormToTop}
-                    className="h-11 bg-amber-500 text-white rounded-md text-md px-4 justify-center text-center outline-none flex items-center gap-1 hover:bg-amber-600">
+                    className="h-11 bg-primary hover:bg-primary-hover text-white rounded-md text-md px-4 justify-center text-center outline-none flex items-center gap-1  ">
                     <HiOutlinePlus className="text-white" />
                     Add New Product
                 </button>
@@ -151,10 +151,10 @@ export default function ProductCatalog() {
                     x-text="pageName">
                     Add New Product or Edit Product
                 </h1>
-                <button className="flex items-center flex-nowrap gap text-[#FF9912] text-base font-medium  ">
+                {/* <button className="flex items-center flex-nowrap gap text-primary text-base font-medium  ">
                     <FiEdit className=" mr-1.5" />
                     Edit
-                </button>
+                </button> */}
             </div>
 
             <AddEditProductCatalogForm filters={filters} paginationData={paginationData} setPaginationData={setPaginationData} editData={editProductCatalogData} onEditSuccess={() => setEditProductCatalogData(null)} />

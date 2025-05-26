@@ -87,7 +87,7 @@ const MemberAddModal: React.FC<MemberAddModalProps> = ({ isOpen, closeModal, id 
             className="max-w-[800px] p-5 lg:p-10">
             <div>
                 <div className="flex items-center">
-                    <span className="bg-amber-500 p-2 flex justify-center items-center rounded-full">
+                    <span className="bg-primary p-2 flex justify-center items-center rounded-full">
                         <Users1 />
                     </span>
                     <div className="ml-4 w-4/5">
