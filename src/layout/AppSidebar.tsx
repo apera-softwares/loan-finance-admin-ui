@@ -25,7 +25,7 @@ import { TbLogout2 } from "react-icons/tb";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { logout } from "@/lib/redux/slices/userSlice";
 import { resetUserProfile } from "@/lib/redux/slices/loginPersonProfile";
-// import LogoutConfirmationModal from "@/components/common/LogoutConfirmationModal";
+import LogoutConfirmationModal from "@/components/common/LogoutConfirmationModal";
 
 type NavItem = {
   name: string;
@@ -128,7 +128,7 @@ const othersItems: NavItem[] = [
 
 const AppSidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
-  // const [isLogoutConfirmModalOpen,setIsLogoutConfirmModalOpen] = useState<boolean>(false);
+  const [isLogoutConfirmModalOpen,setIsLogoutConfirmModalOpen] = useState<boolean>(false);
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useAppDispatch();
@@ -313,16 +313,17 @@ const AppSidebar: React.FC = () => {
       return { type: menuType, index };
     });
   };
-
+ 
+  const handleOpenLogoutConfirmationModal = ()=>{
+    setIsLogoutConfirmModalOpen(true);
+  }
 
   const handleLogout = ()=>{
-  
     localStorage.removeItem("user");
     dispatch(logout());
     dispatch(resetUserProfile());
     router.replace("/")
-
-   
+  
   }
 
   return (
@@ -410,15 +411,15 @@ const AppSidebar: React.FC = () => {
         {/* {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null} */}
       </div>
       <div className="absolute bottom-4 left-0 w-full px-5 mt-6 border-t">
-        <button className="flex items-center gap-2 text-gray-700 dark:text-white w-full p-5  cursor-pointer " onClick={handleLogout}>
+        <button className="flex items-center gap-2 text-gray-700 dark:text-white w-full p-5  cursor-pointer " onClick={handleOpenLogoutConfirmationModal}>
           <TbLogout2 className="w-5 h-5" />
           {(isExpanded || isHovered || isMobileOpen) && <span>Logout</span>}
         </button>
       </div>
-          {/* <LogoutConfirmationModal isOpen={isLogoutConfirmModalOpen} closeModal={() => {
+          <LogoutConfirmationModal isOpen={isLogoutConfirmModalOpen} closeModal={() => {
                       setIsLogoutConfirmModalOpen(false);
                        
-                    }} onLogoutConfirm={()=>{}} type="Remove" name="Member" /> */}
+                    }} onLogoutConfirm={handleLogout}  />
     </aside>
   );
 };

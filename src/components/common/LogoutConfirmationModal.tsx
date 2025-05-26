@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import ReactDOM from 'react-dom';
 import Button from "../ui/button/Button";
 import { Modal } from "../ui/modal";
 
@@ -7,8 +8,6 @@ interface LogoutConfirmationModalProps {
     isOpen: boolean;
     closeModal: () => void;
     onLogoutConfirm: () => void;
-    type: "Remove" | "Delete";
-    name:string;
 }
 
 const LogoutConfirmationModal: React.FC<LogoutConfirmationModalProps> = ({
@@ -17,25 +16,24 @@ const LogoutConfirmationModal: React.FC<LogoutConfirmationModalProps> = ({
     onLogoutConfirm,
     
 }) => {
-    return (
-        <Modal
+    return ( ReactDOM.createPortal(   
+            <Modal
             isOpen={isOpen}
             onClose={closeModal}
-            className="max-w-[500px] p-5 lg:p-10"
+            className=" max-w-md  p-6 lg:p-10 "
             
         >
-          <div className="w-full  ">
-              <div className="flex items-start">
+          <div className="w-full ">
              
                 <div className="">
-                    <h5 className="font-semibold text-gray-800 text-title-sm dark:text-white/90">
+                    <h5 className="font-semibold text-gray-800 text-3xl dark:text-white/90">
                       Confirm Logout
                      </h5>
                     <p className="text-sm text-gray-600 mt-1 dark:text-gray-300">
                         Are you sure you want to logout ?
                     </p>
                 </div>
-            </div>
+            
 
             <div className="flex justify-end mt-6 gap-3">
                 <Button
@@ -53,7 +51,8 @@ const LogoutConfirmationModal: React.FC<LogoutConfirmationModalProps> = ({
                 </Button>
             </div>
           </div>
-        </Modal>
+        </Modal>,document.body)
+     
     );
 };
 
