@@ -7,7 +7,6 @@
   --font-*: initial;
   --font-outfit: Outfit, sans-serif;
   --font-montserrat: Montserrat, sans-serif;
-
   --breakpoint-*: initial;
   --breakpoint-2xsm: 375px;
   --breakpoint-xsm: 425px;
@@ -34,7 +33,11 @@
   --text-theme-sm--line-height: 20px;
   --text-theme-xs: 12px;
   --text-theme-xs--line-height: 18px;
-
+  
+  --color-primary : #FF9912;
+  --color-primary-hover: #E68810;
+  --color-gradient-start : #FF7403;
+  --color-gradient-end : #FFC624 ;
   --color-current: currentColor;
   --color-transparent: transparent;
   --color-white: #ffffff;

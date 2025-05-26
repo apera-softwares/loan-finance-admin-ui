@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import { useAppDispatch,useAppSelector } from "@/lib/redux/hooks";
 import { userSignup } from "@/lib/redux/slices/userSlice";
 import Loader from "@/components/ui/loader/Loader";
+import Radio from "@/components/form/input/Radio";
 
 export default function CreateAccountPage() {
     const [formData, setFormData] = useState({
@@ -133,7 +134,7 @@ export default function CreateAccountPage() {
         return isValidData;
 
     };
-
+    console.log("form data",formData);
     return (
         <div className="flex flex-col md:flex-row min-h-screen">
             {/* Left side - Form */}
@@ -215,35 +216,22 @@ export default function CreateAccountPage() {
                                 Select role ?
                             </label>
                             <div className="flex items-center space-x-6">
-                                <label className="inline-flex items-center space-x-2">
-                                    <input
-                                        type="radio"
-                                        name="role"
-                                        value="A_TEAM"
-                                        checked={formData.role === "A_TEAM"}
-                                        onChange={handleChange}
-                                        className="w-4 h-4 text-orange-500 border-gray-300 focus:ring-orange-500"
+                           
+                                     <Radio id="A_TEAM" label="A Team" name="role"  value="A_TEAM" checked={formData.role === "A_TEAM"} onChange={(value:string)=>{
+                                        setFormData((prev:any)=>({...prev,role:value}))
+                                    }} 
                                     />
-                                    <span className="text-sm text-gray-700">A team</span>
-                                </label>
-                                <label className="inline-flex items-center space-x-2">
-                                    <input
-                                        type="radio"
-                                        name="role"
-                                        value="B_TEAM"
-                                        checked={formData.role === "B_TEAM"}
-                                        onChange={handleChange}
-                                        className="w-4 h-4 text-orange-500 border-gray-300 focus:ring-orange-500"
+                                           <Radio id="B_TEAM" label="B Team" name="role"  value="B_TEAM" checked={formData.role === "B_TEAM"} onChange={(value:string)=>{
+                                        setFormData((prev:any)=>({...prev,role:value}))
+                                    }} 
                                     />
-                                    <span className="text-sm text-gray-700">B team</span>
-                                </label>
                             </div>
                             <span className={`${INPUT_REQUIRED_ERROR_CLASS}`} >{errors.role || ""}</span>
                         </div>
 
                         <button
                             type="submit"
-                            className="flex justify-center  items-center w-full h-14 text-white bg-gradient-to-b from-orange-500 to-amber-400 rounded-full shadow-lg font-bold hover:cursor-pointer"
+                            className="flex justify-center  items-center w-full h-14 text-white bg-gradient-to-r from-gradient-start to-gradient-end rounded-full shadow-lg font-bold hover:cursor-pointer"
                         >
                             {loading ? (<Loader />
                             ) : ("Create account")}

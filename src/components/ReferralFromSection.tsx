@@ -1,5 +1,9 @@
+"use client";
 import { FORM_INPUT_CLASS, REQUIRED_ERROR } from "@/constant/constantClassName";
 import React from "react";
+import Button from "./ui/button/Button";
+import Checkbox from "./form/input/Checkbox";
+
 
 const ReferralFromSection = () => {
   return (
@@ -100,20 +104,20 @@ const ReferralFromSection = () => {
             </div>
           </div>
         </div>
-        <div className="w-full lg:flex justify-between mb-8 md:mb-12 ">
-          <p className=" text-sm font-medium lg:w-[60%]">
-            <input
-              type="checkbox"
-              name=""
-              id=""
-              className="mr-2 w-4 h-4 bg-orange-500 translate-y-[2px]  "
-            />
+        <div className="w-full flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mb-8 md:mb-12 ">
+          <div className=" w-full  md:w-3/5 flex items-start gap-3 text-sm font-medium  ">
+      
+             <Checkbox checked={true} onChange={()=>{}} />
             Customer Consents to receive SMS Notifications, Alerts & Occasional
             Marketing Communication from the company. Message frequency varies.
             Message & data rates may apply. You can reply STOP to unsubscribe at
             any time.
-          </p>
-          <button className="p-2 px-8 bg-orange-400 text-white rounded-md my-2 w-full lg:w-auto">Send Referral</button>
+          </div>
+    
+           <Button size="md" variant="primary" >
+            Send Referral
+          </Button>
+          
         </div>
 
       </div>

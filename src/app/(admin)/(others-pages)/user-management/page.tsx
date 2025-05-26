@@ -31,7 +31,7 @@ export default function UserManagement() {
                     {/* Search Input */}
                     <div className="relative h-11">
                         <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                            <CiSearch />
+                            <CiSearch className="text-lg " />
                         </span>
                         <input
                             type="text"
@@ -39,7 +39,7 @@ export default function UserManagement() {
                             name="SearchInput"
                             value={SearchInput}
                             onChange={(e) => setSearchInput(e.target.value)}
-                            className="pl-10 h-11 pr-4 py-2 border border-gray-300 rounded-md focus:outline-[#FFA819]"
+                            className="pl-10 h-11 pr-4 py-2 border border-gray-300 rounded-md outline-primary "
                         />
                     </div>
                     {/* Create User Button */}

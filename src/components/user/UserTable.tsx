@@ -110,7 +110,7 @@ const UserTable: React.FC<UserTableProps> = ({ searchText, role, order, from }) 
                                             </TableCell>
                                             {from !== "team-a" &&
                                                 <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                                                    <FiEdit className="h-5 w-5 text-orange-300 cursor-pointer" onClick={() => {
+                                                    <FiEdit className="h-5 w-5 text-primary cursor-pointer" onClick={() => {
                                                         setEditUserData(user)
                                                         setIsModalOpen(true)
                                                     }} />

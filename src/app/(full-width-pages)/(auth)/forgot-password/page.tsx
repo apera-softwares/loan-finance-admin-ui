@@ -99,7 +99,7 @@ export default function ForgotPassword() {
 
                     <button
                         type="submit"
-                        className="flex justify-center items-center w-full h-14 text-white bg-gradient-to-b from-orange-500 to-amber-400 rounded-full shadow-lg font-bold hover:cursor-pointer"
+                        className="flex justify-center items-center w-full h-14 text-white bg-gradient-to-r from-gradient-start to-gradient-end rounded-full shadow-lg font-bold hover:cursor-pointer"
                     >
 
                            {/* {loading ? (<Loader/>):("Reset password")} */}
