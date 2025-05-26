@@ -4,7 +4,7 @@ import CommonHeading from "@/components/common/CommonHeading";
 import { CiSearch } from "react-icons/ci";
 import { HiOutlinePlus } from "react-icons/hi";
 import ProductCatalogTable from "@/components/product-catalog/ProductCatalogTable";
-import { FiEdit } from "react-icons/fi";
+// import { FiEdit } from "react-icons/fi";
 import AddEditProductCatalogForm from "@/components/product-catalog/AddEditProductCatalogForm";
 
 interface FiltersState {

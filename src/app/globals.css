@@ -38,6 +38,7 @@
   --color-primary-hover: #E68810;
   --color-gradient-start : #FF7403;
   --color-gradient-end : #FFC624 ;
+  --color-btn-outline : #151D48;
   --color-current: currentColor;
   --color-transparent: transparent;
   --color-white: #ffffff;
@@ -204,7 +205,7 @@
 }
 
 @utility menu-item-active {
-  @apply bg-gradient-to-br from-orange-500 to-amber-400 rounded-lg shadow-[0px_28px_44.79999923706055px_0px_rgba(255,148,16,0.34)] text-white dark:bg-brand-500/[0.12] dark:text-white;
+  @apply bg-gradient-to-r from-gradient-start to-gradient-end rounded-lg shadow-[0px_28px_44.79999923706055px_0px_rgba(255,148,16,0.34)] text-white dark:bg-brand-500/[0.12] dark:text-white;
 }
 
 @utility menu-item-inactive {

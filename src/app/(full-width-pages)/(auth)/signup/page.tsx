@@ -134,7 +134,6 @@ export default function CreateAccountPage() {
         return isValidData;
 
     };
-    console.log("form data",formData);
     return (
         <div className="flex flex-col md:flex-row min-h-screen">
             {/* Left side - Form */}
