@@ -10,7 +10,7 @@ export const getUserProfile = createAsyncThunk(
         const state: any = thunkAPI.getState();
         const id = state.user?.user?.userId;
         const token = state.user?.user?.token;
-      const request = await axios.get(`${BACKEND_API}user/${id}`,  {
+      const request = await axios.get(`${BACKEND_API}user/getUser/${id}`,  {
         headers: { 
             Authorization: `Bearer ${token}`, 
        'ngrok-skip-browser-warning': 'true',

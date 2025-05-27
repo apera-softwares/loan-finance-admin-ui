@@ -10,12 +10,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/redux/store";
 import Spinner from "../common/Spinner";
 import Pagination from "../tables/Pagination";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { MdDeleteOutline } from "react-icons/md";
 import { MdRemoveRedEye } from "react-icons/md";
 import { useRouter } from "next/navigation";
-import { fetchAssignedMembers } from "@/lib/redux/slices/membersSlice";
+import { deleteMember, fetchAssignedMembers } from "@/lib/redux/slices/membersSlice";
 import ProductListModal from "./ProductsModal";
+import TeamDeleteConfirm from "../common/DeleteConfirmationModal";
 
 
 interface TeamTableProps {
@@ -32,7 +33,10 @@ const AssignedMembersTable: React.FC<TeamTableProps> = ({ searchText, role, orde
     const [totalPages, setTotalPages] = useState(1);
     const { loading } = useSelector((state: RootState) => state.TeamManagement);
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const [isModalRemoveOpen, setIsModalRemoveOpen] = useState(false)
     const [products, setProducts] = useState<any[]>([]);
+    const [memberId, setMembeId] = useState<any>("");
+
     const router = useRouter()
 
 
@@ -57,6 +61,24 @@ const AssignedMembersTable: React.FC<TeamTableProps> = ({ searchText, role, orde
     const handlePageChange = (page: any) => {
         setCurrentPage(page);
     };
+
+    const handleRemoveMember = () => {
+        dispatch(deleteMember(memberId)).then((res: any) => {
+            if (res.meta.requestStatus === "fulfilled") {
+                if (res.payload) {
+                    // setTeamDataMembers(res.payload.data || []);
+                    fetchAssignedMembers({ page: currentPage, limit: 5, name: searchText })
+                    toast.success("Member Removed successful!");
+
+                    console.log(res.payload, "Member Deleted")
+                }
+            } else {
+                console.log("Failed to Delete Team Member:", res.payload || "Unknown error");
+                toast.error("Error in Removed Member!");
+
+            }
+        });
+    }
 
     return (
         <div className="overflow-hidden rounded-xl bg-white dark:bg-white/[0.03] shadow-md">
@@ -115,13 +137,14 @@ const AssignedMembersTable: React.FC<TeamTableProps> = ({ searchText, role, orde
                                                 <div className="flex items-center gap-1 bg-[#F8E4C8] p-2 px-4 rounded-full cursor-pointer" onClick={() => {
                                                     setIsModalOpen(true)
                                                     setProducts(user.memberProduct)
-                                                    }}>
+                                                }}>
                                                     <MdRemoveRedEye className="h-5 w-5 text-orange-400 cursor-pointer" /> View Products
                                                 </div>
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-red-500 text-theme-sm dark:text-gray-400">
                                                 <div className="flex items-center gap-1 cursor-pointer" onClick={() => {
-
+                                                    setMembeId(user?.id)
+                                                    setIsModalRemoveOpen(true)
                                                 }}>
                                                     <MdDeleteOutline className="h-5 w-5 text-red-500 cursor-pointer" /> Remove
                                                 </div>
@@ -146,6 +169,11 @@ const AssignedMembersTable: React.FC<TeamTableProps> = ({ searchText, role, orde
 
             </div>
             <ProductListModal isOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} products={products} title="Products List" />
+
+            <TeamDeleteConfirm isOpen={isModalRemoveOpen} closeModal={() => {
+                setIsModalRemoveOpen(false)
+                setMembeId("")
+            }} onDeleteConfirm={handleRemoveMember} type="Remove" name="Member" />
 
         </div>
     );

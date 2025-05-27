@@ -54,27 +54,34 @@ export const fetchAssignedMembers = createAsyncThunk(
 
 
 
-// Delete Product
-// export const deleteProductCatalog = createAsyncThunk(
-//   "productCatalog/deleteProductCatalog",
-//   async (id: string, thunkAPI) => {
-//     try {
-//       const state: any = thunkAPI.getState();
-//       const token = state.user?.user?.token;
+  export const deleteMember = createAsyncThunk(
+  "member/memberDelete",
+  async (id: any, thunkAPI) => {
+    console.log(id, "delete id");
+    try {
+      const state: any = thunkAPI.getState();
+      const token = state.user?.user?.token;
 
-//       const response = await axios.delete(`${BACKEND_API}product/${id}`, {
-//         headers: { Authorization: `Bearer ${token}`,   'ngrok-skip-browser-warning': 'true', },
-//       });
-//       console.log(response,"delete response")
+      const response = await axios.delete(
+        `${BACKEND_API}product/removeMember`,
+        {
+          data: { memberProductId: id },
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'ngrok-skip-browser-warning': 'true',
+          },
+        }
+      );
 
-//       return id ; 
-//     } catch (error: any) {
-//       return thunkAPI.rejectWithValue(
-//         error.response?.data?.message || "Failed to delete product catalog"
-//       );
-//     }
-//   }
-// );
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Failed to Delete Member"
+      );
+    }
+  }
+);
+
 
 
 interface ProductCatalogState {
@@ -120,6 +127,21 @@ const memberManagementSlice = createSlice({
         state.members = action.payload.data || [];
       })
       .addCase(fetchAssignedMembers.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
+
+      // Delete Assigned Members
+    builder
+      .addCase(deleteMember.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteMember.fulfilled, (state, action) => {
+        state.loading = false;
+        state.members = action.payload.data || [];
+      })
+      .addCase(deleteMember.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });
