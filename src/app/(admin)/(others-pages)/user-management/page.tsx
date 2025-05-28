@@ -14,12 +14,12 @@ export default function UserManagement() {
     const [order, setOrder] = useState("")
 
     return (
-        <div className="">
+        <div className="w-full ">
             <Toaster />
             {/* Top Bar: Left (Heading), Right (Search + Actions) */}
-            <div className="flex flex-col lg:flex-row items-start justify-between lg:items-center gap-4">
+            <div className="w-full flex flex-col lg:flex-row items-start justify-between  gap-6 mb-6 ">
                 {/* Left: Heading */}
-                <div className=" w-auto">
+                <div className="w-full lg:w-1/2 ">
                     <CommonHeading
                         pageTitle="User Management"
                         description="Manage all users across Bee-Team, A-Team, Managers, and Admins."
@@ -27,7 +27,7 @@ export default function UserManagement() {
                 </div>
 
                 {/* Right: Actions */}
-                <div className="flex flex-wrap justify-start lg:justify-end items-center gap-3 lg:w-1/2 w-full">
+                <div className="w-full lg:w-1/2 flex flex-wrap justify-start lg:justify-end items-center gap-3">
                     {/* Search Input */}
                     <div className="relative h-11">
                         <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
@@ -82,7 +82,7 @@ export default function UserManagement() {
             </div>
 
             {/* Table */}
-            <div className="mt-6">
+            <div className="w-full">
                 <UserTable searchText={SearchInput} role={filterRole} order={order} />
                 <UserAddEditModal isOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} type="add" />
 

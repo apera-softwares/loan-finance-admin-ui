@@ -57,11 +57,11 @@ const UserTable: React.FC<UserTableProps> = ({ searchText, role, order, from }) 
     };
 
     return (
-        <div className="overflow-hidden rounded-xl bg-white dark:bg-white/[0.03] shadow-md">
-            <div className="max-w-full overflow-x-auto">
+        <div className="w-full overflow-hidden rounded-xl bg-white dark:bg-white/[0.03] shadow-md">
+            <div className="w-full overflow-x-auto">
                 <Toaster />
 
-                <div className="min-w-[1102px]">
+                <div className="w-full ">
                     {loading ? (
                         <Spinner />
                     ) : (
@@ -131,7 +131,7 @@ const UserTable: React.FC<UserTableProps> = ({ searchText, role, order, from }) 
                     )}
                 </div>
             </div>
-            <div className=" w-full flex lg:justify-end p-4">
+            <div className=" w-full flex justify-end px-4 py-6">
                 <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
             </div>
             <UserAddEditModal isOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} userData={editUserData} type="update" />

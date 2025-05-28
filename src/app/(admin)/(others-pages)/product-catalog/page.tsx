@@ -69,12 +69,12 @@ export default function ProductCatalog() {
         }
     }
 
-    return (<div className="">
+    return (<div className="w-full">
 
 
 
         {/* Top Bar: Left (Heading), Right (Search + Actions) */}
-        <div className="flex flex-col lg:flex-row items-start justify-start lg:justify-between lg:items-center gap-0 lg:gap-4  mb-7 ">
+        <div className="w-full flex flex-col lg:flex-row items-start justify-start lg:justify-between  gap-6  mb-6 ">
             {/* Left: Heading */}
             <div className=" w-full lg:w-1/2 ">
                 <CommonHeading
@@ -84,7 +84,7 @@ export default function ProductCatalog() {
             </div>
 
             {/* Right: Actions */}
-            <div className="flex flex-wrap justify-start lg:justify-end items-center gap-3 w-full lg:w-1/2 ">
+            <div className="w-full lg:w-1/2 flex flex-wrap justify-start lg:justify-end items-center gap-3  ">
                 {/* Search Input */}
                 <div className="relative h-11">
                     <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
@@ -137,7 +137,7 @@ export default function ProductCatalog() {
         </div>
 
         {/* Table */}
-        <div className="mb-10">
+        <div className="w-full mb-8 ">
 
             <ProductCatalogTable filters={filters} paginationData={paginationData} setPaginationData={setPaginationData} onEdit={handleEditProductCatalog} />
         </div>
@@ -146,7 +146,7 @@ export default function ProductCatalog() {
         {/* add or edit product form */}
 
         <div className="w-full " ref={formRef}>
-            <div className="w-full flex  items-start sm:items-center justify-between gap-6 mb-5">
+            <div className="w-full flex  items-start sm:items-center justify-between gap-6 mb-6 ">
                 <h1 className=" text-xl sm:text-2xl lg:text-3xl font-semibold text-gray-800 dark:text-white/90"
                     x-text="pageName">
                     Add New Product or Edit Product

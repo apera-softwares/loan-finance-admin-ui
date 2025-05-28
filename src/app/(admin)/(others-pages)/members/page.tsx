@@ -14,19 +14,19 @@ export default function MemberManagement() {
     const [order, setOrder] = useState("")
 
     return (
-        <div className="">
+        <div className="w-full ">
             <Toaster />
             {/* Top Bar: Left (Heading), Right (Search + Actions) */}
-            <div className="flex flex-col lg:flex-row items-start justify-between lg:items-center gap-4">
+            <div className="w-full flex flex-col lg:flex-row items-start justify-between  gap-6 ">
                 {/* Left: Heading */}
-                <div className=" w-auto">
+                <div className="w-full lg:w-1/2">
                     <CommonHeading
                         pageTitle="Members Management"
                         description="Manage all Team's members" />
                 </div>
 
                 {/* Right: Actions */}
-                <div className="flex flex-wrap justify-start lg:justify-end items-center gap-3 w-1/2">
+                <div className="w-full lg:w-1/2 flex flex-wrap justify-start lg:justify-end items-center gap-3 ">
                     {/* Search Input */}
                     <div className="relative h-11">
                         <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
