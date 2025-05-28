@@ -8,6 +8,7 @@ import { Toaster } from "react-hot-toast";
 import ServiceCard from "@/components/ServiceCard";
 import { SERVICES } from "@/data/services";
 import ReferralTable from "@/components/referral/ReferralTable";
+import LeadCard from "@/components/LeadCard";
 
 export default function UserManagement() {
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -31,7 +32,7 @@ export default function UserManagement() {
                     {/* Search Input */}
                     <div className="relative h-11">
                         <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                            <CiSearch className="text-lg"/>
+                            <CiSearch className="text-lg" />
                         </span>
                         <input
                             type="text"
@@ -80,11 +81,39 @@ export default function UserManagement() {
 
                 </div>
             </div>
+            <div className="w-full max-w-[1500px] grid grid-cols-1  lg:grid-cols-4 justify-center gap-10  lg:gap-6 my-4">
+                <LeadCard
+                    title="New Referrals"
+                    value="30"
+                    point="5+ Increased form last month"
+                    active={true}
+                />
+                <LeadCard
+                    title="Leads Pitched"
+                    value="24"
+                    point="5+ Increased form last month"
+                    active={false}
+                />
+                <LeadCard
+                    title="Leads Sold"
+                    value="12"
+                    point="10+ Increased form last month"
+                    active={false}
+
+                />
+                <LeadCard
+                    title="Total Earned (Team)"
+                    value="$2,400"
+                    point="15+ Increased form last month"
+                    active={false}
+
+                />
+            </div>
             {/* Table */}
             <div className="w-full">
                 {/* <UserTable searchText={SearchInput} role="A_TEAM" order="" from="team-a" /> */}
-                <ReferralTable searchText={SearchInput}/>
-            
+                <ReferralTable searchText={SearchInput} />
+
                 <div className="w-full max-w-[1500px] grid grid-cols-1  lg:grid-cols-3 justify-center gap-10  lg:gap-6 my-6">
                     {SERVICES && SERVICES?.length > 0 ? (
                         SERVICES?.map((serviceItems: any) => (
