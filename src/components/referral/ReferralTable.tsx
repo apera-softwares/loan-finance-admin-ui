@@ -36,6 +36,7 @@ const ReferralTable: React.FC<ReferralTableProps> = ({ searchText }) => {
     useEffect(()=>{
        getReferrals(currentPage);
     },[dispatch,currentPage])
+    
       useEffect(()=>{
        setCurrentPage(1);
        getReferrals(1);
