@@ -4,12 +4,7 @@ import Button from "../ui/button/Button";
 import { Modal } from "../ui/modal";
 import { Users1 } from "../../icons/index";
 import { FORM_INPUT_CLASS, REQUIRED_ERROR } from "@/constant/constantClassName";
-import { fetchUsers } from "@/lib/redux/slices/userManagementSlice";
-import { addTeamMember, fetchTeamMembers } from "@/lib/redux/slices/teamManagementSlice";
 import { useAppDispatch,useAppSelector } from "@/lib/redux/hooks";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/lib/redux/store";
-import toast from "react-hot-toast";
 import { RxCross2 } from "react-icons/rx";
 import axios from "axios";
 import { BACKEND_API } from "@/api";
@@ -25,10 +20,7 @@ interface SearchAndSelectMemberProductModalProps {
 
 const SearchAndSelectMemberProductModal: React.FC<SearchAndSelectMemberProductModalProps> = ({ isOpen, closeModal,memberId,selectedProduct,onProductSelect }) => {
     const[productName,setProductName] = useState<string>("");
-    const[loading,setLoading] = useState<boolean>(false);
     const [memberProductsList, setMemberProductsList] = useState<any[]>([]);
-    const [selectedUser, setSelectedUser] = useState<any | null>(null);
-   
     const  loggedInUser = useAppSelector((state)=>state.user.user);
      const dispatch = useAppDispatch();
 
@@ -63,7 +55,6 @@ const fetchMembers = async () => {
        
 
   try {
-        setLoading(true);
         const response = await axios.get(`${BACKEND_API}product/${memberId}?name=${productName.trim()}`,
         {
           headers: { Authorization: `Bearer ${token}`, 
@@ -73,12 +64,10 @@ const fetchMembers = async () => {
         console.log("members products  response",response);
         setMemberProductsList(response?.data?.data||[]);
 
-        } catch (err: any) {
+        } catch (error: any) {
+        console.log("error while fetching member products", error)
 
-      
         } finally {
-
-          setLoading(false);
 
         }
       };
@@ -88,7 +77,6 @@ const fetchMembers = async () => {
     const clear = () => {
         setProductName("");
         setMemberProductsList([]);
-        setSelectedUser(null);
     };
 
     return (
@@ -132,7 +120,6 @@ const fetchMembers = async () => {
                                             onClick={() => {
 
                                                 onProductSelect(memberProduct);
-                                                setSelectedUser(memberProduct);
                                                 setProductName("");
                                                 setMemberProductsList([]);
                                                 closeModal();

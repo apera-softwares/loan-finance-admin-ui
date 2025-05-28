@@ -4,12 +4,7 @@ import Button from "../ui/button/Button";
 import { Modal } from "../ui/modal";
 import { Users1 } from "../../icons/index";
 import { FORM_INPUT_CLASS, REQUIRED_ERROR } from "@/constant/constantClassName";
-import { fetchUsers } from "@/lib/redux/slices/userManagementSlice";
-import { addTeamMember, fetchTeamMembers } from "@/lib/redux/slices/teamManagementSlice";
 import { useAppDispatch,useAppSelector } from "@/lib/redux/hooks";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/lib/redux/store";
-import toast from "react-hot-toast";
 import { RxCross2 } from "react-icons/rx";
 import axios from "axios";
 import { BACKEND_API } from "@/api";
@@ -24,7 +19,6 @@ interface SearchAndSelectPreferredSalesPersonModalProps {
 
 const SearchAndSelectPreferredSalesModal: React.FC<SearchAndSelectPreferredSalesPersonModalProps> = ({ isOpen, closeModal,selectedPreferredSalesPerson,onPreferredSalesPersonSelect }) => {
     const[personName,setPersonName] = useState<string>("");
-    const[loading,setLoading] = useState<boolean>(false);
     const [preferredSalesPersonList, setPreferredSalesPersonList] = useState<any[]>([]);
    
     const  loggedInUser = useAppSelector((state)=>state.user.user);
@@ -61,7 +55,6 @@ const fetchPreferredSalesPerson = async () => {
        
 
   try {
-        setLoading(true);
         const response = await axios.get(`${BACKEND_API}admin/users?name=${personName.trim()}`,
         {
           headers: { Authorization: `Bearer ${token}`, 
@@ -71,12 +64,10 @@ const fetchPreferredSalesPerson = async () => {
         console.log(" preferred sales person  response",response);
         setPreferredSalesPersonList(response?.data?.data||[]);
 
-        } catch (err: any) {
-
+        } catch (error: any) {
+         console.log("error while fetching users", error)
       
         } finally {
-
-          setLoading(false);
 
         }
       };

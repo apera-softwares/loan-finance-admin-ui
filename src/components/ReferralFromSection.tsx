@@ -1,7 +1,7 @@
 "use client";
 import React,{useState,useEffect,useRef} from "react";
 import Button from "./ui/button/Button";
-import Checkbox from "./form/input/Checkbox";
+// import Checkbox from "./form/input/Checkbox";
 import { FORM_INPUT_CLASS, REQUIRED_ERROR } from "@/constant/constantClassName";
 import axios from "axios";
 import { BACKEND_API } from "@/api";
@@ -10,7 +10,7 @@ import { createReferral } from "@/lib/redux/slices/referralSlice";
 import SearchAndSelectMemberModal from "./referral/SearchAndSelectMemberModal";
 import SearchAndSelectMemberProductModal from "./referral/SearchAndSelectMemberProductModal";
 import SearchAndSelectPreferredSalesModal from "./referral/SearchAndSelectPreferredSalesPersonModal";
-import toast from "react-hot-toast";
+import toast,{Toaster} from "react-hot-toast";
 
 interface FormDataState {
   firstName:string;
@@ -87,8 +87,6 @@ const ReferralFromSection = () => {
   cityId:"",
   stateId:"",
 })
-const [memberName,setMemberName]=useState<string>("");
-const [members,setMembers] = useState([]);
 const [loading,setLoading] = useState<boolean>(false);
 const [selectedMember,setSelectedMember] = useState<any|null>(null);
 const [selectedMemberProduct,setSelectedMemberProduct] = useState<any|null>(null);
@@ -171,12 +169,9 @@ const dropdownRef = useRef<HTMLDivElement>(null);
         setStateCityList(parsedLocations||[]);
         console.log("parse state city resonse",parsedLocations);
 
-        } catch (err: any) {
-
-      
+        } catch (error: any) {
+          console.log("error while fetching state and city",error);
         } finally {
-
-          
 
         }
       };
@@ -188,19 +183,11 @@ const dropdownRef = useRef<HTMLDivElement>(null);
 
     try {
 
-
       if (!validateFormData()) return;
 
       setLoading(true);
-     
-        console.log("before")
-        await dispatch(createReferral(formData)).unwrap();
-        console.log("after dispatch")
-
-        toast.success("Created referral successfully");
-        console.log("after success toatst");
-   
-
+      await dispatch(createReferral(formData)).unwrap();
+      toast.success("Created referral successfully");
       handleClearFormData();
 
     } catch (error: any) {
@@ -209,16 +196,8 @@ const dropdownRef = useRef<HTMLDivElement>(null);
     }
     finally {
       setLoading(false);
-
-
     }
   };
-
-
-
-const  handleCancel = ()=>{
-
-}
 
 
 const validateFormData = () => {
@@ -250,15 +229,15 @@ const validateFormData = () => {
 
 
          // Validate phone number
-        const phoneRegex = /^\d{10}$/;
+        //const phoneRegex = /^\d{10}$/;
         if (formData.phoneNumber.trim() === "") {
             tempErrors.phoneNumber = "phone number is required";
             isValidData = false;
-        } else if (!phoneRegex?.test(formData.phoneNumber)) {
+        } else if (formData.phoneNumber.length < 10) {
             tempErrors.phoneNumber = "Please enter a valid phone number";
             isValidData = false;
         } else {
-            tempErrors.email = "";
+            tempErrors.phoneNumber = "";
         }
 
         // Validate email
@@ -291,7 +270,12 @@ const validateFormData = () => {
         if (formData.postalCode.trim() === "") {
             tempErrors.postalCode = "Postal code  is required";
             isValidData = false;
-        } else {
+        }else if(formData.postalCode.length < 6 ){
+             tempErrors.postalCode = "Please enter valid postal code";
+            isValidData = false;
+
+        }
+         else {
             tempErrors.postalCode = "";
         }
 
@@ -479,16 +463,14 @@ setErrors({
 setSelectedMember(null);
 setSelectedMemberProduct(null);
 setSelectedPreferredSalesPerson(null);
+setSelectedStateCity(null);
 }
-
-
-
 
 console.log("referral form data",formData);
   
   return (
     <div className="w-full max-w-[1500px] bg-white p-8 rounded-xl mb-14 md:mb-20">
-
+     <Toaster/>
       <div className="w-full ">
         <div className="w-full space-y-10 lg:space-y-14 mb-8">
           <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-16 ">
@@ -521,7 +503,14 @@ console.log("referral form data",formData);
                 name="phoneNumber"
                 className={`${FORM_INPUT_CLASS}`}
                 value={formData.phoneNumber}
-                onChange={handleChange}
+                onChange={(e) => {
+                 const value = e.target.value;
+                 // Allow only numbers and max 10 digits
+                 if (/^\d{0,10}$/.test(value)) {
+                
+                 setFormData((prev:FormDataState)=>({...prev,phoneNumber:value}))
+                }
+    }}
               />
               <span className={`${REQUIRED_ERROR}`}>{errors.phoneNumber||""}</span>
             </div>
@@ -624,7 +613,12 @@ console.log("referral form data",formData);
                 name="postalCode"
                 className={`${FORM_INPUT_CLASS}`}
                 value={formData.postalCode}
-                onChange={handleChange}
+                onChange={(e)=>{
+                      const value = e.target.value;
+                      if (/^\d{0,6}$/.test(value)) { // Only allow up to 6 digits
+                      setFormData((prev:FormDataState) => ({ ...prev, postalCode: value }));
+                      }
+                }}
               />
               <span className={`${REQUIRED_ERROR}`}>{errors.postalCode||""}</span>
             </div>
@@ -672,7 +666,7 @@ console.log("referral form data",formData);
                     value={`${formData.status}`}
                     onChange={handleChange}
                 >
-                    <option value="">Select Status</option>
+                    <option className="" value="">Select Status</option>
                     {
                       statusList.map((item:{label:string,value:string})=>(  <option key={item.value} value={item.value}>{item.label}</option>))
                     }
@@ -713,8 +707,8 @@ console.log("referral form data",formData);
             loading ? "loading...":"Send Referral"
            }
           </Button>
-            <Button size="md" variant="outline"  onClick={handleCancel}>
-            Cancel
+            <Button size="md" variant="outline"  onClick={handleClearFormData}>
+            Clear
           </Button>
           
         </div>
