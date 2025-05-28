@@ -7,7 +7,7 @@ import { Toaster } from "react-hot-toast";
 import MemberAddAssignProductModal from "@/components/members/MemebrAddAsignProductModal";
 import AssignedMembersTable from "@/components/members/MembersTable";
 
-export default function memberManagement() {
+export default function MemberManagement() {
 
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [SearchInput, setSearchInput] = useState("")
