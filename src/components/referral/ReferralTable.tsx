@@ -34,13 +34,18 @@ const ReferralTable: React.FC<ReferralTableProps> = ({ searchText }) => {
     const [totalPages, setTotalPages] = useState(1);
 
     useEffect(()=>{
-       getReferrals();
-    },[dispatch,currentPage,searchText])
+       getReferrals(currentPage);
+    },[dispatch,currentPage])
+    
+      useEffect(()=>{
+       setCurrentPage(1);
+       getReferrals(1);
+    },[dispatch,searchText])
 
-   const getReferrals = async()=>{
+   const getReferrals = async(page:number)=>{
        try {
             const params={
-                page:currentPage,
+                page:page,
                 limit:LIMIT,
                 searchQuery:searchText
             }

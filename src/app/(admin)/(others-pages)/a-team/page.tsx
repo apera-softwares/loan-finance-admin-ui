@@ -81,7 +81,7 @@ export default function UserManagement() {
 
                 </div>
             </div>
-            <div className="w-full max-w-[1500px] grid grid-cols-1  lg:grid-cols-4 justify-center gap-10  lg:gap-6 my-4">
+            <div className="w-full max-w-[1500px] grid grid-cols-1  lg:grid-cols-4 justify-center gap-10  lg:gap-6 mb-6 ">
                 <LeadCard
                     title="New Referrals"
                     value="30"
