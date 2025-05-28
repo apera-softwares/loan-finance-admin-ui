@@ -44,13 +44,12 @@ export const fetchReferrals = createAsyncThunk(
 
 
       const response = await axios.get(
-        `${BACKEND_API}admin/products?${queryParams.toString()}`,
+        `${BACKEND_API}lead?${queryParams.toString()}`,
         {
           headers: { Authorization: `Bearer ${token}`,   'ngrok-skip-browser-warning': 'true', },
           
         }
       );
-
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(
@@ -68,7 +67,7 @@ export const updateReferral = createAsyncThunk(
       const state: any = thunkAPI.getState();
       const token = state.user?.user?.token;
 
-      const response = await axios.put(`${BACKEND_API}product/${id}`, data, {
+      const response = await axios.put(`${BACKEND_API}lead/${id}`, data, {
         headers: { Authorization: `Bearer ${token}`,  'ngrok-skip-browser-warning': 'true', },
       });
 
@@ -89,7 +88,7 @@ export const deleteReferral = createAsyncThunk(
       const state: any = thunkAPI.getState();
       const token = state.user?.user?.token;
 
-      const response = await axios.delete(`${BACKEND_API}product/${id}`, {
+      const response = await axios.delete(`${BACKEND_API}lead/${id}`, {
         headers: { Authorization: `Bearer ${token}`,   'ngrok-skip-browser-warning': 'true', },
       });
       console.log(response,"delete response")
@@ -145,6 +144,7 @@ const productCatalogSlice = createSlice({
       .addCase(fetchReferrals.fulfilled, (state, action) => {
         state.loading = false;
         state.referralList = action.payload.data || [];
+        state.error = null;
       })
       .addCase(fetchReferrals.rejected, (state, action) => {
         state.loading = false;
@@ -159,6 +159,7 @@ const productCatalogSlice = createSlice({
       })
       .addCase(updateReferral.fulfilled, (state) => {
         state.loading = false;
+        state.error = null;
         //refetch data on UI side
       })
       .addCase(updateReferral.rejected, (state, action) => {
@@ -174,6 +175,7 @@ const productCatalogSlice = createSlice({
       })
       .addCase(deleteReferral.fulfilled, (state) => {
         state.loading = false;
+        state.error = null;
         //refetch data on UI side
       })
       .addCase(deleteReferral.rejected, (state, action) => {

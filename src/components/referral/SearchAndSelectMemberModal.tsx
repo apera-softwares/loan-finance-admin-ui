@@ -32,10 +32,7 @@ const SearchAndSelectMemberModal: React.FC<SearchAndSelectMemberModalProps> = ({
     useEffect(() => {
      
         const timeoutId = setTimeout(() => {
-
-
             fetchMembers();
-
        
         }, 300); // debounce
 
@@ -61,7 +58,6 @@ const fetchMembers = async () => {
                      'ngrok-skip-browser-warning': 'true', },
         }
         );
-        console.log("members response",response);
         setMembersList(response?.data?.data||[]);
 
         } catch (error: any) {

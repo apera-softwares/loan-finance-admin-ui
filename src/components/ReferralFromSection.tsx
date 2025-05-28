@@ -47,7 +47,7 @@ type LocationData = {
   [key: string]: [number, "city", string, number] | [number, "state"];
 };
 
-const statusList = [{label:"Pending",value:"Pending"},{label:"Payout",value:"Payout"},{label:"Sold",value:"Sold"}];
+const statusList = [{label:"Pitched",value:"Pitched"},{label:"Pending",value:"Pending"},{label:"Payout",value:"Payout"},{label:"Sold",value:"Sold"}];
 const ReferralFromSection = () => {
 
 
@@ -111,17 +111,11 @@ const dropdownRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
      
         const timeoutId = setTimeout(() => {
-
-
             fetchStateCity();
-
-       
         }, 300); // debounce
 
         return () => clearTimeout(timeoutId);
     }, [stateCityName]);
-
-
 
 
     const fetchStateCity = async () => {
@@ -130,20 +124,15 @@ const dropdownRef = useRef<HTMLDivElement>(null);
       return;
   }
 
-  const token = loggedInUser?.token;
-
-       
 
   try {
-        
+        const token = loggedInUser?.token;
         const response = await axios.get(`${BACKEND_API}user/getStateCity?name=${stateCityName.trim()}`,
         {
           headers: { Authorization: `Bearer ${token}`, 
                      'ngrok-skip-browser-warning': 'true', },
         }
         );
-        console.log("state city response",response?.data?.data);
-
         const locationData = response?.data?.data as LocationData;
 
         const parsedLocations: ParsedLocation[] = Object.entries(locationData)?.map(([key, value]) => {
@@ -167,7 +156,6 @@ const dropdownRef = useRef<HTMLDivElement>(null);
        });
     
         setStateCityList(parsedLocations||[]);
-        console.log("parse state city resonse",parsedLocations);
 
         } catch (error: any) {
           console.log("error while fetching state and city",error);
@@ -192,7 +180,7 @@ const dropdownRef = useRef<HTMLDivElement>(null);
 
     } catch (error: any) {
       console.log("error while add edit product catalog", error)
-      toast.error("Something went wrong");
+      toast.error("Failed to create referral");
     }
     finally {
       setLoading(false);
@@ -465,8 +453,6 @@ setSelectedMemberProduct(null);
 setSelectedPreferredSalesPerson(null);
 setSelectedStateCity(null);
 }
-
-console.log("referral form data",formData);
   
   return (
     <div className="w-full max-w-[1500px] bg-white p-8 rounded-xl mb-14 md:mb-20">
@@ -703,9 +689,7 @@ console.log("referral form data",formData);
           </div> */}
            
            <Button size="md" variant="primary" onClick={handleSubmitReferrals} >
-           {
-            loading ? "loading...":"Send Referral"
-           }
+            Send Referral
           </Button>
             <Button size="md" variant="outline"  onClick={handleClearFormData}>
             Clear

@@ -61,7 +61,6 @@ const fetchMembers = async () => {
                      'ngrok-skip-browser-warning': 'true', },
         }
         );
-        console.log("members products  response",response);
         setMemberProductsList(response?.data?.data||[]);
 
         } catch (error: any) {

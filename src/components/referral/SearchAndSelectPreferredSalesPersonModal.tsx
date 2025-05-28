@@ -61,12 +61,10 @@ const fetchPreferredSalesPerson = async () => {
                      'ngrok-skip-browser-warning': 'true', },
         }
         );
-        console.log(" preferred sales person  response",response);
         setPreferredSalesPersonList(response?.data?.data||[]);
 
         } catch (error: any) {
          console.log("error while fetching users", error)
-      
         } finally {
 
         }
