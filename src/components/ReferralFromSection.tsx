@@ -30,6 +30,22 @@ interface FormDataState {
   stateId? :string;
 }
 
+type ParsedLocation = |  {
+      type: "city";
+      cityId: number;
+      cityName: string;
+      stateName: string;
+      stateId: number;
+    }
+  | {
+      type: "state";
+      stateId: number;
+      stateName: string;
+   };
+
+type LocationData = {
+  [key: string]: [number, "city", string, number] | [number, "state"];
+};
 
 const statusList = [{label:"Pending",value:"Pending"},{label:"Payout",value:"Payout"},{label:"Sold",value:"Sold"}];
 const ReferralFromSection = () => {
@@ -83,7 +99,7 @@ const [isPreferredSalesPersonSelectModalOpen,setIsPreferredSalesPersonSelectModa
 const[stateCityList,setStateCityList] = useState<any[]>([])
 const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 const [stateCityName, setStateCityName] = useState('');
-const [selectedValue, setSelectedValue] = useState('');
+const [selectedStateCity, setSelectedStateCity] = useState<ParsedLocation|null>(null);
 const dropdownRef = useRef<HTMLDivElement>(null);
 
 
@@ -129,7 +145,31 @@ const dropdownRef = useRef<HTMLDivElement>(null);
         }
         );
         console.log("state city response",response?.data?.data);
-        setStateCityList(response?.data?.data||[]);
+
+        const locationData = response?.data?.data as LocationData;
+
+        const parsedLocations: ParsedLocation[] = Object.entries(locationData)?.map(([key, value]) => {
+        if (value[1] === "city") {
+         const [cityId, , stateName, stateId] = value;
+        return {
+           type: "city",
+           cityId,
+           cityName: key,
+           stateName,
+           stateId,
+        };
+      } else {
+        const [stateId] = value;
+         return {
+          type: "state",
+          stateId,
+          stateName: key,
+      };
+      }
+       });
+    
+        setStateCityList(parsedLocations||[]);
+        console.log("parse state city resonse",parsedLocations);
 
         } catch (err: any) {
 
@@ -319,8 +359,15 @@ const validateFormData = () => {
   };
 
   const handleSelectStateCity = (value:any) => {
-    setSelectedValue(value);
+
+    setSelectedStateCity(value);
     setIsDropdownOpen(false);
+    setFormData((prev: FormDataState) => ({
+    ...prev,
+    stateId: `${value?.stateId}`,
+     cityId: value?.type === "city" ? `${value?.cityId}` : "",
+    }));
+    
   };
 
 
@@ -507,7 +554,13 @@ console.log("referral form data",formData);
       <input
         type="text"
         readOnly
-        value={selectedValue}
+         value={
+        selectedStateCity
+        ? selectedStateCity?.type === "city"
+        ? `${selectedStateCity?.cityName}, ${selectedStateCity?.stateName}`
+        : selectedStateCity.stateName
+        : ""
+  }
         onClick={handleOpenStateCityDropdown}
         placeholder="City or state"
         className={`${FORM_INPUT_CLASS} cursor-pointer`}
@@ -516,6 +569,24 @@ console.log("referral form data",formData);
 
       {isDropdownOpen && (
         <div className="absolute z-50 top-full left-0 w-full bg-white border border-gray-200 rounded-md shadow-lg mt-1 px-2 py-2">
+              {selectedStateCity && (
+        <div className="mb-2 flex items-center justify-between px-3 py-1 bg-gray-100 rounded">
+          <span className="text-sm text-gray-800">
+            {selectedStateCity.type === "city"
+              ? `${selectedStateCity.cityName}, ${selectedStateCity.stateName}`
+              : selectedStateCity.stateName}
+          </span>
+          <button
+            onClick={() =>{
+              setSelectedStateCity(null);
+              setFormData((prev:FormDataState)=>({...prev,stateId:"",cityId:""}))
+            }}
+            className="ml-2 text-gray-500 hover:text-red-500 transition-all duration-300 "
+          >
+            ✕
+          </button>
+        </div>
+      )}
           <input
             type="text"
             placeholder="Search state or city"
@@ -530,13 +601,13 @@ console.log("referral form data",formData);
                 <li
                   key={index}
                   onClick={() => handleSelectStateCity(item)}
-                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                  className="px-3 py-2 hover:bg-gray-100 rounded cursor-pointer"
                 >
-                  {item}
+                  {item?.type==="city" ? (`${item?.cityName} (city)`):(`${item?.stateName} (state)`)}
                 </li>
               ))
             ) : (
-              <li className=" text-gray-400">No results found</li>
+              <li className=" px-3 py-1 text-gray-400">No results found</li>
             )}
           </ul>
         </div>
