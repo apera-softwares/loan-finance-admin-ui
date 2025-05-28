@@ -3,72 +3,69 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 // Async get UserProfile Thunk
-export const getUserProfile = createAsyncThunk(
-  "user/getProfile",
-  async (_,thunkAPI) => {
+export const getCityAndState = createAsyncThunk(
+  "user/getCityAndState",
+  async (obj:any,thunkAPI) => {
+ 
     try {  
+           const {name} = obj
         const state: any = thunkAPI.getState();
-        const id = state.user?.user?.userId;
         const token = state.user?.user?.token;
-      const request = await axios.get(`${BACKEND_API}user/getUser/${id}`,  {
+      const request = await axios.get(`${BACKEND_API}user/getStateCity?name=${name}`,  {
         headers: { 
             Authorization: `Bearer ${token}`, 
        'ngrok-skip-browser-warning': 'true',
      },
       });
       const response = request.data.user;
-      console.log(response, "User Profile response");
+      console.log(response, "city and state response");
 
       return response;
     } catch (error: any) {
       console.log(error, "User Profile error");
-      return thunkAPI.rejectWithValue(error.response?.data?.message || "Login failed");
+      return thunkAPI.rejectWithValue(error.response?.data?.message || "get city and state failed");
     }
   }
 );
 
 
 interface UserState {
-  userProfile: any;
+  cityState: any;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: UserState = {
-  userProfile:{} ,
+  cityState:[] ,
   loading: false,
   error: null,
 };
 
 
-const userProfileSlice = createSlice({
-  name: "userProfile",
+const cityStateSlice = createSlice({
+  name: "cityState",
   initialState,
   reducers: {
 
-    resetUserProfile(state) {
-      state.userProfile = null;
-      state.loading = false;
-      state.error = null;
-    },
+   
     
   },
   extraReducers: (builder) => {
-    // get Login Profile
+    // get City and State
     builder
-      .addCase(getUserProfile.pending, (state) => {
+      .addCase(getCityAndState.pending, (state) => {
         state.loading = true;
-        state.userProfile = null;
+        state.cityState = null;
         state.error = null;
       })
-      .addCase(getUserProfile.fulfilled, (state, action) => {
+      .addCase(getCityAndState.fulfilled, (state, action) => {
         state.loading = false;
-        state.userProfile = action.payload;
+        state.cityState = action.payload;
         state.error = null;
       })
-      .addCase(getUserProfile.rejected, (state, action) => {
+      .addCase(getCityAndState.rejected, (state, action) => {
         state.loading = false;
-        state.userProfile = null;
+        state.cityState = null;
         if (action.error.message === "Request failed with Status code 401") {
           state.error = "Access Denied!";
         } else {
@@ -79,5 +76,4 @@ const userProfileSlice = createSlice({
    
 });
 
-export const {resetUserProfile} = userProfileSlice.actions
-export default userProfileSlice.reducer;
+export default cityStateSlice.reducer;

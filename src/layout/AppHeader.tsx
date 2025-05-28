@@ -6,11 +6,15 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState, useEffect, useRef } from "react";
 import Logo from '../assets/logo/logo.png'
+import { useAppSelector } from "@/lib/redux/hooks";
 
 const AppHeader: React.FC = () => {
+
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
 
   const { isMobileOpen, toggleSidebar, toggleMobileSidebar } = useSidebar();
+
+  const { userProfile } = useAppSelector((state) => state.userProfile);
 
   const handleToggle = () => {
     if (window.innerWidth >= 1024) {
@@ -23,6 +27,7 @@ const AppHeader: React.FC = () => {
   const toggleApplicationMenu = () => {
     setApplicationMenuOpen(!isApplicationMenuOpen);
   };
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -120,7 +125,7 @@ const AppHeader: React.FC = () => {
           </button>
 
           <div className="w-1/3 hidden lg:block">
-            <span className="block mr-1 text-theme-xs">Hello Catherine Chen !</span>
+            <span className="block mr-1 text-theme-xs">Hello {userProfile?.firstName} {userProfile?.lastName}</span>
             <span className="block mr-1 font-medium text-theme-md">Welcome to dashboard</span>
 
           </div>

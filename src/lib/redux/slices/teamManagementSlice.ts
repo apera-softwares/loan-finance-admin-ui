@@ -29,8 +29,9 @@ export const fetchTeams = createAsyncThunk(
       try {
         const state: any = thunkAPI.getState();
         const token = state.user?.user?.token; 
-        const {page,limit, id} = obj
-        const response = await axios.get(`${BACKEND_API}team/members/${id}?page=${page}&&limit=${limit}`, {
+        const {page,limit, id, search} = obj
+        console.log(obj,"obj 2")
+        const response = await axios.get(`${BACKEND_API}team/members/${id}?name=${search}&&page=${page}&&limit=${limit}`, {
           headers: { Authorization: `Bearer ${token}`, 
          'ngrok-skip-browser-warning': 'true',
        },

@@ -38,7 +38,7 @@ export default function UserManagement() {
     }, [dispatch, currentPage, isModalOpen, isAddModalOpen]);
 
     const fetcTeamMembers = () => {
-        dispatch(fetchTeamMembers({ id: teamId, page: currentPage, limit: 5 })).then((res: any) => {
+        dispatch(fetchTeamMembers({ id: teamId, page: currentPage, limit: 5, search:"" })).then((res: any) => {
             if (res.meta.requestStatus === "fulfilled") {
                 if (res.payload) {
                     setTeamDataMembers(res.payload.data || []);

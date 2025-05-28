@@ -4,11 +4,10 @@ import Button from "../ui/button/Button";
 import { Modal } from "../ui/modal";
 import { Users1 } from "../../icons/index";
 import { FORM_INPUT_CLASS, REQUIRED_ERROR } from "@/constant/constantClassName";
-
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/redux/store";
 import toast from "react-hot-toast";
-import { CreateTeam, UpdateTeam } from "@/lib/redux/slices/teamManagementSlice";
+import { CreateTeam, fetchTeams, UpdateTeam } from "@/lib/redux/slices/teamManagementSlice";
 
 interface TeamAddEditProps {
     isOpen: boolean;
@@ -22,6 +21,9 @@ const TeamAddEdit: React.FC<TeamAddEditProps> = ({ isOpen, closeModal, teamData,
         id: "",
         name: ""
     });
+    const [errors, setErrors] = useState({
+        name: "",
+    })
 
     const dispatch = useDispatch<AppDispatch>();
 
@@ -39,16 +41,35 @@ const TeamAddEdit: React.FC<TeamAddEditProps> = ({ isOpen, closeModal, teamData,
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
+    const validateFormData = () => {
+        let isValidData = true;
+        const tempErrors = { ...errors };
+
+        // Validate firstName
+        if (formData.name.trim() === "") {
+            tempErrors.name = "Team name is required";
+            isValidData = false;
+        } else {
+            tempErrors.name = "";
+        }
+
+
+        setErrors(tempErrors);
+        return isValidData;
+
+    };
+
+
     console.log(teamData, "Team Data 1")
 
     const handleEdit = () => {
         console.log("Form Data: Update User", formData);
-
+        if (!validateFormData()) return
         dispatch(UpdateTeam(formData)).then((res: any) => {
             if (res.meta.requestStatus === "fulfilled") {
                 if (res.payload) {
                     toast.success("Team Updated successful!");
-
+                    dispatch(fetchTeams({ page: 1, limit: 5 }))
                     console.log(res.payload)
                     closeModal();
                     clear()
@@ -63,6 +84,7 @@ const TeamAddEdit: React.FC<TeamAddEditProps> = ({ isOpen, closeModal, teamData,
 
     const handleAddUser = () => {
         console.log("Form Data: Add Team", formData);
+        if (!validateFormData()) return
         dispatch(CreateTeam(formData)).then((res: any) => {
             if (res.meta.requestStatus === "fulfilled") {
                 if (res.payload) {
@@ -87,8 +109,6 @@ const TeamAddEdit: React.FC<TeamAddEditProps> = ({ isOpen, closeModal, teamData,
             name: "",
         })
     }
-
-    console.log("tyoe", type)
 
     return (
         <Modal
@@ -126,8 +146,9 @@ const TeamAddEdit: React.FC<TeamAddEditProps> = ({ isOpen, closeModal, teamData,
                                 value={formData.name}
                                 onChange={handleInputChange}
                                 className={FORM_INPUT_CLASS}
+                                required
                             />
-                            <span className={REQUIRED_ERROR}></span>
+                            <span className={REQUIRED_ERROR}>{errors.name}</span>
                         </div>
                     </form>
                 </div>
