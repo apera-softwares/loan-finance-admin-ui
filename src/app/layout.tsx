@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   title:
     "Honeybee Harry's",
   description: "Admin Dashboard",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 const montserrat = Montserrat({
