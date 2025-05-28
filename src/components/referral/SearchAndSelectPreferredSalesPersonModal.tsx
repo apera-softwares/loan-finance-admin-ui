@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Button from "../ui/button/Button";
 import { Modal } from "../ui/modal";
 import { Users1 } from "../../icons/index";
-import { FORM_INPUT_CLASS, REQUIRED_ERROR } from "@/constant/constantClassName";
+import { FORM_INPUT_CLASS } from "@/constant/constantClassName";
 import { useAppDispatch,useAppSelector } from "@/lib/redux/hooks";
 import { RxCross2 } from "react-icons/rx";
 import axios from "axios";
@@ -55,7 +55,7 @@ const fetchPreferredSalesPerson = async () => {
        
 
   try {
-        const response = await axios.get(`${BACKEND_API}admin/users?name=${personName.trim()}`,
+        const response = await axios.get(`${BACKEND_API}admin/users?name=${personName.trim()}&limit=10`,
         {
           headers: { Authorization: `Bearer ${token}`, 
                      'ngrok-skip-browser-warning': 'true', },
@@ -108,11 +108,13 @@ const fetchPreferredSalesPerson = async () => {
                                 onChange={handleInputChange}
                                 className={FORM_INPUT_CLASS}
                             />
-                            <span className={REQUIRED_ERROR}></span>
+                            <span className="text-[#717171]">
+                                {personName.length > 0 && preferredSalesPersonList .length === 0 && "No result found"}
+                            </span>
 
                             {/* Dropdown list */}
                             {preferredSalesPersonList.length > 0 && !selectedPreferredSalesPerson && (
-                                <ul className="absolute z-10 w-full bg-white border border-gray-200 rounded-md shadow-md mt-1 max-h-60 overflow-y-auto">
+                                <ul className="w-full bg-white border border-gray-200 rounded-md shadow-md mt-1 max-h-60 overflow-y-auto">
                                     {preferredSalesPersonList.map((person) => (
                                         <li
                                             key={person.id}
@@ -134,6 +136,7 @@ const fetchPreferredSalesPerson = async () => {
                                     ))}
                                 </ul>
                             )}
+               
                         </div>
                 </div>
                 {/* Selected user card */}

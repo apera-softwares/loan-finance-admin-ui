@@ -186,6 +186,7 @@ const dropdownRef = useRef<HTMLDivElement>(null);
       setLoading(false);
     }
   };
+  console.log("loading",loading);
 
 
 const validateFormData = () => {

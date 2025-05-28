@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Button from "../ui/button/Button";
 import { Modal } from "../ui/modal";
 import { Users1 } from "../../icons/index";
-import { FORM_INPUT_CLASS, REQUIRED_ERROR } from "@/constant/constantClassName";
+import { FORM_INPUT_CLASS } from "@/constant/constantClassName";
 import { useAppDispatch,useAppSelector } from "@/lib/redux/hooks";
 import { RxCross2 } from "react-icons/rx";
 import axios from "axios";
@@ -55,7 +55,7 @@ const fetchMembers = async () => {
        
 
   try {
-        const response = await axios.get(`${BACKEND_API}product/${memberId}?name=${productName.trim()}`,
+        const response = await axios.get(`${BACKEND_API}product/${memberId}?name=${productName.trim()}&limit=10`,
         {
           headers: { Authorization: `Bearer ${token}`, 
                      'ngrok-skip-browser-warning': 'true', },
@@ -108,11 +108,13 @@ const fetchMembers = async () => {
                                 onChange={handleInputChange}
                                 className={FORM_INPUT_CLASS}
                             />
-                            <span className={REQUIRED_ERROR}></span>
+                            <span className="text-[#717171]">
+                                {productName.trim().length > 0 && memberProductsList.length === 0 ? "No result found" : ""}
+                            </span>
 
                             {/* Dropdown list */}
                             {memberProductsList.length > 0 && !selectedProduct && (
-                                <ul className="absolute z-10 w-full bg-white border border-gray-200 rounded-md shadow-md mt-1 max-h-60 overflow-y-auto">
+                                <ul className=" w-full bg-white border border-gray-200 rounded-md shadow-md mt-1 max-h-60 overflow-y-auto">
                                     {memberProductsList.map((memberProduct) => (
                                         <li
                                             key={memberProduct.id}
