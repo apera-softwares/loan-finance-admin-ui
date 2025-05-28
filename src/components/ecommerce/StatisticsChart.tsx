@@ -130,7 +130,7 @@ export default function StatisticsChart() {
             Target you’ve set for each month
           </p> */}
           <span className="text-lg text-gray-700 dark:text-white/90">
-          Total leads submitted
+            Total leads submitted
           </span>
         </div>
         <div className="flex items-start w-full gap-3 sm:justify-end">
