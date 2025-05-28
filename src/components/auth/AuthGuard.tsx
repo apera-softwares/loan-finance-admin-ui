@@ -18,5 +18,5 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
 
   if (!loggedInUser) return null;
 
-  return <>{children}</>;
+  return <div className="w-full">{children}</div>;
 }

@@ -8,7 +8,7 @@ interface CommonHeadingProps {
 
 const CommonHeading: React.FC<CommonHeadingProps> = ({ pageTitle, description }) => {
   return (
-    <div className="mb-6">
+    <div className="w-full">
       <h1
         className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white/90"
         x-text="pageName"

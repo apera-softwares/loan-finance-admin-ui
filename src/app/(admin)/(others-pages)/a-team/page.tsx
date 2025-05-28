@@ -18,9 +18,9 @@ export default function UserManagement() {
         <div className="w-full">
             <Toaster />
             {/* Top Bar: Left (Heading), Right (Search + Actions) */}
-            <div className="flex flex-col lg:flex-row items-start justify-between lg:items-center lg:gap-4 mb-6">
+            <div className="w-full flex flex-col lg:flex-row items-start justify-between  gap-6  mb-6 ">
                 {/* Left: Heading */}
-                <div className=" w-auto">
+                <div className="w-full lg:w-1/2 ">
                     <CommonHeading
                         pageTitle="A-Team member"
                     // description="Manage all users across Bee-Team, A-Team, Managers, and Admins."
@@ -28,7 +28,7 @@ export default function UserManagement() {
                 </div>
 
                 {/* Right: Actions */}
-                <div className="flex flex-wrap justify-start lg:justify-end items-center gap-3 lg:w-1/2 w-full">
+                <div className=" w-full lg:w-1/2 flex flex-wrap justify-start lg:justify-end items-center gap-3  ">
                     {/* Search Input */}
                     <div className="relative h-11">
                         <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
@@ -81,7 +81,7 @@ export default function UserManagement() {
 
                 </div>
             </div>
-            <div className="w-full max-w-[1500px] grid grid-cols-1  lg:grid-cols-4 justify-center gap-10  lg:gap-6 mb-6 ">
+            <div className="w-full  grid grid-cols-1  lg:grid-cols-4 justify-center gap-6 mb-6 ">
                 <LeadCard
                     title="New Referrals"
                     value="30"

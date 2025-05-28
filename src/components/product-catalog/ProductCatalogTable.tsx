@@ -33,22 +33,11 @@ interface ProductCatalogTableProps {
     onEdit:(data:any)=>void;
 }
 
-
+const LIMIT = 5;
 const ProductCatalogTable: React.FC<ProductCatalogTableProps> = ({ filters,paginationData,setPaginationData,onEdit, }) => {
-    
-
- 
 
     const dispatch = useDispatch<AppDispatch>();
     const {productCatalogs, loading } = useSelector((state: RootState) => state.productCatalog);
-
-    const payload = {
-           
-            searchQuery:filters.searchQuery,
-            status:filters.status === "" ? "" : filters.status==="true" ? "true" : "false",
-            page:paginationData.currentPage||1,
-            limit:5,
-        }
 
     useEffect(() => {
 
@@ -60,6 +49,13 @@ const ProductCatalogTable: React.FC<ProductCatalogTableProps> = ({ filters,pagin
 
     const getProductCatalogs = async () => {
         try {
+
+            const payload = {
+            searchQuery:filters.searchQuery,
+            status:filters.status === "" ? "" : filters.status==="true" ? "true" : "false",
+            page:paginationData.currentPage||1,
+            limit:LIMIT,
+            }
             const res = await dispatch(fetchProductCatalogs(payload)).unwrap();
             setPaginationData((prev:PaginationState)=>({...prev,totalPages:res?.lastPage||0}))
             
@@ -76,18 +72,17 @@ const ProductCatalogTable: React.FC<ProductCatalogTableProps> = ({ filters,pagin
 
 
     return (
-        <div className="overflow-hidden rounded-xl bg-white dark:bg-white/[0.03] shadow-md">
-            <div className="max-w-full overflow-x-auto">
+        <div className="w-full overflow-hidden rounded-xl bg-white dark:bg-white/[0.03] shadow-md">
+            <div className="w-full overflow-x-auto">
             <Toaster />
 
-                <div className="min-w-[1102px]">
+                <div className="w-full">
                     {loading ? (
                         <Spinner />
                     ) : (
                         <Table>
                             <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
                                 <TableRow>
-                                  
                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Name</TableCell>
                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Status</TableCell>
                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Elevator Pitch</TableCell>
@@ -96,8 +91,8 @@ const ProductCatalogTable: React.FC<ProductCatalogTableProps> = ({ filters,pagin
                             </TableHeader>
                             <TableBody>
                                 {productCatalogs && productCatalogs.length > 0 ? (
-                                    productCatalogs.map((product:any)=>(      <TableRow key={product?.id} >
-                                          
+                                    productCatalogs.map((product:any)=>( 
+                                    <TableRow key={product?.id} >
                                             <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                            {product?.name||""}
                                             </TableCell>
@@ -144,7 +139,7 @@ const ProductCatalogTable: React.FC<ProductCatalogTableProps> = ({ filters,pagin
             </div>
 
         
-               {paginationData.totalPages > 0 && (    <div className=" w-full flex justify-end p-4">
+               {paginationData.totalPages > 0 && (    <div className=" w-full flex justify-end px-4 py-6 ">
                 <Pagination currentPage={paginationData.currentPage} totalPages={paginationData.totalPages } onPageChange={handlePageChange} />
 
             </div>)}
