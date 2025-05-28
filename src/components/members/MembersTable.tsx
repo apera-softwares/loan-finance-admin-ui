@@ -11,13 +11,10 @@ import { AppDispatch, RootState } from "@/lib/redux/store";
 import Spinner from "../common/Spinner";
 import Pagination from "../tables/Pagination";
 import toast, { Toaster } from "react-hot-toast";
-import { MdDeleteOutline } from "react-icons/md";
 import { MdRemoveRedEye } from "react-icons/md";
 import { useRouter } from "next/navigation";
-import { deleteMember, fetchAssignedMembers } from "@/lib/redux/slices/membersSlice";
+import { deleteAssignedMemberProduct, fetchAssignedMembers } from "@/lib/redux/slices/membersSlice";
 import ProductListModal from "./ProductsModal";
-import TeamDeleteConfirm from "../common/DeleteConfirmationModal";
-
 
 interface TeamTableProps {
     searchText: string;
@@ -28,14 +25,11 @@ interface TeamTableProps {
 const AssignedMembersTable: React.FC<TeamTableProps> = ({ searchText, role, order }) => {
 
     const dispatch = useDispatch<AppDispatch>();
-    const [assignedMemebers, setAssignedMemebers] = useState<any[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const { loading } = useSelector((state: RootState) => state.TeamManagement);
+    const { loading, members } = useSelector((state: RootState) => state.memberManagement);
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const [isModalRemoveOpen, setIsModalRemoveOpen] = useState(false)
     const [products, setProducts] = useState<any[]>([]);
-    const [memberId, setMembeId] = useState<any>("");
 
     const router = useRouter()
 
@@ -44,38 +38,35 @@ const AssignedMembersTable: React.FC<TeamTableProps> = ({ searchText, role, orde
         dispatch(fetchAssignedMembers({ page: currentPage, limit: 5, name: searchText })).then((res: any) => {
             if (res.meta.requestStatus === "fulfilled") {
                 if (res.payload) {
-                    setAssignedMemebers(res.payload.data || []);
                     console.log(res.payload, "Assigend members")
                     const lastPage = res.payload.lastPage;
                     setTotalPages(lastPage);
                 } else {
-                    setAssignedMemebers([]);
                     setTotalPages(1);
                 }
             } else {
                 console.log("Failed to fetch Assigend Members:", res.payload || "Unknown error");
             }
         });
-    }, [dispatch, currentPage, searchText, role, order]);
+    }, [dispatch, currentPage, searchText, role, order, isModalOpen]);
 
     const handlePageChange = (page: any) => {
         setCurrentPage(page);
     };
 
-    const handleRemoveMember = () => {
-        dispatch(deleteMember(memberId)).then((res: any) => {
+    const handleRemoveMemberProduct = (id: any) => {
+        dispatch(deleteAssignedMemberProduct(id)).then((res: any) => {
             if (res.meta.requestStatus === "fulfilled") {
                 if (res.payload) {
                     // setTeamDataMembers(res.payload.data || []);
                     fetchAssignedMembers({ page: currentPage, limit: 5, name: searchText })
-                    toast.success("Member Removed successful!");
-
+                    setIsModalOpen(false)
+                    toast.success("Product Removed successful!");
                     console.log(res.payload, "Member Deleted")
                 }
             } else {
-                console.log("Failed to Delete Team Member:", res.payload || "Unknown error");
-                toast.error("Error in Removed Member!");
-
+                console.log("Failed to Removed Product:", res.payload || "Unknown error");
+                toast.error("Error in Removed Product!");
             }
         });
     }
@@ -95,14 +86,15 @@ const AssignedMembersTable: React.FC<TeamTableProps> = ({ searchText, role, orde
                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">S.No</TableCell>
                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Name</TableCell>
                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Email</TableCell>
+                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Team</TableCell>
                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Role</TableCell>
                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Products</TableCell>
-                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Actions</TableCell>
+                                    {/* <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Actions</TableCell> */}
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {assignedMemebers.length > 0 ? (
-                                    assignedMemebers.map((user: any, index) => (
+                                {members.length > 0 ? (
+                                    members.map((user: any, index) => (
                                         <TableRow key={user?.id}>
                                             <TableCell className="px-5 py-4 text-start">
                                                 <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
@@ -114,6 +106,9 @@ const AssignedMembersTable: React.FC<TeamTableProps> = ({ searchText, role, orde
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                                 {user?.user?.email}
+                                            </TableCell>
+                                            <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                                                {user?.team?.name}
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                                 {user?.user?.role}
@@ -141,14 +136,14 @@ const AssignedMembersTable: React.FC<TeamTableProps> = ({ searchText, role, orde
                                                     <MdRemoveRedEye className="h-5 w-5 text-orange-400 cursor-pointer" /> View Products
                                                 </div>
                                             </TableCell>
-                                            <TableCell className="px-4 py-3 text-red-500 text-theme-sm dark:text-gray-400">
+                                            {/* <TableCell className="px-4 py-3 text-red-500 text-theme-sm dark:text-gray-400">
                                                 <div className="flex items-center gap-1 cursor-pointer" onClick={() => {
                                                     setMembeId(user?.id)
                                                     setIsModalRemoveOpen(true)
                                                 }}>
                                                     <MdDeleteOutline className="h-5 w-5 text-red-500 cursor-pointer" /> Remove
                                                 </div>
-                                            </TableCell>
+                                            </TableCell> */}
 
                                         </TableRow>
                                     ))
@@ -168,12 +163,9 @@ const AssignedMembersTable: React.FC<TeamTableProps> = ({ searchText, role, orde
                 <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
 
             </div>
-            <ProductListModal isOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} products={products} title="Products List" />
+            <ProductListModal isOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} products={products} title="Products List"
+                onRemove={handleRemoveMemberProduct} />
 
-            <TeamDeleteConfirm isOpen={isModalRemoveOpen} closeModal={() => {
-                setIsModalRemoveOpen(false)
-                setMembeId("")
-            }} onDeleteConfirm={handleRemoveMember} type="Remove" name="Member" />
 
         </div>
     );

@@ -35,6 +35,40 @@ const MemberAddAssignProductModal: React.FC<MemberAddModalProps> = ({
     const [selectedMember, setSelectedMember] = useState<any | null>(null);
     const [products, setProducts] = useState<any[]>([]);
     const [selectedProduct, setSelectedProduct] = useState<string>("");
+    const [errors, setErrors] = useState({
+        team: "",
+        member: "",
+        product: "",
+    })
+
+    const validateFormData = () => {
+        let isValidData = true;
+        const tempErrors = { ...errors };
+
+        // Validation
+        if (!selectedTeam) {
+            tempErrors.team = "Team is required";
+            isValidData = false;
+        } else if
+            (!selectedMember) {
+            tempErrors.member = "Team Member is required";
+            isValidData = false;
+        } else if
+            (!selectedProduct) {
+            tempErrors.product = "Product is required";
+            isValidData = false;
+        } else {
+            setErrors({
+                team: "",
+                member: "",
+                product: "",
+            });
+        }
+
+        setErrors(tempErrors);
+        return isValidData;
+
+    };
 
 
     useEffect(() => {
@@ -50,7 +84,6 @@ const MemberAddAssignProductModal: React.FC<MemberAddModalProps> = ({
             setMembers([]);
             return;
         }
-
 
         const timeout = setTimeout(() => {
             dispatch(
@@ -82,10 +115,11 @@ const MemberAddAssignProductModal: React.FC<MemberAddModalProps> = ({
     }, [dispatch]);
 
     const handleAssign = () => {
-        if (!selectedMember || !selectedProduct) {
-            toast.error("Please select both a team member and a product.");
-            return;
-        }
+        if (!validateFormData()) return
+        // if (!selectedMember || !selectedProduct) {
+        //     toast.error("Please select both a team member and a product.");
+        //     return;
+        // }
 
         dispatch(
             createMember({
@@ -95,10 +129,11 @@ const MemberAddAssignProductModal: React.FC<MemberAddModalProps> = ({
         ).then((res: any) => {
             if (res.meta.requestStatus === "fulfilled") {
                 toast.success("Product assigned to member successfully.");
+                dispatch(fetchAssignedMembers({ page: 1, limit: 5, name: "" }));
                 clear();
                 closeModal();
 
-                dispatch(fetchAssignedMembers({}));
+
             } else {
                 closeModal();
                 toast.error(res.payload || "Failed to assign product.");
@@ -151,6 +186,7 @@ const MemberAddAssignProductModal: React.FC<MemberAddModalProps> = ({
                             </option>
                         ))}
                     </select>
+                    <span className={REQUIRED_ERROR}>{errors.team}</span>
                 </div>
 
                 {/* Member search */}
@@ -183,6 +219,7 @@ const MemberAddAssignProductModal: React.FC<MemberAddModalProps> = ({
                                 ))}
                             </ul>
                         )}
+                        <span className={REQUIRED_ERROR}>{errors.member}</span>
                     </div>
                 )}
 
@@ -221,6 +258,7 @@ const MemberAddAssignProductModal: React.FC<MemberAddModalProps> = ({
                             </option>
                         ))}
                     </select>
+                    <span className={REQUIRED_ERROR}>{errors.product}</span>
                 </div>
 
                 {/* Action buttons */}

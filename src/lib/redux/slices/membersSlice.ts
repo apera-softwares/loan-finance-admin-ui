@@ -10,7 +10,7 @@ export const createMember = createAsyncThunk(
       const state: any = thunkAPI.getState();
       const token = state.user?.user?.token;
       const response = await axios.post(`${BACKEND_API}product/assignMember`, data, {
-        headers: { Authorization: `Bearer ${token}`, 
+        headers: { Authorization: `Bearer ${token}`,
        'ngrok-skip-browser-warning': 'true',
      },
       });
@@ -30,9 +30,7 @@ export const fetchAssignedMembers = createAsyncThunk(
     try {
       const state: any = thunkAPI.getState();
       const token = state.user?.user?.token;
-   
       const {page,limit, name}= obj;
-    
       const response = await axios.get(
         `${BACKEND_API}product/members?name=${name}&&limit=${limit}&&page=${page}`,
         {
@@ -40,8 +38,6 @@ export const fetchAssignedMembers = createAsyncThunk(
           
         }
       );
-
-
       console.log(response.data,"assigend members")
       return response.data;
     } catch (error: any) {
@@ -52,10 +48,8 @@ export const fetchAssignedMembers = createAsyncThunk(
   }
 );
 
-
-
-  export const deleteMember = createAsyncThunk(
-  "member/memberDelete",
+  export const deleteAssignedMemberProduct = createAsyncThunk(
+  "member/memberProductDelete",
   async (id: any, thunkAPI) => {
     console.log(id, "delete id");
     try {
@@ -133,15 +127,15 @@ const memberManagementSlice = createSlice({
 
       // Delete Assigned Members
     builder
-      .addCase(deleteMember.pending, (state) => {
+      .addCase(deleteAssignedMemberProduct.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(deleteMember.fulfilled, (state, action) => {
+      .addCase(deleteAssignedMemberProduct.fulfilled, (state, action) => {
         state.loading = false;
         state.members = action.payload.data || [];
       })
-      .addCase(deleteMember.rejected, (state, action) => {
+      .addCase(deleteAssignedMemberProduct.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });
