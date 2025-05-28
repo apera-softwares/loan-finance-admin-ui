@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname,useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useSidebar } from "../context/SidebarContext";
 import {
   BoxCubeIcon,
@@ -22,7 +22,7 @@ import {
 } from "../icons/index";
 import Logo from '../assets/logo/logo.png'
 import { TbLogout2 } from "react-icons/tb";
-import { useAppDispatch } from "@/lib/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { logout } from "@/lib/redux/slices/userSlice";
 import { resetUserProfile } from "@/lib/redux/slices/loginPersonProfile";
 import LogoutConfirmationModal from "@/components/common/LogoutConfirmationModal";
@@ -75,24 +75,57 @@ const navItems: NavItem[] = [
     path: "/product-catalog",
   },
 
+  // {
+  //   name: "Forms",
+  //   icon: <ListIcon />,
+  //   subItems: [{ name: "Form Elements", path: "/form-elements", pro: false }],
+  // },
+  // {
+  //   name: "Tables",
+  //   icon: <TableIcon />,
+  //   subItems: [{ name: "Basic Tables", path: "/basic-tables", pro: false }],
+  // },
+  // {
+  //   name: "Pages",
+  //   icon: <PageIcon />,
+  //   subItems: [
+  //     { name: "Blank Page", path: "/blank", pro: false },
+  //     { name: "404 Error", path: "/error-404", pro: false },
+  //   ],
+  // },
+];
+
+const team_A: NavItem[] = [
   {
-    name: "Forms",
-    icon: <ListIcon />,
-    subItems: [{ name: "Form Elements", path: "/form-elements", pro: false }],
+    icon: <Graph />,
+    name: "Dashboard",
+    // subItems: [{ name: "Ecommerce", path: "/", pro: false }],
+    path: "/",
+
   },
   {
-    name: "Tables",
-    icon: <TableIcon />,
-    subItems: [{ name: "Basic Tables", path: "/basic-tables", pro: false }],
+    icon: <Send />,
+    name: "Landing page and submit referral",
+    path: "/referral",
   },
   {
-    name: "Pages",
-    icon: <PageIcon />,
-    subItems: [
-      { name: "Blank Page", path: "/blank", pro: false },
-      { name: "404 Error", path: "/error-404", pro: false },
-    ],
+    icon: <Users />,
+    name: "Member",
+    path: "/members",
   },
+  {
+    icon: <CoinHand />,
+    name: "A-Team",
+    path: "/a-team",
+  },
+
+  {
+    icon: <GridIcon />,
+    name: "Product Catalog",
+    path: "/product-catalog",
+  },
+
+
 ];
 
 const othersItems: NavItem[] = [
@@ -128,7 +161,9 @@ const othersItems: NavItem[] = [
 
 const AppSidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
-  const [isLogoutConfirmModalOpen,setIsLogoutConfirmModalOpen] = useState<boolean>(false);
+  const [isLogoutConfirmModalOpen, setIsLogoutConfirmModalOpen] = useState<boolean>(false);
+  const { userProfile } = useAppSelector((state) => state.userProfile);
+
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useAppDispatch();
@@ -313,17 +348,17 @@ const AppSidebar: React.FC = () => {
       return { type: menuType, index };
     });
   };
- 
-  const handleOpenLogoutConfirmationModal = ()=>{
+
+  const handleOpenLogoutConfirmationModal = () => {
     setIsLogoutConfirmModalOpen(true);
   }
 
-  const handleLogout = ()=>{
+  const handleLogout = () => {
     localStorage.removeItem("user");
     dispatch(logout());
     dispatch(resetUserProfile());
     router.replace("/")
-  
+
   }
 
   return (
@@ -388,27 +423,15 @@ const AppSidebar: React.FC = () => {
                   <HorizontaLDots />
                 )}
               </h2>
-              {renderMenuItems(navItems, "main")}
+              {renderMenuItems(
+                userProfile?.role === "A_TEAM" ? team_A : navItems,
+                "main"
+              )}
             </div>
 
-            {/* <div className="">
-              <h2
-                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${!isExpanded && !isHovered
-                  ? "lg:justify-center"
-                  : "justify-start"
-                  }`}
-              >
-                {isExpanded || isHovered || isMobileOpen ? (
-                  "Others"
-                ) : (
-                  <HorizontaLDots />
-                )}
-              </h2>
-              {renderMenuItems(othersItems, "others")}
-            </div> */}
           </div>
         </nav>
-        {/* {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null} */}
+
       </div>
       <div className="absolute bottom-4 left-0 w-full px-5 mt-6 border-t">
         <button className="flex items-center gap-2 text-gray-700 dark:text-white w-full p-5  cursor-pointer " onClick={handleOpenLogoutConfirmationModal}>
@@ -416,10 +439,10 @@ const AppSidebar: React.FC = () => {
           {(isExpanded || isHovered || isMobileOpen) && <span>Logout</span>}
         </button>
       </div>
-          <LogoutConfirmationModal isOpen={isLogoutConfirmModalOpen} closeModal={() => {
-                      setIsLogoutConfirmModalOpen(false);
-                       
-                    }} onLogoutConfirm={handleLogout}  />
+      <LogoutConfirmationModal isOpen={isLogoutConfirmModalOpen} closeModal={() => {
+        setIsLogoutConfirmModalOpen(false);
+
+      }} onLogoutConfirm={handleLogout} />
     </aside>
   );
 };
