@@ -6,6 +6,7 @@ import teamManagementReducer from "./slices/teamManagementSlice";
 import userProfileReducer from "./slices/loginPersonProfile";
 import memberManagementReducer from './slices/membersSlice'
 
+import referralReducer from "./slices/referralSlice"
 
 export const makeStore = () => {
   return configureStore({
@@ -15,7 +16,8 @@ export const makeStore = () => {
       productCatalog: productCatalogReducer,
       TeamManagement: teamManagementReducer,
       userProfile: userProfileReducer,
-      memberManagement: memberManagementReducer
+      memberManagement: memberManagementReducer,
+      referral:referralReducer
     },
   });
 };

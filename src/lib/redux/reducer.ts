@@ -5,6 +5,7 @@ import productCatalogReducer from "./slices/productCatalogSlice";
 import teamManagementReducer from './slices/teamManagementSlice'
 import userProfileReducer from './slices/loginPersonProfile'
 import memberManagementReducer from './slices/membersSlice'
+import referralReducer from "./slices/referralSlice"
 
 
 const rootReducer = combineReducers({
@@ -13,7 +14,8 @@ const rootReducer = combineReducers({
   productCatalog:productCatalogReducer,
   teamManagement: teamManagementReducer,
   userProfile: userProfileReducer,
-  memberManagement:memberManagementReducer
+  memberManagement:memberManagementReducer,
+  referral:referralReducer
 })
 
 export type RootReducer = ReturnType<typeof rootReducer> ;

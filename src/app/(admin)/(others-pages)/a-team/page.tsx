@@ -3,21 +3,21 @@ import React, { useState } from "react";
 import CommonHeading from "@/components/common/CommonHeading";
 import { CiSearch } from "react-icons/ci";
 import UserAddEditModal from "@/components/user/UserAddEditModal";
-import UserTable from "@/components/user/UserTable";
+// import UserTable from "@/components/user/UserTable";
 import { Toaster } from "react-hot-toast";
 import ServiceCard from "@/components/ServiceCard";
 import { SERVICES } from "@/data/services";
-import LeadCard from "@/components/LeadCard";
+import ReferralTable from "@/components/referral/ReferralTable";
 
 export default function UserManagement() {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [SearchInput, setSearchInput] = useState("")
 
     return (
-        <div className="">
+        <div className="w-full">
             <Toaster />
             {/* Top Bar: Left (Heading), Right (Search + Actions) */}
-            <div className="flex flex-col lg:flex-row items-start justify-between lg:items-center gap-4">
+            <div className="flex flex-col lg:flex-row items-start justify-between lg:items-center lg:gap-4 mb-6">
                 {/* Left: Heading */}
                 <div className=" w-auto">
                     <CommonHeading
@@ -81,37 +81,11 @@ export default function UserManagement() {
                 </div>
             </div>
             {/* Table */}
-            <div className="w-full max-w-[1500px] grid grid-cols-1  lg:grid-cols-4 justify-center gap-10  lg:gap-6 my-4">
-                <LeadCard
-                    title="New Referrals"
-                    value="30"
-                    point="5+ Increased form last month"
-                    active={true}
-                />
-                <LeadCard
-                    title="Leads Pitched"
-                    value="24"
-                    point="5+ Increased form last month"
-                    active={false}
-                />
-                <LeadCard
-                    title="Leads Sold"
-                    value="12"
-                    point="10+ Increased form last month"
-                    active={false}
-
-                />
-                 <LeadCard
-                    title="Total Earned (Team)"
-                    value="$2,400"
-                    point="15+ Increased form last month"
-                    active={false}
-
-                />
-            </div>
-            <div className="mt-6">
-                <UserTable searchText={SearchInput} role="A_TEAM" order="" from="team-a" />
-                <div className="w-full max-w-[1500px] grid grid-cols-1  lg:grid-cols-3 justify-center gap-10  lg:gap-6 mt-6">
+            <div className="w-full">
+                {/* <UserTable searchText={SearchInput} role="A_TEAM" order="" from="team-a" /> */}
+                <ReferralTable searchText={SearchInput}/>
+            
+                <div className="w-full max-w-[1500px] grid grid-cols-1  lg:grid-cols-3 justify-center gap-10  lg:gap-6 my-6">
                     {SERVICES && SERVICES?.length > 0 ? (
                         SERVICES?.map((serviceItems: any) => (
                             <ServiceCard
