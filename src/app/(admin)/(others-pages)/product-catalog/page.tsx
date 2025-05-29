@@ -31,7 +31,8 @@ export default function ProductCatalog() {
     })
 
     const [editProductCatalogData, setEditProductCatalogData] = useState<any | null>(null);
-    const formRef = useRef<HTMLDivElement>(null);
+    const formRef = useRef<HTMLDivElement|null>(null);
+    const headingRef = useRef<HTMLDivElement|null>(null);
 
     useEffect(() => {
 
@@ -56,14 +57,23 @@ export default function ProductCatalog() {
         });
 
         setEditProductCatalogData({ ...rest, ...bulletPointsObject });
-        handlesScrollFormToTop();
+        handleScrollFormToTop();
     }
 
 
-    const handlesScrollFormToTop = () => {
+    const handleScrollFormToTop = () => {
 
         if (formRef && formRef.current) {
             formRef.current.scrollIntoView({
+                behavior: "smooth"
+            })
+        }
+    }
+
+       const handleScrollHeadingToTop = () => {
+
+        if (headingRef && headingRef.current) {
+            headingRef.current.scrollIntoView({
                 behavior: "smooth"
             })
         }
@@ -76,7 +86,7 @@ export default function ProductCatalog() {
         {/* Top Bar: Left (Heading), Right (Search + Actions) */}
         <div className="w-full flex flex-col lg:flex-row items-start justify-start lg:justify-between  gap-6  mb-6 ">
             {/* Left: Heading */}
-            <div className=" w-full lg:w-1/2 ">
+            <div className=" w-full lg:w-1/2 " ref={headingRef} >
                 <CommonHeading
                     pageTitle="Product Catalog"
                     description="Manage products available for referral, assign them to teams, and keep content up to date."
@@ -114,7 +124,7 @@ export default function ProductCatalog() {
 
 
                 <button
-                    onClick={handlesScrollFormToTop}
+                    onClick={handleScrollFormToTop}
                     className="h-11 bg-primary hover:bg-primary-hover text-white rounded-md text-md px-4 justify-center text-center outline-none flex items-center gap-1  ">
                     <HiOutlinePlus className="text-white" />
                     Add New Product
@@ -157,7 +167,10 @@ export default function ProductCatalog() {
                 </button> */}
             </div>
 
-            <AddEditProductCatalogForm filters={filters} paginationData={paginationData} setPaginationData={setPaginationData} editData={editProductCatalogData} onEditSuccess={() => setEditProductCatalogData(null)} />
+            <AddEditProductCatalogForm filters={filters} paginationData={paginationData} setPaginationData={setPaginationData} editData={editProductCatalogData} onEditSuccess={() => {
+                setEditProductCatalogData(null)
+                handleScrollHeadingToTop();
+            }} />
 
         </div>
 

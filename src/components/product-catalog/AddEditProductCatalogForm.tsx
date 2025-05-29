@@ -166,8 +166,10 @@ const AddEditProductCatalogForm: React.FC<AddEditProductCatalogFormProps> = ({ f
 
   const handleClearFormData = () => {
     setFormData({ name: "", bulletPoint1: "", bulletPoint2: "", bulletPoint3: "", elevatorPitch: "", team: "", members: "", status: "", state: "" });
-
-  }
+    setErrors({
+    name: "", bulletPoint1: "", bulletPoint2: "", bulletPoint3: "", elevatorPitch: "", team: "", members: "", status: "", state: ""
+  })
+  };
 
 
   const handleSubmit = async () => {
@@ -204,6 +206,8 @@ const AddEditProductCatalogForm: React.FC<AddEditProductCatalogFormProps> = ({ f
         await dispatch(createProductCatalog(payload)).unwrap();
 
         toast.success("Created product catalog successfully");
+        onEditSuccess();
+        
       }
 
       handleClearFormData();
@@ -247,8 +251,6 @@ const AddEditProductCatalogForm: React.FC<AddEditProductCatalogFormProps> = ({ f
       );
 
       setStates(response?.data?.data || []);
-      console.log("reponse of state", response);
-
     }
     catch (error) {
       console.log("error while fetching state", error);

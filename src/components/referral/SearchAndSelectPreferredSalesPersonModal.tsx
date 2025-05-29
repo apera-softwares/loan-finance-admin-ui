@@ -85,14 +85,14 @@ const fetchPreferredSalesPerson = async () => {
                 closeModal();
                 clear();
             }}
-            className="max-w-[800px] p-5 lg:p-10">
-            <div>
+            className="max-w-[800px] p-6 lg:p-10 pt-10 ">
+            <div className="w-full">
                 <div className="flex items-center">
-                    <span className="bg-primary p-2 flex justify-center items-center rounded-full">
+                    <span className="bg-primary p-1 md:p-2 flex justify-center items-center rounded-full">
                         <Users1 />
                     </span>
                     <div className="ml-4 w-4/5">
-                        <h5 className="font-semibold text-gray-800 text-title-sm dark:text-white/90">
+                        <h5 className="font-semibold text-gray-800 text-xl sm:text-3xl dark:text-white/90">
                             Select Preferrred Salesperson
                         </h5>
                     </div>
@@ -113,7 +113,7 @@ const fetchPreferredSalesPerson = async () => {
                             </span>
 
                             {/* Dropdown list */}
-                            {preferredSalesPersonList.length > 0 && !selectedPreferredSalesPerson && (
+                            {preferredSalesPersonList.length > 0 &&  (
                                 <ul className="w-full bg-white border border-gray-200 rounded-md shadow-md mt-1 max-h-60 overflow-y-auto">
                                     {preferredSalesPersonList.map((person) => (
                                         <li
