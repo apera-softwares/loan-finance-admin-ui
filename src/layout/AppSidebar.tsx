@@ -172,7 +172,7 @@ const AppSidebar: React.FC = () => {
     navItems: NavItem[],
     menuType: "main" | "others"
   ) => (
-    <ul className="flex flex-col gap-4">
+    <ul className="flex flex-col gap-3">
       {navItems.map((nav, index) => (
         <li key={nav.name}>
           {nav.subItems ? (
@@ -376,7 +376,7 @@ const AppSidebar: React.FC = () => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <div
-        className={`py-8 flex  ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
+        className={` h-auto py-6 flex  ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
           }`}
       >
         <Link href="/">
@@ -407,7 +407,7 @@ const AppSidebar: React.FC = () => {
           )}
         </Link>
       </div>
-      <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
+      <div className=" h-8/12 flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
         <nav className="mb-6">
           <div className="flex flex-col gap-4">
             <div>
@@ -433,8 +433,8 @@ const AppSidebar: React.FC = () => {
         </nav>
 
       </div>
-      <div className="absolute bottom-4 left-0 w-full px-5 mt-6 border-t">
-        <button className="flex items-center gap-2 text-gray-700 dark:text-white w-full p-5  cursor-pointer " onClick={handleOpenLogoutConfirmationModal}>
+      <div className="hidden lg:block h-auto mt-auto  w-full py-3 border-t ">
+        <button className="flex items-center gap-2 text-gray-700 dark:text-white w-full px-5 py-3 rounded-lg   cursor-pointer " onClick={handleOpenLogoutConfirmationModal}>
           <TbLogout2 className="w-5 h-5" />
           {(isExpanded || isHovered || isMobileOpen) && <span>Logout</span>}
         </button>
