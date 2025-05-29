@@ -103,11 +103,11 @@ const team_A: NavItem[] = [
     path: "/",
 
   },
-  {
-    icon: <Send />,
-    name: "Landing page and submit referral",
-    path: "/referral",
-  },
+  // {
+  //   icon: <Send />,
+  //   name: "Landing page and submit referral",
+  //   path: "/referral",
+  // },
   {
     icon: <Users />,
     name: "Member",
@@ -124,6 +124,29 @@ const team_A: NavItem[] = [
     name: "Product Catalog",
     path: "/product-catalog",
   },
+
+];
+
+const team_B: NavItem[] = [
+  {
+    icon: <Graph />,
+    name: "Dashboard",
+    // subItems: [{ name: "Ecommerce", path: "/", pro: false }],
+    path: "/",
+
+  },
+  {
+    icon: <Send />,
+    name: "Landing page and submit referral",
+    path: "/referral",
+  },
+
+  {
+    icon: <CoinHand />,
+    name: "A-Team",
+    path: "/a-team",
+  },
+
 
 
 ];
@@ -424,9 +447,14 @@ const AppSidebar: React.FC = () => {
                 )}
               </h2>
               {renderMenuItems(
-                userProfile?.role === "A_TEAM" ? team_A : navItems,
+                userProfile?.role === "A_TEAM"
+                  ? team_A
+                  : userProfile?.role === "B_TEAM"
+                    ? team_B
+                    : navItems,
                 "main"
               )}
+
             </div>
 
           </div>
