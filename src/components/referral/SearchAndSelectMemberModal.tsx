@@ -111,7 +111,7 @@ const fetchMembers = async () => {
                              </span>
 
                             {/* Dropdown list */}
-                            {membersList.length > 0 && !selectedMember && (
+                            {membersList.length > 0  && (
                                 <ul className=" w-full bg-white border border-gray-200 rounded-md shadow-md mt-1 max-h-60 overflow-y-auto">
                                     {membersList.map((member) => (
                                         <li

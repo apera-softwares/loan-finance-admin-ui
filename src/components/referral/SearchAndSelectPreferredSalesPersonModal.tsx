@@ -113,7 +113,7 @@ const fetchPreferredSalesPerson = async () => {
                             </span>
 
                             {/* Dropdown list */}
-                            {preferredSalesPersonList.length > 0 && !selectedPreferredSalesPerson && (
+                            {preferredSalesPersonList.length > 0 &&  (
                                 <ul className="w-full bg-white border border-gray-200 rounded-md shadow-md mt-1 max-h-60 overflow-y-auto">
                                     {preferredSalesPersonList.map((person) => (
                                         <li
