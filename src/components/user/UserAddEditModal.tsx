@@ -205,20 +205,20 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                 closeModal()
                 clear()
             }}
-            className="max-w-[800px] p-5 lg:p-10"
+            className="max-w-[800px] p-6 lg:p-10 pt-10 "
         >
             {/* <Toaster /> */}
 
-            <div>
+            <div className="w-full">
                 <div className="flex items-center">
-                    <span className="bg-primary p-2 flex justify-center items-center rounded-full">
+                    <span className="bg-primary p-1 sm:p-2 flex justify-center items-center rounded-full">
                         <Users1 />
                     </span>
                     <div className="ml-4 w-4/5">
-                        <h5 className="font-semibold text-gray-800 text-title-sm dark:text-white/90">
+                        <h5 className="font-semibold text-gray-800 text-xl sm:text-2xl lg:text-3xl dark:text-white/90">
                             {type == "add" ? "Create New User" : "Edit User"}
                         </h5>
-                        <span className="text-md">
+                        <span className="text-base">
                             {type == "add" && "Add a new user to the Honeybee Hive. Assign their role, team, and send a welcome email to get them started."}
                         </span>
                     </div>

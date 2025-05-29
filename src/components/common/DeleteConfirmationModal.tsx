@@ -23,14 +23,15 @@ const TeamDeleteConfirm: React.FC<TeamDeleteConfirmProps> = ({
         <Modal
             isOpen={isOpen}
             onClose={closeModal}
-            className="max-w-[500px] p-5 lg:p-10"
+            className="max-w-[500px] p-6 lg:p-10 pt-10"
         >
-            <div className="flex items-start">
+         <div className="w-full">
+               <div className="flex items-start">
                 <div className="flex justify-center items-center p-4 rounded-full bg-red-100 dark:bg-red-500/10">
                     <TrashBinIcon className=" text-red-600 dark:text-red-400" />
                 </div>
                 <div className="ml-4">
-                    <h5 className="font-semibold text-gray-800 text-title-sm dark:text-white/90">
+                    <h5 className="font-semibold text-gray-800 text-2xl sm:text-2xl  dark:text-white/90">
                      {type} {name}
                      </h5>
                     <p className="text-sm text-gray-600 mt-1 dark:text-gray-300">
@@ -54,6 +55,7 @@ const TeamDeleteConfirm: React.FC<TeamDeleteConfirmProps> = ({
                     No, Cancel
                 </Button>
             </div>
+          </div>
         </Modal>
     );
 };

@@ -156,13 +156,13 @@ const MemberAddAssignProductModal: React.FC<MemberAddModalProps> = ({
                 closeModal();
                 clear();
             }}
-            className="max-w-[700px] p-5 lg:p-10">
-            <div>
-                <div className="flex items-center mb-6">
-                    <span className="bg-amber-500 p-2 rounded-full">
+            className="max-w-[700px] p-6 lg:p-10 pt-10 ">
+            <div className="w-full">
+                <div className="flex items-center mb-6 ">
+                    <span className="bg-amber-500 p-1 sm:p-2 rounded-full">
                         <Users1 />
                     </span>
-                    <h5 className="ml-4 font-semibold text-gray-800 dark:text-white/90">
+                    <h5 className="ml-4 font-semibold text-xl sm:text-2xl text-gray-800 dark:text-white/90">
                         Assign Product to Team Member
                     </h5>
                 </div>
