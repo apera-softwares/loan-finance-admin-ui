@@ -22,7 +22,7 @@ import Pagination from '@/components/tables/Pagination';
 import Spinner from '@/components/common/Spinner';
 
 export default function UserManagement() {
-
+    const ITEM_PER_PAGE = 5;
     const { teamId } = useParams()
     const dispatch = useDispatch<AppDispatch>();
     const [teamDataMembers, setTeamDataMembers] = useState<any[]>([]);
@@ -34,11 +34,11 @@ export default function UserManagement() {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false)
 
     useEffect(() => {
-        fetcTeamMembers()
+        getTeamMembers()
     }, [dispatch, currentPage, isModalOpen, isAddModalOpen]);
 
-    const fetcTeamMembers = () => {
-        dispatch(fetchTeamMembers({ id: teamId, page: currentPage, limit: 5, search:"" })).then((res: any) => {
+    const getTeamMembers = () => {
+        dispatch(fetchTeamMembers({ id: teamId, page: currentPage, limit:ITEM_PER_PAGE, search:"" })).then((res: any) => {
             if (res.meta.requestStatus === "fulfilled") {
                 if (res.payload) {
                     setTeamDataMembers(res.payload.data || []);
@@ -64,7 +64,7 @@ export default function UserManagement() {
             if (res.meta.requestStatus === "fulfilled") {
                 if (res.payload) {
                     setTeamDataMembers(res.payload.data || []);
-                    fetcTeamMembers()
+                    getTeamMembers()
                     toast.success("Team Member Deleted successful!");
 
                     console.log(res.payload, "Member Deleted")
@@ -161,7 +161,7 @@ export default function UserManagement() {
                                                 <TableRow key={member?.id}>
                                                     <TableCell className="px-5 py-4 text-start">
                                                         <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                                                            {index + 1}
+                                                            {(currentPage-1)*ITEM_PER_PAGE+index + 1}
                                                         </span>
                                                     </TableCell>
                                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">

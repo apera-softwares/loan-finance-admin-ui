@@ -24,7 +24,7 @@ interface UserTableProps {
 }
 
 const UserTable: React.FC<UserTableProps> = ({ searchText, role, order, from }) => {
-
+    const ITEM_PER_PAGE = 5;
     const dispatch = useDispatch<AppDispatch>();
     const [usersData, setUsersData] = useState<any[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -35,7 +35,7 @@ const UserTable: React.FC<UserTableProps> = ({ searchText, role, order, from }) 
 
 
     useEffect(() => {
-        dispatch(fetchUsers({ page: currentPage, limit: 5, name: searchText, role: role, order })).then((res: any) => {
+        dispatch(fetchUsers({ page: currentPage, limit: ITEM_PER_PAGE, name: searchText, role: role, order })).then((res: any) => {
             if (res.meta.requestStatus === "fulfilled") {
                 if (res.payload) {
                     setUsersData(res.payload.data || []);
@@ -78,11 +78,11 @@ const UserTable: React.FC<UserTableProps> = ({ searchText, role, order, from }) 
                             </TableHeader>
                             <TableBody>
                                 {usersData.length > 0 ? (
-                                    usersData.map((user: any, index) => (
+                                    usersData.map((user: any, index:number) => (
                                         <TableRow key={user?.id}>
                                             <TableCell className="px-5 py-4 text-start">
                                                 <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                                                    {index + 1}
+                                                    {(currentPage - 1) * ITEM_PER_PAGE + index + 1}
                                                 </span>
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
