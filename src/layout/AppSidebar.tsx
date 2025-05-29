@@ -103,11 +103,11 @@ const team_A: NavItem[] = [
     path: "/",
 
   },
-  {
-    icon: <Send />,
-    name: "Landing page and submit referral",
-    path: "/referral",
-  },
+  // {
+  //   icon: <Send />,
+  //   name: "Landing page and submit referral",
+  //   path: "/referral",
+  // },
   {
     icon: <Users />,
     name: "Member",
