@@ -25,9 +25,9 @@ type BadgeColor =
   | "info"
   | "light"
   | "dark";
-const LIMIT = 5;
-const ReferralTable: React.FC<ReferralTableProps> = ({ searchText }) => {
 
+const ReferralTable: React.FC<ReferralTableProps> = ({ searchText }) => {
+    const ITEM_PER_PAGE = 5;
     const dispatch = useAppDispatch();
     const {referralList,loading} = useAppSelector((state)=>state.referral)
     const [currentPage, setCurrentPage] = useState(1);
@@ -46,7 +46,7 @@ const ReferralTable: React.FC<ReferralTableProps> = ({ searchText }) => {
        try {
             const params={
                 page:page,
-                limit:LIMIT,
+                limit:ITEM_PER_PAGE,
                 searchQuery:searchText
             }
             const res = await dispatch(fetchReferrals(params)).unwrap();
@@ -104,7 +104,7 @@ const ReferralTable: React.FC<ReferralTableProps> = ({ searchText }) => {
                                         <TableRow key={item?.id}>
                                             <TableCell className="px-5 py-4 text-start">
                                                 <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                                                  {(currentPage - 1) * LIMIT + index + 1}
+                                                  {(currentPage - 1) * ITEM_PER_PAGE + index + 1}
                                                 </span>
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">

@@ -25,7 +25,7 @@ interface TeamTableProps {
 }
 
 const TeamTable: React.FC<TeamTableProps> = ({ searchText, role, order }) => {
-
+    const ITEM_PER_PAGE = 5;
     const dispatch = useDispatch<AppDispatch>();
     const [teamData, setTeamData] = useState<any[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -38,7 +38,7 @@ const TeamTable: React.FC<TeamTableProps> = ({ searchText, role, order }) => {
 
 
     useEffect(() => {
-        dispatch(fetchTeams({ page: currentPage, limit: 5 })).then((res: any) => {
+        dispatch(fetchTeams({ page: currentPage, limit: ITEM_PER_PAGE })).then((res: any) => {
             if (res.meta.requestStatus === "fulfilled") {
                 if (res.payload) {
                     setTeamData(res.payload.data || []);
@@ -54,6 +54,8 @@ const TeamTable: React.FC<TeamTableProps> = ({ searchText, role, order }) => {
             }
         });
     }, [dispatch, currentPage, searchText, role, isModalOpen, order]);
+
+    
 
     const handlePageChange = (page: any) => {
         setCurrentPage(page);
@@ -85,7 +87,7 @@ const TeamTable: React.FC<TeamTableProps> = ({ searchText, role, order }) => {
                                         <TableRow key={user?.id}>
                                             <TableCell className="px-5 py-4 text-start">
                                                 <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                                                    {index + 1}
+                                                    {(currentPage-1)*ITEM_PER_PAGE+index + 1}
                                                 </span>
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
