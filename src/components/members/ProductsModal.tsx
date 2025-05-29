@@ -37,10 +37,11 @@ const ProductListModal: React.FC<ProductListModalProps> = ({
     <Modal
       isOpen={isOpen}
       onClose={closeModal}
-      className="max-w-[700px] p-5 lg:p-8"
+      className="max-w-[700px] p-6 lg:p-10 pt-10 "
     >
-      <div className="mb-4">
-        <h5 className="font-semibold text-gray-800 text-xl dark:text-white/90">
+     <div className="w-full">
+         <div className="mb-4">
+        <h5 className="font-semibold text-gray-800 text-xl sm:text-2xl dark:text-white/90">
           {title}
         </h5>
         <p className="text-sm text-gray-600 mt-1 dark:text-gray-300">
@@ -101,6 +102,8 @@ const ProductListModal: React.FC<ProductListModalProps> = ({
           Close
         </Button>
       </div>
+
+     </div>
     </Modal>
   );
 };

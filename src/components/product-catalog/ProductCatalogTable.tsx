@@ -115,8 +115,8 @@ const ProductCatalogTable: React.FC<ProductCatalogTableProps> = ({ filters,pagin
 
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                                               <button className="flex items-center text-primary gap-2 cursor-pointer ">
-                                                 <FiEdit className="h-5 w-5 text-primary cursor-pointer " onClick={() =>onEdit(product)} />
+                                               <button className="flex items-center text-primary gap-2 cursor-pointer " onClick={() =>onEdit(product)}>
+                                                 <FiEdit className="h-5 w-5 text-primary cursor-pointer "  />
                                                     Edit
                                                </button>
                                                     

@@ -83,14 +83,14 @@ const fetchMembers = async () => {
                 closeModal();
                 clear();
             }}
-            className="max-w-[800px] p-5 lg:p-10">
+            className="max-w-[800px] p-6 pt-10 lg:p-10 ">
             <div>
-                <div className="flex items-center">
-                    <span className="bg-primary p-2 flex justify-center items-center rounded-full">
+                <div className="flex items-center ">
+                    <span className="bg-primary p-1 sm:p-2 flex justify-center items-center rounded-full">
                         <Users1 />
                     </span>
                     <div className="ml-4 w-4/5">
-                        <h5 className="font-semibold text-gray-800 text-title-sm dark:text-white/90">
+                        <h5 className="font-semibold text-gray-800 text-xl sm:text-3xl dark:text-white/90">
                             Select Member
                         </h5>
                     </div>
