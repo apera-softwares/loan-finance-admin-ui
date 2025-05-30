@@ -28,14 +28,14 @@ const ServiceCard: React.FC<ISectionCardProps> = ({
   };
 
   return (
-    <div className="w-full shrink-0 min-w-[340px] max-w-sm  flex  gap-4 p-4 lg:p-2  bg-white rounded-3xl ">
+    <div className="w-full shrink-0 min-w-[340px] max-w-sm h-[200px]  flex     gap-4 p-4 lg:p-2  bg-white rounded-3xl ">
       {/* Left: Image Carousel */}
-      <div className="w-full lg:w-[40%] aspect-square relative rounded-xl overflow-hidden">
+      <div className="w-[50%] aspect-square relative rounded-xl overflow-hidden  shrink-0 ">
         <Image
           src={images[current]}
           alt={title}
           fill
-          className=" lg:w-[200px] lg:h-[200px] w-full  object-cover object-center rounded-xl"
+          className=" w-[200px] h-[188px] object-cover object-center  rounded-2xl"
         />
 
         {/* Left Arrow */}
@@ -71,9 +71,9 @@ const ServiceCard: React.FC<ISectionCardProps> = ({
       </div>
 
       {/* Right: Content */}
-      <div className="w-full lg:w-[60%] flex flex-col justify-center">
+      <div className="w-[50%] flex flex-col justify-center">
         <h2 className="text-xl font-bold text-gray-800 mb-2">{title}</h2>
-        <ul className=" mb-4">
+        <ul className=" mb-4  max-h-24 overflow-y-auto no-scrollbar ">
           {points.map((point, idx) => (
             <li key={idx} className="text-gray-600 text-sm leading-relaxed">
               • {point}
