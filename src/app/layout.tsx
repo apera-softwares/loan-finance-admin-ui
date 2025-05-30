@@ -32,10 +32,7 @@ export default function RootLayout({
         data-new-gr-c-s-check-loaded="14.1235.0"
         data-gr-ext-installed=""
         cz-shortcut-listen="true"
-        style={{
-          background:
-            "radial-gradient(ellipse at bottom center, #FFF4D2 0%, #F8F8F8 60%)",
-        }}>
+        >
         <ReduxProvider>
           <ThemeProvider>
             <SidebarProvider>

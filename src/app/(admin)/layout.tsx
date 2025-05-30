@@ -43,7 +43,12 @@ export default function AdminLayout({
         {/* Header */}
         <AppHeader />
         {/* Page Content */}
-        <div className="w-full p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">{children}</div>
+        <div className="relative  w-full min-h-[calc(100vh-140px)] max-w-(--breakpoint-2xl)  mx-auto p-4  md:p-6  ">
+          {children}
+ 
+          <div className=" w-64  h-40 md:w-80  md:h-56   absolute -z-10 bottom-0 left-0 transform -translate-x-1/2  bg-amber-300 rounded-full blur-[280px]" />
+          <div className="w-64  h-40 md:w-80  md:h-56  absolute -z-10 top-40 right-0 bg-amber-300 rounded-full blur-[280px]" />
+          </div>
       </div>
 
     </div>
