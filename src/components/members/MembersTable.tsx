@@ -22,7 +22,7 @@ interface TeamTableProps {
 }
 
 const AssignedMembersTable: React.FC<TeamTableProps> = ({ searchText, role, order }) => {
-    const ITEM_PER_PAGE=5;
+    const ITEM_PER_PAGE = 5;
     const dispatch = useDispatch<AppDispatch>();
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
@@ -32,7 +32,7 @@ const AssignedMembersTable: React.FC<TeamTableProps> = ({ searchText, role, orde
 
     useEffect(() => {
         setCurrentPage(1);
-        dispatch(fetchAssignedMembers({ page:1, limit:ITEM_PER_PAGE, name: searchText })).then((res: any) => {
+        dispatch(fetchAssignedMembers({ page: 1, limit: ITEM_PER_PAGE, name: searchText })).then((res: any) => {
             if (res.meta.requestStatus === "fulfilled") {
                 if (res.payload) {
                     console.log(res.payload, "Assigend members")
@@ -47,8 +47,8 @@ const AssignedMembersTable: React.FC<TeamTableProps> = ({ searchText, role, orde
         });
     }, [dispatch, searchText, role, order, isModalOpen]);
 
-        useEffect(() => {
-        dispatch(fetchAssignedMembers({ page: currentPage, limit:ITEM_PER_PAGE, name: searchText })).then((res: any) => {
+    useEffect(() => {
+        dispatch(fetchAssignedMembers({ page: currentPage, limit: ITEM_PER_PAGE, name: searchText })).then((res: any) => {
             if (res.meta.requestStatus === "fulfilled") {
                 if (res.payload) {
                     console.log(res.payload, "Assigend members")
@@ -88,7 +88,6 @@ const AssignedMembersTable: React.FC<TeamTableProps> = ({ searchText, role, orde
         <div className="overflow-hidden rounded-xl bg-white dark:bg-white/[0.03] shadow-md">
             <div className="w-full overflow-x-auto ">
                 <Toaster />
-
                 <div className="w-full">
                     {loading ? (
                         <Spinner />
@@ -111,7 +110,7 @@ const AssignedMembersTable: React.FC<TeamTableProps> = ({ searchText, role, orde
                                         <TableRow key={user?.id}>
                                             <TableCell className="px-5 py-4 text-start">
                                                 <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                                                    {(currentPage-1)*ITEM_PER_PAGE+index + 1}
+                                                    {(currentPage - 1) * ITEM_PER_PAGE + index + 1}
                                                 </span>
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">

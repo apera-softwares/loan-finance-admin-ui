@@ -78,7 +78,7 @@ const UserTable: React.FC<UserTableProps> = ({ searchText, role, order, from }) 
                             </TableHeader>
                             <TableBody>
                                 {usersData.length > 0 ? (
-                                    usersData.map((user: any, index:number) => (
+                                    usersData.map((user: any, index: number) => (
                                         <TableRow key={user?.id}>
                                             <TableCell className="px-5 py-4 text-start">
                                                 <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
@@ -109,13 +109,16 @@ const UserTable: React.FC<UserTableProps> = ({ searchText, role, order, from }) 
                                                 </Badge>
                                             </TableCell>
                                             {from !== "team-a" &&
-                                                <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                                                    <FiEdit className="h-5 w-5 text-primary cursor-pointer" onClick={() => {
+                                                <TableCell className="px-4 py-3 text-primary text-theme-sm dark:text-gray-400">
+                                                    <div className="flex items-center gap-1 cursor-pointer" onClick={() => {
                                                         setEditUserData(user)
                                                         setIsModalOpen(true)
-                                                    }} />
+                                                    }}>
+                                                        <FiEdit className="h-5 w-5 text-primary" />Edit
+                                                    </div>
                                                 </TableCell>
                                             }
+
                                         </TableRow>
 
                                     ))
