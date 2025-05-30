@@ -42,7 +42,6 @@ export const fetchReferrals = createAsyncThunk(
       queryParams.append("name", searchQuery);
       }
 
-
       const response = await axios.get(
         `${BACKEND_API}lead?${queryParams.toString()}`,
         {
