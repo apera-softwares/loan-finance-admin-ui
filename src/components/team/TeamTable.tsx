@@ -36,7 +36,6 @@ const TeamTable: React.FC<TeamTableProps> = ({ searchText, role, order }) => {
 
     const router = useRouter()
 
-
     useEffect(() => {
         dispatch(fetchTeams({ page: currentPage, limit: ITEM_PER_PAGE })).then((res: any) => {
             if (res.meta.requestStatus === "fulfilled") {
@@ -55,13 +54,9 @@ const TeamTable: React.FC<TeamTableProps> = ({ searchText, role, order }) => {
         });
     }, [dispatch, currentPage, searchText, role, isModalOpen, order]);
 
-
-
     const handlePageChange = (page: any) => {
         setCurrentPage(page);
     };
-
-
 
     return (
         <div className=" w-full overflow-hidden rounded-xl bg-white dark:bg-white/[0.03] shadow-md">
