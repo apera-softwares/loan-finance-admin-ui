@@ -5,10 +5,10 @@ import { SERVICES } from "@/data/services";
 import React from "react";
 
 
-export default function BlankPage() {
+export default function Referral() {
     return (
         <div>
-               <div className="flex flex-col lg:flex-row items-start justify-between lg:items-center gap-4">
+               <div className="flex flex-col lg:flex-row items-start justify-between lg:items-center gap-4 mb-8 ">
                 {/* Left: Heading */}
                 <div className=" w-auto">
                     <CommonHeading
@@ -17,7 +17,8 @@ export default function BlankPage() {
                     />
                 </div>
                 </div>
-            <div className="w-full max-w-[1500px] grid grid-cols-1  lg:grid-cols-3 justify-center gap-10  lg:gap-6 my-4">
+            <div className=" overflow-x-auto  no-scrollbar ">
+                          <div className=" max-w-[900px] flex space-x-5 ">
                 {SERVICES && SERVICES?.length > 0 ? (
                     SERVICES?.map((serviceItems: any) => (
                         <ServiceCard
@@ -30,6 +31,7 @@ export default function BlankPage() {
                 ) : (
                     <div></div>
                 )}
+            </div>
             </div>
 
             <div className="mb-4 mt-10">
