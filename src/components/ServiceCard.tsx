@@ -28,7 +28,7 @@ const ServiceCard: React.FC<ISectionCardProps> = ({
   };
 
   return (
-    <div className="lg:flex flex-col lg:flex-row items-center lg:items-stretch gap-4 p-6 lg:p-2 max-w-6xl bg-white rounded-3xl shadow-md w-full">
+    <div className="w-full shrink-0 min-w-[340px] max-w-sm  flex  gap-4 p-4 lg:p-2  bg-white rounded-3xl ">
       {/* Left: Image Carousel */}
       <div className="w-full lg:w-[40%] aspect-square relative rounded-xl overflow-hidden">
         <Image
