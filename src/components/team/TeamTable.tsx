@@ -36,7 +36,6 @@ const TeamTable: React.FC<TeamTableProps> = ({ searchText, role, order }) => {
 
     const router = useRouter()
 
-
     useEffect(() => {
         dispatch(fetchTeams({ page: currentPage, limit: ITEM_PER_PAGE })).then((res: any) => {
             if (res.meta.requestStatus === "fulfilled") {
@@ -55,13 +54,9 @@ const TeamTable: React.FC<TeamTableProps> = ({ searchText, role, order }) => {
         });
     }, [dispatch, currentPage, searchText, role, isModalOpen, order]);
 
-    
-
     const handlePageChange = (page: any) => {
         setCurrentPage(page);
     };
-
-
 
     return (
         <div className=" w-full overflow-hidden rounded-xl bg-white dark:bg-white/[0.03] shadow-md">
@@ -87,7 +82,7 @@ const TeamTable: React.FC<TeamTableProps> = ({ searchText, role, order }) => {
                                         <TableRow key={user?.id}>
                                             <TableCell className="px-5 py-4 text-start">
                                                 <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                                                    {(currentPage-1)*ITEM_PER_PAGE+index + 1}
+                                                    {(currentPage - 1) * ITEM_PER_PAGE + index + 1}
                                                 </span>
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
@@ -116,11 +111,11 @@ const TeamTable: React.FC<TeamTableProps> = ({ searchText, role, order }) => {
                                                 </div>
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-primary text-theme-sm dark:text-gray-400">
-                                                <div className="flex items-center gap-1" onClick={() => {
+                                                <div className="flex items-center gap-1 cursor-pointer" onClick={() => {
                                                     setEditTeamData(user)
                                                     setIsModalOpen(true)
                                                 }}>
-                                                    <FiEdit className="h-5 w-5 text-primary cursor-pointer" />Edit
+                                                    <FiEdit className="h-5 w-5 text-primary" />Edit
                                                 </div>
                                             </TableCell>
 
