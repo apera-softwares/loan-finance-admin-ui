@@ -11,9 +11,9 @@ export const fetchUsers = createAsyncThunk(
         const state: any = thunkAPI.getState();
         const token = state.user?.user?.token; 
 
-        const {order,role,page,limit,name} = obj
+        const {order,page,limit,name} = obj
 
-        const response = await axios.get(`${BACKEND_API}admin/users?page=${page}&&role=${role}&&name=${name}&&order=${order}&&limit=${limit}`, {
+        const response = await axios.get(`${BACKEND_API}admin/users?page=${page}&&name=${name}&&order=${order}&&limit=${limit}`, {
           headers: { Authorization: `Bearer ${token}`, 
          'ngrok-skip-browser-warning': 'true',
        },

@@ -18,12 +18,11 @@ import { Toaster } from "react-hot-toast";
 
 interface UserTableProps {
     searchText: string;
-    role: string;
     order: string;
     from?: string;
 }
 
-const UserTable: React.FC<UserTableProps> = ({ searchText, role, order, from }) => {
+const UserTable: React.FC<UserTableProps> = ({ searchText, order}) => {
     const ITEM_PER_PAGE = 5;
     const dispatch = useDispatch<AppDispatch>();
     const [usersData, setUsersData] = useState<any[]>([]);
@@ -35,7 +34,7 @@ const UserTable: React.FC<UserTableProps> = ({ searchText, role, order, from }) 
 
 
     useEffect(() => {
-        dispatch(fetchUsers({ page: currentPage, limit: ITEM_PER_PAGE, name: searchText, role: role, order })).then((res: any) => {
+        dispatch(fetchUsers({ page: currentPage, limit: ITEM_PER_PAGE, name: searchText, order })).then((res: any) => {
             if (res.meta.requestStatus === "fulfilled") {
                 if (res.payload) {
                     setUsersData(res.payload.data || []);
@@ -50,7 +49,7 @@ const UserTable: React.FC<UserTableProps> = ({ searchText, role, order, from }) 
                 console.log("Failed to fetch users:", res.payload || "Unknown error");
             }
         });
-    }, [dispatch, currentPage, searchText, role, isModalOpen, order]);
+    }, [dispatch, currentPage, searchText,isModalOpen, order]);
 
     const handlePageChange = (page: any) => {
         setCurrentPage(page);
@@ -71,9 +70,10 @@ const UserTable: React.FC<UserTableProps> = ({ searchText, role, order, from }) 
                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">S.No</TableCell>
                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Name</TableCell>
                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Email</TableCell>
-                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Role</TableCell>
+                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Available Funding</TableCell>
+                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Interest Rate</TableCell>
                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Status</TableCell>
-                                    {from !== "team-a" && <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Actions</TableCell>}
+                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Action</TableCell>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -86,13 +86,16 @@ const UserTable: React.FC<UserTableProps> = ({ searchText, role, order, from }) 
                                                 </span>
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                                {user?.firstName} {user?.lastName}
+                                                {`${user?.firstName||""} ${user?.lastName||""}`}
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                                {user?.email}
+                                               {`${user?.email||""}`}
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                                                {user?.role}
+                                                {`${user?.availableFunding||""}`}
+                                            </TableCell>
+                                            <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+                                                {`${user?.interestRate||""}`}
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                                 <Badge

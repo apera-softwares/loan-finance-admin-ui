@@ -35,7 +35,7 @@ export default function UserManagement() {
                         </span>
                         <input
                             type="text"
-                            placeholder="Search by name, product, date"
+                            placeholder="Search by name"
                             name="SearchInput"
                             value={SearchInput}
                             onChange={(e) => setSearchInput(e.target.value)}
@@ -83,7 +83,7 @@ export default function UserManagement() {
 
             {/* Table */}
             <div className="w-full">
-                <UserTable searchText={SearchInput} role={filterRole} order={order} />
+                <UserTable searchText={SearchInput}  order={order} />
                 <UserAddEditModal isOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} type="add" />
 
             </div>

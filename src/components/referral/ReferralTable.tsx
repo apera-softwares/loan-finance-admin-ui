@@ -90,12 +90,15 @@ const ReferralTable: React.FC<ReferralTableProps> = ({ searchText }) => {
                             <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
                                 <TableRow>
                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">S.No</TableCell>
-                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Lead Name</TableCell>
-                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Product</TableCell>
-                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Referred By</TableCell>
-                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Status</TableCell>
-                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Submitted On</TableCell>
-                                     {/* <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Actions</TableCell> */}
+                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Name</TableCell>
+                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Email</TableCell>
+                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Phone Number</TableCell>
+                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Amount Required</TableCell>
+                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Business Revenue</TableCell>
+                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Business Tenure</TableCell>
+                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Credit Score</TableCell>
+                                      <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Submitted On</TableCell>
+                        
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -113,30 +116,40 @@ const ReferralTable: React.FC<ReferralTableProps> = ({ searchText }) => {
                                              }
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                                {item?.productId}
+                                                {item?.email||""}
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                                                   {
-                                                `${item?.MemberFirstName||""} ${item?.MemberLastName||""}`
+                                                `${item?.phone||""}`
                                              }
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                                <Badge
-                                                    size="md"
-                                                    color={getBadgeColor(item?.status)
-                                                    }
-                                                >
-                                                    {item?.status||""}
-                                                </Badge>
+                                              {`${item?.amountNeeded ||""}`}
                                             </TableCell>
                                              <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+
+                                                 {`${item?.annualRevenue ||""}`}
+                                              
+                                            </TableCell>
+                                             <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+
+                                                 {`${item?.timeInBusiness ||""}`}
+                                              
+                                            </TableCell>
+                                             <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+
+                                                 {`${item?.creditScore ||""}`}
+                                              
+                                            </TableCell>
+                                             <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+
+                                        
                                                   {
-                                                   item?.submittedOn?.slice(0,10)||""
+                                                    `${item?.createdAt?.slice(0,10)||""}`
+                                                   
                                                   }
                                             </TableCell>
-                                             {/* <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                                                  Update Status
-                                            </TableCell> */}
+                                        
                                         </TableRow>
 
                                     ))
