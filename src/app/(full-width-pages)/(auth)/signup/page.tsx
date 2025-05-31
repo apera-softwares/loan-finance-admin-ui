@@ -137,12 +137,12 @@ export default function CreateAccountPage() {
     return (
         <div className="flex flex-col md:flex-row min-h-screen">
             {/* Left side - Form */}
-            <div className="w-full  flex flex-col justify-center items-center   px-3 sm:px-6  py-10 ">
-                <div className="absolute top-8 left-1/2 md:left-8 transform -translate-x-1/2 md:translate-x-0 ">
-                    <h1 className=" text-3xl md:text-4xl font-bold ">Lending Square</h1>
+            <div className="w-full  flex flex-col justify-center items-center   py-10 ">
+                <div className="absolute top-8  md:left-8  ">
+                    <h1 className=" text-3xl md:text-4xl font-bold text-center md:text-start ">Lending Square</h1>
                 </div>
-                <div className="w-full max-w-[482px] mx-auto  mt-12 sm:mt-24 ">
-                    <h2 className="text-center md:text-start text-2xl sm:text-3xl font-bold text-slate-800 mb-4">
+                <div className="w-full max-w-[482px] mx-auto  mt-12 sm:mt-24 border border-gray-100 rounded-2xl px-6 py-8 shadow-lg bg-gray-25 ">
+                    <h2 className="text-center  text-2xl sm:text-3xl font-bold text-slate-800 mb-4">
                         Create an account
                     </h2>
                     <p className=" text-base  sm:text-lg md:text-start text-slate-800 mb-8">
@@ -209,27 +209,10 @@ export default function CreateAccountPage() {
                             />
                             <span className={`${INPUT_REQUIRED_ERROR_CLASS}`} >{errors.password || ""}</span>
                         </div>
-                        <div>
-                            <label className="block textsm font-bold text-black mb-2">
-                                Select role ?
-                            </label>
-                            <div className="flex items-center space-x-6">
-                           
-                                     <Radio id="A_TEAM" label="A Team" name="role"  value="A_TEAM" checked={formData.role === "A_TEAM"} onChange={(value:string)=>{
-                                        setFormData((prev:any)=>({...prev,role:value}))
-                                    }} 
-                                    />
-                                           <Radio id="B_TEAM" label="B Team" name="role"  value="B_TEAM" checked={formData.role === "B_TEAM"} onChange={(value:string)=>{
-                                        setFormData((prev:any)=>({...prev,role:value}))
-                                    }} 
-                                    />
-                            </div>
-                            <span className={`${INPUT_REQUIRED_ERROR_CLASS}`} >{errors.role || ""}</span>
-                        </div>
-
+           
                         <button
                             type="submit"
-                            className="flex justify-center  items-center w-full h-14 bg-primary hover:bg-primary-hover rounded-full shadow-lg font-bold hover:cursor-pointer transition-all duration-500"
+                            className="flex justify-center  items-center w-full h-14 mt-10 bg-primary hover:bg-primary-hover rounded-full shadow-lg font-bold hover:cursor-pointer transition-all duration-500"
                         >
                             {loading ? (<Loader />
                             ) : ("Create account")}

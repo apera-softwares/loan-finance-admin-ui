@@ -104,12 +104,12 @@ export default function Login() {
         <div className="flex flex-col md:flex-row min-h-screen">
             {/* Left side - Form */}
 
-            <div className="w-full  flex flex-col justify-center items-center   px-3 sm:px-6  py-10 ">
-                <div className="absolute top-8 left-1/2 md:left-8 transform -translate-x-1/2 md:translate-x-0 ">
-                  <h1 className=" text-3xl md:text-4xl font-bold ">Lending Square</h1>
+            <div className="w-full  flex flex-col justify-center items-center     py-10 ">
+                <div className=" absolute top-8  md:left-8   ">
+                  <h1 className=" text-3xl md:text-4xl font-bold text-center md:text-start  ">Lending Square</h1>
                 </div>
-                 <div className="w-full max-w-[482px] mx-auto  mt-12 sm:mt-24  ">
-                        <h2 className=" text-center md:text-start text-2xl md:text-3xl font-bold text-slate-800 mb-4">
+                 <div className="w-full max-w-[482px] mx-auto  mt-12 sm:mt-24 border border-gray-100  rounded-2xl px-6 py-8 shadow-lg bg-gray-25  ">
+                        <h2 className=" text-center  text-2xl md:text-3xl font-bold text-slate-800 mb-4">
                     Login                </h2>
                 <p className="text-center md:text-start text-base sm:text-lg text-slate-800 mb-8">
                   
@@ -145,7 +145,7 @@ export default function Login() {
                         />
                          <span className={`${INPUT_REQUIRED_ERROR_CLASS}`}>{errors.password||""}</span>
                     </div>
-                    <div className="flex items-center justify-between gap-3 text-sm mt-2">
+                    {/* <div className="flex items-center justify-between gap-3 text-sm mt-2">
                         <label className="flex items-center space-x-2">
                         
                                <Checkbox checked={true} onChange={()=>{}} />
@@ -157,12 +157,12 @@ export default function Login() {
                         >
                             Forgot Password?
                         </span>
-                    </div>
+                    </div> */}
 
 
                     <button
                         type="submit"
-                        className="flex justify-center items-center  w-full h-14 bg-primary hover:bg-primary-hover rounded-full shadow-lg font-bold hover:cursor-pointer transition-all duration-500"
+                        className="flex justify-center items-center  w-full h-14 mt-10 bg-primary hover:bg-primary-hover rounded-full shadow-lg font-bold hover:cursor-pointer transition-all duration-500"
                     >
                     
 
@@ -170,13 +170,13 @@ export default function Login() {
                     </button>
                 </form>
 
-                <div className="mt-6 text-center">
+                {/* <div className="mt-6 text-center">
                     <span className="text-black text-sm font-medium">
                         Don’t have an account?                   </span>
                     <span className="text-black text-sm font-extrabold cursor-pointer" onClick={() => router.push("/signup")}>
                         Create now
                     </span>
-                </div>
+                </div> */}
                  </div>
             </div>
 
