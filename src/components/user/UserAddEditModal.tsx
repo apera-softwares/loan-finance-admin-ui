@@ -11,12 +11,22 @@ import { CreateUser, UpdateUser } from "@/lib/redux/slices/userManagementSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/redux/store";
 import toast from "react-hot-toast";
+import { availableMemory } from "process";
 
 const Role = [
     { value: "ADMIN", label: "Admin" },
     { value: "A_TEAM", label: "Team A" },
     { value: "B_TEAM", label: "Team B" },
 ];
+
+const Status = [
+     { value: "PENDING", label: "Pending" },
+     { value: "APPROVED", label: "Approved" },
+     { value: "DECLINED", label: "Declined" },
+     { value: "FUNDED", label: "Funded" },
+     { value: "CANCELED", label: "Canceled" },
+
+]
 
 interface UserAddEditModalProps {
     isOpen: boolean;
@@ -31,18 +41,31 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
         firstName: "",
         lastName: "",
         email: "",
-        role: "",
-        team: "",
-        status: true,
-        verified: true,
-        sendWelcomeEmail: true,
+        phone:"",
+        password:"",
+        status:"",
+        availableFunding:"",
+        interestRate:"",
+        bankAccountNumber:"",
+        routingNumber:"",
+        assignedSalesRep:"",
+        
+
     });
 
     const [errors, setErrors] = useState({
+       id: "",
         firstName: "",
         lastName: "",
         email: "",
-        role: ""
+        phone:"",
+        password:"",
+         status:"",
+        availableFunding:"",
+        interestRate:"",
+        bankAccountNumber:"",
+        routingNumber:"",
+        assignedSalesRep:"",
     })
 
     const dispatch = useDispatch<AppDispatch>();
@@ -50,16 +73,18 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
     useEffect(() => {
         if (userData) {
             setFormData({
-                id: userData?.id || "",
-                firstName: userData?.firstName || "",
-                lastName: userData?.lastName || "",
-                email: userData?.email || "",
-                role: userData?.role || "",
-                team: userData?.team || "",
-                status: Boolean(userData?.status),
-                verified: Boolean(userData?.verified),
-
-                sendWelcomeEmail: false,
+            id: "",
+            firstName: "",
+            lastName: "",
+            email: "",
+            phone:"",
+            password:"",
+            status:"",
+            availableFunding:"",
+            interestRate:"",
+            bankAccountNumber:"",
+            routingNumber:"",
+            assignedSalesRep:"",
             });
         }
     }, [userData]);
@@ -72,13 +97,6 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
 
     const handleSelectChange = (name: "role" | "team", value: string) => {
         setFormData((prev) => ({ ...prev, [name]: value }));
-    };
-
-    const handleStatusChange = (value: string) => {
-        setFormData((prev) => ({
-            ...prev,
-            status: value === "active",
-        }));
     };
 
 
@@ -128,13 +146,40 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
             tempErrors.email = "";
         }
 
-        // Validate role
-        if (formData.role.trim() === "") {
-            tempErrors.role = "Role is required";
+
+        if (formData.phone.trim() === "") {
+         tempErrors.phone = "Phone number is required";
+         isValidData = false;
+        } else if (formData.phone.length < 10) {
+         tempErrors.phone = "Please enter a valid phone number";
+          isValidData = false;
+        } else {
+         tempErrors.phone = "";
+         }
+
+
+            //validate password
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+        if (formData.password.trim() === "") {
+            tempErrors.password = "Password is required";
+            isValidData = false;
+        } else if (!passwordRegex.test(formData.password)) {
+            tempErrors.password = "Password must be at least 8 characters and include uppercase, lowercase, number, and special character";
             isValidData = false;
         } else {
-            tempErrors.role = "";
+            tempErrors.password = "";
         }
+
+        //validate status
+        if (formData.status.trim() === "") {
+            tempErrors.status = "Status is required";
+            isValidData = false;
+        }else {
+            tempErrors.status = "";
+        }
+
+
 
         setErrors(tempErrors);
         return isValidData;
@@ -165,7 +210,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
 
     const handleAddUser = () => {
         console.log("Form Data: Add User", formData);
-        if (!validateFormData()) return
+        if (!validateFormData()) return;
         dispatch(CreateUser(formData)).then((res: any) => {
             if (res.meta.requestStatus === "fulfilled") {
                 if (res.payload) {
@@ -190,43 +235,66 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
             firstName: "",
             lastName: "",
             email: "",
-            role: "",
-            team: "",
-            status: false,
-            sendWelcomeEmail: true,
-            verified: false
-        })
+            phone:"",
+            password:"",
+            status:"",
+            availableFunding:"",
+            interestRate:"",
+            bankAccountNumber:"",
+            routingNumber:"",
+            assignedSalesRep:"",
+            });
+
+            setErrors({
+            id: "",
+            firstName: "",
+            lastName: "",
+            email: "",
+            phone:"",
+            password:"",
+            status:"",
+            availableFunding:"",
+            interestRate:"",
+            bankAccountNumber:"",
+            routingNumber:"",
+            assignedSalesRep:"",
+            });
     }
 
+    const handleModalClose = ()=>{
+
+          clear();
+          closeModal();
+    }
+
+console.log("user modal form data",formData);
     return (
         <Modal
             isOpen={isOpen}
             onClose={() => {
-                closeModal()
-                clear()
+            handleModalClose();
             }}
             className="max-w-[800px] p-6 lg:p-10 pt-10 "
         >
             {/* <Toaster /> */}
 
             <div className="w-full">
-                <div className="flex items-center">
-                    <span className="bg-primary p-1 sm:p-2 flex justify-center items-center rounded-full">
+                <div className="w-full flex items-center mb-6">
+                    <span className="bg-primary p-1  flex justify-center items-center rounded-full">
                         <Users1 />
                     </span>
                     <div className="ml-4 w-4/5">
                         <h5 className="font-semibold text-gray-800 text-xl sm:text-2xl lg:text-3xl dark:text-white/90">
                             {type == "add" ? "Create New User" : "Edit User"}
                         </h5>
-                        <span className="text-base">
-                            {type == "add" && "Add a new user to the Honeybee Hive. Assign their role, team, and send a welcome email to get them started."}
-                        </span>
                     </div>
                 </div>
 
-                <div className="p-2">
-                    <div>
-                        <div className="w-full my-6">
+                <div className="w-full">
+                    <div className="max-h-[400px] overflow-y-auto space-y-6">
+
+                        <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6">
+                               <div className="w-full ">
                             <input
                                 type="text"
                                 name="firstName"
@@ -238,7 +306,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                             <span className={REQUIRED_ERROR}>{errors.firstName || ""}</span>
                         </div>
 
-                        <div className="w-full my-6">
+                        <div className="w-full ">
                             <input
                                 type="text"
                                 name="lastName"
@@ -250,7 +318,9 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                             <span className={REQUIRED_ERROR}>{errors.lastName || ""}</span>
                         </div>
 
-                        <div className="w-full my-6">
+                        </div>
+                        <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                   <div className="w-full">
                             <input
                                 type="email"
                                 name="email"
@@ -261,90 +331,161 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                             />
                             <span className={REQUIRED_ERROR}>{errors.email || ""}</span>
                         </div>
-
-                        <div className="w-full my-6">
-                            <Select
-                                options={Role}
-                                defaultValue={formData.role}
-                                placeholder="User role"
-                                onChange={(value: string) => handleSelectChange("role", value)}
-                                className="dark:bg-dark-900"
+                          <div className="w-full">
+                            <input
+                                type="text"
+                                name="phone"
+                                placeholder="Phone"
+                                className={FORM_INPUT_CLASS}
+                                value={formData.phone}
+                                
+                                 onChange={(e) => {
+                                    const value = e.target.value;
+                                    // Allow only numbers and max 10 digits
+                                    if (/^\d{0,10}$/.test(value)) {
+                                    setFormData((prev) => ({ ...prev, phone: value }))
+                                    }
+                                    }}
                             />
-                            <span className={REQUIRED_ERROR}>{errors.role || ""}</span>
+                            <span className={REQUIRED_ERROR}>{errors.phone|| ""}</span>
                         </div>
 
-                        {/* <div className="w-full my-6">
-                            <Select
-                                options={Teams}
-                                defaultValue={formData.team}
-                                placeholder="Assign to team"
-                                onChange={(value: string) => handleSelectChange("team", value)}
-                                className="dark:bg-dark-900"
+                        </div>
+                        <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            
+                            <div className="w-full">
+                            <input
+                                type="text"
+                                name="password"
+                                placeholder="Password"
+                                value={formData.password}
+                                onChange={handleInputChange}
+                                className={FORM_INPUT_CLASS}
                             />
-                            <span className={REQUIRED_ERROR}></span>
-                        </div> */}
-
-                        <div className="flex flex-wrap items-center gap-8 mb-6">
-                            <div className="w-20">Verified:</div>
-                            <Radio
-                                id="radio3"
-                                name="status"
-                                value="yes"
-                                checked={formData.verified === true}
-                                onChange={() => handleVerifiedChange("yes")}
-                                label="Yes"
-                            />
-                            <Radio
-                                id="radio4"
-                                name="status"
-                                value="no"
-                                checked={formData.verified === false}
-                                onChange={() => handleVerifiedChange("no")}
-                                label="No"
-                            />
+                            <span className={REQUIRED_ERROR}>{errors.password|| ""}</span>
                         </div>
 
 
+                            <div className="w-full">
+                            <Select
+                                options={Status}
+                                defaultValue={formData.status}
+                                placeholder="Select status"
+                                onChange={(value: string) => setFormData((prev)=>({...prev,status:value}))}
+                                className="dark:bg-dark-900"
+                            />
+                            <span className={REQUIRED_ERROR}>{errors.status || ""}</span>
+                        </div>
 
-                        <div className="flex justify-between">
-                            <div className="flex flex-wrap items-center gap-4">
-                                <div className="w-20">Status:</div>
-                                <Radio
-                                    id="radio1"
-                                    name="status"
-                                    value="active"
-                                    checked={formData.status === true}
-                                    onChange={() => handleStatusChange("active")}
-                                    label="Active"
-                                />
-                                <Radio
-                                    id="radio2"
-                                    name="status"
-                                    value="inactive"
-                                    checked={formData.status === false}
-                                    onChange={() => handleStatusChange("inactive")}
-                                    label="Inactive"
-                                />
-                            </div>
-
-                            {type == "add" && <Checkbox
-                                checked={formData.sendWelcomeEmail}
-                                onChange={(val: boolean) =>
-                                    setFormData((prev) => ({ ...prev, sendWelcomeEmail: val }))
+                        </div>
+                        <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            
+                             <div className="w-full">
+                            <input
+                                type="text"
+                                name="availableFunding"
+                                placeholder="Available Funding"
+                                value={formData.availableFunding}
+                                onChange={(e) => {
+                                const value = e.target.value;
+                                 // Allow only digits (optionally, you can add `.` if you want decimals)
+                                if (/^\d*$/.test(value)) {
+                                    setFormData((prev) => ({
+                                                           ...prev,
+                                                           availableFunding: value,
+                                                           }));
                                 }
-                                label="Send Welcome Email"
-                            />}
+                                }}
+                                className={FORM_INPUT_CLASS}
+                            />
+                            <span className={REQUIRED_ERROR}>{errors.availableFunding|| ""}</span>
                         </div>
+                          
+                             <div className="w-full ">
+                            <input
+                                type="text"
+                                name="interestRate"
+                                placeholder="Interest rate"
+                                value={formData.interestRate}
+                                onChange={(e) => {
+                                const rateValue = e.target.value;
+                                const interestRateRegex = /^\d{0,3}(\.\d{0,2})?$/;
+
+                                 if (rateValue === "" || interestRateRegex.test(rateValue)) {
+                                const numericValue = parseFloat(rateValue);
+                                if (rateValue === "" || (numericValue >= 0 && numericValue <= 100)) {
+                                setFormData((prev) => ({ ...prev, interestRate: rateValue }));
+                                  }
+                                 }
+                                }}
+                                className={FORM_INPUT_CLASS}
+                            />
+                            <span className={REQUIRED_ERROR}>{errors.interestRate|| ""}</span>
+                        </div>
+
+                        </div>
+                        <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            
+                             <div className="w-full">
+                            <input
+                                type="text"
+                                name="bankAccountNumber"
+                                placeholder="Bank account number"
+                                value={formData.bankAccountNumber}
+                                onChange={handleInputChange}
+                                className={FORM_INPUT_CLASS}
+                            />
+                            <span className={REQUIRED_ERROR}>{errors.bankAccountNumber|| ""}</span>
+                        </div>
+                             <div className="w-full">
+                            <input
+                                type="text"
+                                name="routingNumber"
+                                placeholder="Routing number"
+                                value={formData.routingNumber}
+                                onChange={handleInputChange}
+                                className={FORM_INPUT_CLASS}
+                            />
+                            <span className={REQUIRED_ERROR}>{errors.routingNumber|| ""}</span>
+                        </div>
+
+                        </div>
+                          <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6">
+                               <div className="w-full ">
+                            <input
+                                type="text"
+                                name="assignedSalesRep"
+                                placeholder="Assigned sales rep"
+                                value={formData.assignedSalesRep}
+                                onChange={handleInputChange}
+                                className={FORM_INPUT_CLASS}
+                            />
+                            <span className={REQUIRED_ERROR}>{errors.assignedSalesRep || ""}</span>
+                        </div>
+
+                   
+
+                        </div>
+                     
+
+                 
+
+
+    
+
+                
+
+               
                     </div>
                 </div>
 
                 <div className="flex items-center justify-end w-full gap-3 mt-8">
-                    <Button size="sm" onClick={type == "add" ? handleAddUser : handleEdit}>
+                    <Button size="sm" onClick={handleAddUser}>
                         Save User
                     </Button>
                     <Button size="sm" variant="outline" onClick={() => {
-                        closeModal()
-                        clear()
+                        handleModalClose();
+                      
                     }}>
                         Cancel
                     </Button>

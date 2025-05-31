@@ -16,6 +16,7 @@ export const fetchUsers = createAsyncThunk(
         const response = await axios.get(`${BACKEND_API}admin/users?page=${page}&&name=${name}&&order=${order}&&limit=${limit}`, {
           headers: { Authorization: `Bearer ${token}`, 
          'ngrok-skip-browser-warning': 'true',
+         
        },
         });
   
@@ -30,20 +31,21 @@ export const fetchUsers = createAsyncThunk(
 
   export const CreateUser = createAsyncThunk(
     "user/Create",
-    async (obj: any, thunkAPI) => {
+    async (data: any, thunkAPI) => {
       try {
         const state: any = thunkAPI.getState();
         const token = state.user?.user?.token;
   
         const response = await axios.post(
           `${BACKEND_API}admin/user`,
-          obj, 
+          data, 
           {
             headers: { Authorization: `Bearer ${token}`, 
            'ngrok-skip-browser-warning': 'true',
          },
           }
         );
+        console.log("create user resonse in thunk",response)
   
         return response.data;
       } catch (error: any) {
