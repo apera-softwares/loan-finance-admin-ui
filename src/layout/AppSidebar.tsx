@@ -42,57 +42,17 @@ const navItems: NavItem[] = [
     path: "/",
 
   },
-  {
-    icon: <Send />,
-    name: "Landing page and submit referral",
-    path: "/referral",
-  },
-  {
-    icon: <Users />,
-    name: "Member",
-    path: "/members",
-  },
-  {
-    icon: <CoinHand />,
-    name: "A-Team",
-    path: "/a-team",
-  },
-
-  {
-    icon: <Users />,
-    name: "Team",
-    path: "/team",
-  },
 
   {
     icon: <AudioSetting />,
     name: "User Management",
     path: "/user-management",
   },
-  {
-    icon: <GridIcon />,
-    name: "Product Catalog",
-    path: "/product-catalog",
+    {
+    icon: <CoinHand />,
+    name: "Lead",
+    path: "/lead",
   },
-
-  // {
-  //   name: "Forms",
-  //   icon: <ListIcon />,
-  //   subItems: [{ name: "Form Elements", path: "/form-elements", pro: false }],
-  // },
-  // {
-  //   name: "Tables",
-  //   icon: <TableIcon />,
-  //   subItems: [{ name: "Basic Tables", path: "/basic-tables", pro: false }],
-  // },
-  // {
-  //   name: "Pages",
-  //   icon: <PageIcon />,
-  //   subItems: [
-  //     { name: "Blank Page", path: "/blank", pro: false },
-  //     { name: "404 Error", path: "/error-404", pro: false },
-  //   ],
-  // },
 ];
 
 const team_A: NavItem[] = [
