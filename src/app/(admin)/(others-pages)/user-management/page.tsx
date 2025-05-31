@@ -6,13 +6,16 @@ import { HiOutlinePlus } from "react-icons/hi";
 import UserAddEditModal from "@/components/user/UserAddEditModal";
 import UserTable from "@/components/user/UserTable";
 import { Toaster } from "react-hot-toast";
+import { useAppDispatch,useAppSelector } from "@/lib/redux/hooks";
 
 export default function UserManagement() {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [SearchInput, setSearchInput] = useState("")
     const [filterRole, setFilterRole] = useState("")
     const [order, setOrder] = useState("")
-
+    const loggedInUser = useAppSelector((state)=>state.user.user);
+    console.log("loggedUser",loggedInUser);
+ 
     return (
         <div className="w-full ">
             <Toaster />
@@ -51,39 +54,16 @@ export default function UserManagement() {
                         Create User
                     </button>
 
-                    {/* Filter Dropdown */}
-                    <select
-                        value={filterRole}
-                        onChange={(e) => setFilterRole(e.target.value)}
-                        className="border border-[#151D48] w-32 h-11 text-[#151D48] rounded-md text-sm justify-center text-center outline-none">
-                        <option value="">Filter By Role</option>
-                        <option value="ADMIN">Admin</option>
-                        <option value="A_TEAM">Team A</option>
-                        <option value="B_TEAM">Team B</option>
-                    </select>
+        
 
-                    {/* Filter By Asc Des */}
-                    <select
-                        value={order}
-                        onChange={(e) => setOrder(e.target.value)}
-                        className="border border-[#151D48] w-32 h-11 text-[#151D48] rounded-md text-sm justify-center text-center outline-none ">
-                        <option value="">Short By</option>
-                        <option value="asc">asc to des</option>
-                        <option value="desc">des to asc</option>
-                    </select>
-
-                    {/* Upload Button */}
-                    {/* <div className="w-32 h-11 relative rounded-md">
-                        <div className="w-32 h-11 left-0 top-0 absolute bg-amber-500 rounded-md" />
-                        <div className="left-[36px] top-[14.43px] absolute justify-start text-white text-sm font-medium font-['Montserrat']">CSV/PDF</div>
-                    </div> */}
+           
 
                 </div>
             </div>
 
             {/* Table */}
             <div className="w-full">
-                <UserTable searchText={SearchInput}  order={order} />
+                <UserTable searchText={SearchInput}   />
                 <UserAddEditModal isOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} type="add" />
 
             </div>

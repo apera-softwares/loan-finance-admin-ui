@@ -6,14 +6,22 @@ import { BACKEND_API } from "@/api";
 
 export const fetchUsers = createAsyncThunk(
     "user/fetchUsers",
-    async (obj: any, thunkAPI) => {
+    async (params: any, thunkAPI) => {
       try {
         const state: any = thunkAPI.getState();
         const token = state.user?.user?.token; 
+        const {page,limit,name}= params;
+    
+      const queryParams = new URLSearchParams({
+          page: String(page),
+          limit: String(limit),
+      });
 
-        const {order,page,limit,name} = obj
+      if (name) {
+      queryParams.append("name", name);
+      }
 
-        const response = await axios.get(`${BACKEND_API}admin/users?page=${page}&&name=${name}&&order=${order}&&limit=${limit}`, {
+        const response = await axios.get(`${BACKEND_API}admin/users?${queryParams.toString()}`, {
           headers: { Authorization: `Bearer ${token}`, 
          'ngrok-skip-browser-warning': 'true',
          
@@ -42,6 +50,7 @@ export const fetchUsers = createAsyncThunk(
           {
             headers: { Authorization: `Bearer ${token}`, 
            'ngrok-skip-browser-warning': 'true',
+             'Content-Type': 'application/json',
          },
           }
         );
@@ -70,6 +79,7 @@ export const fetchUsers = createAsyncThunk(
           {
             headers: { Authorization: `Bearer ${token}`, 
            'ngrok-skip-browser-warning': 'true',
+            'Content-Type': 'application/json',
          },
           }
         );

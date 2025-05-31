@@ -141,7 +141,7 @@ export default function CreateAccountPage() {
                 <div className="absolute top-8  md:left-8  ">
                     <h1 className=" text-3xl md:text-4xl font-bold text-center md:text-start ">Lending Square</h1>
                 </div>
-                <div className="w-full max-w-[482px] mx-auto  mt-12 sm:mt-24 border border-gray-100 rounded-2xl px-6 py-8 shadow-lg bg-gray-25 ">
+                <div className="w-full max-w-[482px] mx-auto  mt-12 sm:mt-24 border border-gray-100 rounded-2xl px-6 py-8 shadow-lg bg-gray-100 ">
                     <h2 className="text-center  text-2xl sm:text-3xl font-bold text-slate-800 mb-4">
                         Create an account
                     </h2>

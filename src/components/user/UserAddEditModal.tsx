@@ -5,19 +5,11 @@ import { Modal } from "../ui/modal";
 import { Users1 } from "../../icons/index";
 import { FORM_INPUT_CLASS, REQUIRED_ERROR } from "@/constant/constantClassName";
 import Select from "../form/Select";
-import Radio from "../form/input/Radio";
-import Checkbox from "../form/input/Checkbox";
+
 import { CreateUser, UpdateUser } from "@/lib/redux/slices/userManagementSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/redux/store";
 import toast from "react-hot-toast";
-import { availableMemory } from "process";
-
-const Role = [
-    { value: "ADMIN", label: "Admin" },
-    { value: "A_TEAM", label: "Team A" },
-    { value: "B_TEAM", label: "Team B" },
-];
 
 const Status = [
      { value: "PENDING", label: "Pending" },
@@ -36,6 +28,9 @@ interface UserAddEditModalProps {
 }
 
 const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal, userData, type }) => {
+
+
+    const dispatch = useDispatch<AppDispatch>();
     const [formData, setFormData] = useState({
         id: "",
         firstName: "",
@@ -49,6 +44,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
         bankAccountNumber:"",
         routingNumber:"",
         assignedSalesRep:"",
+        utilizedCredit:"",
         
 
     });
@@ -66,25 +62,28 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
         bankAccountNumber:"",
         routingNumber:"",
         assignedSalesRep:"",
+         utilizedCredit:"",
     })
+    const isReadOnly = userData ? true:false;
 
-    const dispatch = useDispatch<AppDispatch>();
+ 
 
     useEffect(() => {
         if (userData) {
             setFormData({
-            id: "",
-            firstName: "",
-            lastName: "",
-            email: "",
-            phone:"",
-            password:"",
-            status:"",
+            id: userData?.id,
+            firstName: userData?.firstName,
+            lastName: userData?.lastName,
+            email: userData?.email,
+            phone:userData?.phone,
+            password:userData?.password||"",
+            status:userData?.UserDetails?.[0]?.status||"",
             availableFunding:"",
             interestRate:"",
             bankAccountNumber:"",
             routingNumber:"",
             assignedSalesRep:"",
+             utilizedCredit:"",
             });
         }
     }, [userData]);
@@ -209,10 +208,18 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
     };
 
     const handleAddUser = () => {
-        console.log("Form Data: Add User", formData);
+        const transformPayload={
+            ...formData,
+            interestRate: parseFloat(formData.interestRate)||0,
+            availableFunding: parseFloat(formData.availableFunding)||0,
+            utilizedCredit: parseFloat(formData.utilizedCredit)||0,
+        }
+        
+        console.log("trnansformform data",transformPayload);
         if (!validateFormData()) return;
-        dispatch(CreateUser(formData)).then((res: any) => {
+        dispatch(CreateUser(transformPayload)).then((res: any) => {
             if (res.meta.requestStatus === "fulfilled") {
+                console.log("res after add user success",res);
                 if (res.payload) {
                     toast.success("User Created successful!");
                     console.log("User Created successful!");
@@ -243,6 +250,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
             bankAccountNumber:"",
             routingNumber:"",
             assignedSalesRep:"",
+             utilizedCredit:"",
             });
 
             setErrors({
@@ -258,6 +266,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
             bankAccountNumber:"",
             routingNumber:"",
             assignedSalesRep:"",
+             utilizedCredit:"",
             });
     }
 
@@ -400,8 +409,30 @@ console.log("user modal form data",formData);
                             />
                             <span className={REQUIRED_ERROR}>{errors.availableFunding|| ""}</span>
                         </div>
+                               <div className="w-full">
+                            <input
+                                type="text"
+                                name="utilizedCredit"
+                                placeholder="Utilized credit"
+                                value={formData.utilizedCredit}
+                                onChange={(e) => {
+                                const value = e.target.value;
+                                 // Allow only digits (optionally, you can add `.` if you want decimals)
+                                if (/^\d*$/.test(value)) {
+                                    setFormData((prev) => ({
+                                                           ...prev,
+                                                           utilizedCredit: value,
+                                                           }));
+                                }
+                                }}
+                                className={FORM_INPUT_CLASS}
+                            />
+                            <span className={REQUIRED_ERROR}>{errors.utilizedCredit|| ""}</span>
+                        </div>
                           
-                             <div className="w-full ">
+                        </div>
+                            <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                         <div className="w-full ">
                             <input
                                 type="text"
                                 name="interestRate"
@@ -422,6 +453,20 @@ console.log("user modal form data",formData);
                             />
                             <span className={REQUIRED_ERROR}>{errors.interestRate|| ""}</span>
                         </div>
+
+                               <div className="w-full ">
+                            <input
+                                type="text"
+                                name="assignedSalesRep"
+                                placeholder="Assigned sales rep"
+                                value={formData.assignedSalesRep}
+                                onChange={handleInputChange}
+                                className={FORM_INPUT_CLASS}
+                            />
+                            <span className={REQUIRED_ERROR}>{errors.assignedSalesRep || ""}</span>
+                        </div>
+
+                   
 
                         </div>
                         <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -450,22 +495,7 @@ console.log("user modal form data",formData);
                         </div>
 
                         </div>
-                          <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6">
-                               <div className="w-full ">
-                            <input
-                                type="text"
-                                name="assignedSalesRep"
-                                placeholder="Assigned sales rep"
-                                value={formData.assignedSalesRep}
-                                onChange={handleInputChange}
-                                className={FORM_INPUT_CLASS}
-                            />
-                            <span className={REQUIRED_ERROR}>{errors.assignedSalesRep || ""}</span>
-                        </div>
-
-                   
-
-                        </div>
+                      
                      
 
                  
