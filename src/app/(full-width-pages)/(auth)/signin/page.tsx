@@ -170,13 +170,13 @@ export default function Login() {
                     </button>
                 </form>
 
-                {/* <div className="mt-6 text-center">
+                <div className="mt-6 text-center">
                     <span className="text-black text-sm font-medium">
                         Don’t have an account?                   </span>
                     <span className="text-black text-sm font-extrabold cursor-pointer" onClick={() => router.push("/signup")}>
                         Create now
                     </span>
-                </div> */}
+                </div>
                  </div>
             </div>
 

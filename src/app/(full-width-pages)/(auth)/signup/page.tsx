@@ -16,16 +16,23 @@ export default function CreateAccountPage() {
         firstName: "",
         lastName: "",
         email: "",
+        phone:"",
         password: "",
-        role: ""
+        bankAccountNumber:"",
+        routingNumber:"",
+
+        
     });
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({
         firstName: "",
         lastName: "",
         email: "",
+        phone:"",
         password: "",
-        role: ""
+     
+         bankAccountNumber:"",
+        routingNumber:"",
     })
     const router = useRouter()
     const dispatch = useAppDispatch()
@@ -51,14 +58,8 @@ export default function CreateAccountPage() {
         setLoading(true)
         dispatch(userSignup(formData)).then((res: any) => {
             if (res.meta.requestStatus === "fulfilled") {
-                toast.success("Account Creation successful!");
-                setFormData({
-                    firstName: "",
-                    lastName: "",
-                    email: "",
-                    password: "",
-                    role: ""
-                });
+                toast.success("Account Created successfully");
+                handleClear();
                 router.push("/signin");
                 setLoading(false)
             } else {
@@ -109,6 +110,17 @@ export default function CreateAccountPage() {
             tempErrors.email = "";
         }
 
+
+        if (formData.phone.trim() === "") {
+         tempErrors.phone = "Phone number is required";
+         isValidData = false;
+        } else if (formData.phone.length < 10) {
+         tempErrors.phone = "Please enter a valid phone number";
+          isValidData = false;
+        } else {
+         tempErrors.phone = "";
+         }
+
         //validate password
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
@@ -122,18 +134,38 @@ export default function CreateAccountPage() {
             tempErrors.password = "";
         }
 
-        // Validate role
-        if (formData.role.trim() === "") {
-            tempErrors.role = "Role is required";
-            isValidData = false;
-        } else {
-            tempErrors.role = "";
-        }
+
 
         setErrors(tempErrors);
         return isValidData;
 
     };
+
+    const handleClear = ()=>{
+
+          setFormData({
+                    firstName: "",
+                    lastName: "",
+                    email: "",
+                    phone:"",
+                    password: "",
+                     bankAccountNumber:"",
+                    routingNumber:"",
+                });
+                setErrors({
+                    firstName: "",
+                    lastName: "",
+                    email: "",
+                    phone:"",
+                    password: "",
+                     bankAccountNumber:"",
+                    routingNumber:"",
+                });
+
+
+    }
+
+    console.log("form data",formData);
     return (
         <div className="flex flex-col md:flex-row min-h-screen">
             {/* Left side - Form */}
@@ -194,6 +226,26 @@ export default function CreateAccountPage() {
                             />
                             <span className={`${INPUT_REQUIRED_ERROR_CLASS}`} >{errors.email || ""}</span>
                         </div>
+                          <div>
+                            <label className="block text-sm font-bold text-black mb-1">
+                                Phone
+                            </label>
+                            <input
+                                type="text"
+                                name="phone"
+                                value={formData.phone}
+                                placeholder="Enter your phone number"
+                                className={`${INPUT_CLASS}`}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    // Allow only numbers and max 10 digits
+                                    if (/^\d{0,10}$/.test(value)) {
+                                    setFormData((prev) => ({ ...prev, phone: value }))
+                                    }
+                                    }}
+                            />
+                            <span className={`${INPUT_REQUIRED_ERROR_CLASS}`} >{errors.phone || ""}</span>
+                        </div>
 
                         <div>
                             <label className="block text-sm font-bold text-black mb-1">
@@ -208,6 +260,34 @@ export default function CreateAccountPage() {
                                 className={`${INPUT_CLASS}`}
                             />
                             <span className={`${INPUT_REQUIRED_ERROR_CLASS}`} >{errors.password || ""}</span>
+                        </div>
+                        <div>
+                            <label className="block text-sm font-bold text-black mb-1">
+                                Bank Account Number
+                            </label>
+                            <input
+                                type="text"
+                                name="bankAccountNumber"
+                                value={formData.bankAccountNumber}
+                                onChange={handleChange}
+                                placeholder="Enter your bank account number"
+                                className={`${INPUT_CLASS}`}
+                            />
+                            <span className={`${INPUT_REQUIRED_ERROR_CLASS}`} >{errors.bankAccountNumber || ""}</span>
+                        </div>
+                        <div>
+                            <label className="block text-sm font-bold text-black mb-1">
+                                Routing Number
+                            </label>
+                            <input
+                                type="text"
+                                name="routingNumber"
+                                value={formData.routingNumber}
+                                onChange={handleChange}
+                                placeholder="Enter your routing number"
+                                className={`${INPUT_CLASS}`}
+                            />
+                            <span className={`${INPUT_REQUIRED_ERROR_CLASS}`} >{errors.routingNumber || ""}</span>
                         </div>
            
                         <button
