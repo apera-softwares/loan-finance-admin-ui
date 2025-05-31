@@ -29,7 +29,7 @@ const UserTable: React.FC<UserTableProps> = ({ searchText}) => {
     const [totalPages, setTotalPages] = useState(1);
     const { loading } = useSelector((state: RootState) => state.UserManagement);
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const [editUserData, setEditUserData] = useState<any>({});
+    const [editUserData, setEditUserData] = useState<any|null>(null);
 
 
     useEffect(() => {
@@ -37,7 +37,6 @@ const UserTable: React.FC<UserTableProps> = ({ searchText}) => {
             if (res.meta.requestStatus === "fulfilled") {
                 if (res.payload) {
                     setUsersData(res.payload.data || []);
-                    console.log(res.payload)
                     const lastPage = res.payload.lastPage;
                     setTotalPages(lastPage);
                 } else {
@@ -131,7 +130,9 @@ const UserTable: React.FC<UserTableProps> = ({ searchText}) => {
             <div className=" w-full flex justify-end px-4 py-6">
                 <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
             </div>
-            <UserAddEditModal isOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} userData={editUserData} type="update" />
+            <UserAddEditModal isOpen={isModalOpen} closeModal={() => {
+                setIsModalOpen(false)
+            }} userData={editUserData}  type="update" />
 
         </div>
     );

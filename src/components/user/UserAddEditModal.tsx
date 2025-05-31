@@ -62,9 +62,11 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
         bankAccountNumber:"",
         routingNumber:"",
         assignedSalesRep:"",
-         utilizedCredit:"",
+        utilizedCredit:"",
     })
-    const isReadOnly = userData ? true:false;
+    const isEditMode = userData ? true : false ;
+
+
 
  
 
@@ -78,12 +80,12 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
             phone:userData?.phone,
             password:userData?.password||"",
             status:userData?.UserDetails?.[0]?.status||"",
-            availableFunding:"",
-            interestRate:"",
-            bankAccountNumber:"",
-            routingNumber:"",
-            assignedSalesRep:"",
-             utilizedCredit:"",
+            availableFunding:userData?.UserDetails?.[0]?.availableFunding?.toString()||"",
+            interestRate:userData?.UserDetails?.[0]?.interestRate?.toString()||"",
+            bankAccountNumber:userData?.UserDetails?.[0]?.bankAccountNumber||"",
+            routingNumber:userData?.UserDetails?.[0]?.routingNumber||"",
+            assignedSalesRep:userData?.UserDetails?.[0]?.assignedSalesRep||"",
+            utilizedCredit:userData?.UserDetails?.[0]?.utilizedCredit?.toString()||"",
             });
         }
     }, [userData]);
@@ -106,7 +108,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
         }));
     };
 
-    const validateFormData = () => {
+    const validateAddUserFormData = () => {
         let isValidData = true;
         const tempErrors = { ...errors };
 
@@ -185,11 +187,41 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
 
     };
 
+      const validateEditUserFormData = () => {
+        let isValidData = true;
+        const tempErrors = { ...errors };
+
+
+     
+        //validate status
+        if (formData.status.trim() === "") {
+            tempErrors.status = "Status is required";
+            isValidData = false;
+        }else {
+            tempErrors.status = "";
+        }
+
+
+
+        setErrors(tempErrors);
+        return isValidData;
+
+    };
+
 
     const handleEdit = () => {
         console.log("Form Data: Update User", formData);
-        if (!validateFormData()) return
-        dispatch(UpdateUser(formData)).then((res: any) => {
+           const transformPayload={
+            ...formData,
+            interestRate: parseFloat(formData.interestRate)||0,
+            availableFunding: parseFloat(formData.availableFunding)||0,
+            utilizedCredit: parseFloat(formData.utilizedCredit)||0,
+        }
+       if (!validateEditUserFormData()){
+        console.log("validation failed",);
+        return ;
+       }
+        dispatch(UpdateUser(transformPayload)).then((res: any) => {
             if (res.meta.requestStatus === "fulfilled") {
                 if (res.payload) {
                     toast.success("User Updated successful!");
@@ -215,11 +247,10 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
             utilizedCredit: parseFloat(formData.utilizedCredit)||0,
         }
         
-        console.log("trnansformform data",transformPayload);
-        if (!validateFormData()) return;
+        // console.log("trnansformform data",transformPayload);
+        if (!validateAddUserFormData()) return;
         dispatch(CreateUser(transformPayload)).then((res: any) => {
             if (res.meta.requestStatus === "fulfilled") {
-                console.log("res after add user success",res);
                 if (res.payload) {
                     toast.success("User Created successful!");
                     console.log("User Created successful!");
@@ -276,7 +307,8 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
           closeModal();
     }
 
-console.log("user modal form data",formData);
+    console.log("user data",userData);
+    console.log("form data",formData);
     return (
         <Modal
             isOpen={isOpen}
@@ -294,7 +326,10 @@ console.log("user modal form data",formData);
                     </span>
                     <div className="ml-4 w-4/5">
                         <h5 className="font-semibold text-gray-800 text-xl sm:text-2xl lg:text-3xl dark:text-white/90">
-                            {type == "add" ? "Create New User" : "Edit User"}
+                            {
+                               
+                                type==='add' ? "Create  User" : "Edit User"
+                            }
                         </h5>
                     </div>
                 </div>
@@ -303,49 +338,50 @@ console.log("user modal form data",formData);
                     <div className="max-h-[400px] overflow-y-auto space-y-6">
 
                         <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6">
-                               <div className="w-full ">
+                            <div className="w-full ">
                             <input
                                 type="text"
                                 name="firstName"
                                 placeholder="First name"
+                                readOnly={isEditMode}
                                 value={formData.firstName}
                                 onChange={handleInputChange}
                                 className={FORM_INPUT_CLASS}
                             />
                             <span className={REQUIRED_ERROR}>{errors.firstName || ""}</span>
-                        </div>
+                            </div>
 
-                        <div className="w-full ">
+                             <div className="w-full ">
                             <input
                                 type="text"
                                 name="lastName"
                                 placeholder="Last name"
+                                readOnly={isEditMode}
                                 value={formData.lastName}
                                 onChange={handleInputChange}
                                 className={FORM_INPUT_CLASS}
                             />
                             <span className={REQUIRED_ERROR}>{errors.lastName || ""}</span>
-                        </div>
-
-                        </div>
-                        <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                   <div className="w-full">
+                             </div>
+                            <div className="w-full">
                             <input
                                 type="email"
                                 name="email"
                                 placeholder="Email address"
+                                readOnly={isEditMode}
                                 value={formData.email}
                                 onChange={handleInputChange}
                                 className={FORM_INPUT_CLASS}
                             />
                             <span className={REQUIRED_ERROR}>{errors.email || ""}</span>
-                        </div>
-                          <div className="w-full">
+                            </div>
+                            <div className="w-full">
                             <input
                                 type="text"
                                 name="phone"
                                 placeholder="Phone"
                                 className={FORM_INPUT_CLASS}
+                                readOnly={isEditMode}
                                 value={formData.phone}
                                 
                                  onChange={(e) => {
@@ -357,23 +393,22 @@ console.log("user modal form data",formData);
                                     }}
                             />
                             <span className={REQUIRED_ERROR}>{errors.phone|| ""}</span>
-                        </div>
+                            </div>
 
-                        </div>
-                        <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            
-                            <div className="w-full">
-                            <input
+                             {
+                                !isEditMode && ( <div className="w-full">
+                                <input
                                 type="text"
                                 name="password"
                                 placeholder="Password"
                                 value={formData.password}
                                 onChange={handleInputChange}
                                 className={FORM_INPUT_CLASS}
-                            />
-                            <span className={REQUIRED_ERROR}>{errors.password|| ""}</span>
-                        </div>
-
+                                 />
+                                 <span className={REQUIRED_ERROR}>{errors.password|| ""}</span>
+                                 </div>
+)
+                             }
 
                             <div className="w-full">
                             <Select
@@ -384,11 +419,8 @@ console.log("user modal form data",formData);
                                 className="dark:bg-dark-900"
                             />
                             <span className={REQUIRED_ERROR}>{errors.status || ""}</span>
-                        </div>
+                             </div>
 
-                        </div>
-                        <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            
                              <div className="w-full">
                             <input
                                 type="text"
@@ -408,8 +440,8 @@ console.log("user modal form data",formData);
                                 className={FORM_INPUT_CLASS}
                             />
                             <span className={REQUIRED_ERROR}>{errors.availableFunding|| ""}</span>
-                        </div>
-                               <div className="w-full">
+                             </div>
+                            <div className="w-full">
                             <input
                                 type="text"
                                 name="utilizedCredit"
@@ -428,11 +460,9 @@ console.log("user modal form data",formData);
                                 className={FORM_INPUT_CLASS}
                             />
                             <span className={REQUIRED_ERROR}>{errors.utilizedCredit|| ""}</span>
-                        </div>
-                          
-                        </div>
-                            <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                         <div className="w-full ">
+                            </div>
+
+                            <div className="w-full ">
                             <input
                                 type="text"
                                 name="interestRate"
@@ -452,9 +482,9 @@ console.log("user modal form data",formData);
                                 className={FORM_INPUT_CLASS}
                             />
                             <span className={REQUIRED_ERROR}>{errors.interestRate|| ""}</span>
-                        </div>
+                             </div>
 
-                               <div className="w-full ">
+                            <div className="w-full ">
                             <input
                                 type="text"
                                 name="assignedSalesRep"
@@ -464,14 +494,9 @@ console.log("user modal form data",formData);
                                 className={FORM_INPUT_CLASS}
                             />
                             <span className={REQUIRED_ERROR}>{errors.assignedSalesRep || ""}</span>
-                        </div>
+                            </div>
 
-                   
-
-                        </div>
-                        <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            
-                             <div className="w-full">
+                            <div className="w-full">
                             <input
                                 type="text"
                                 name="bankAccountNumber"
@@ -481,8 +506,8 @@ console.log("user modal form data",formData);
                                 className={FORM_INPUT_CLASS}
                             />
                             <span className={REQUIRED_ERROR}>{errors.bankAccountNumber|| ""}</span>
-                        </div>
-                             <div className="w-full">
+                           </div>
+                            <div className="w-full">
                             <input
                                 type="text"
                                 name="routingNumber"
@@ -492,9 +517,14 @@ console.log("user modal form data",formData);
                                 className={FORM_INPUT_CLASS}
                             />
                             <span className={REQUIRED_ERROR}>{errors.routingNumber|| ""}</span>
-                        </div>
+                            </div>
 
                         </div>
+                   
+                   
+        
+     
+          
                       
                      
 
@@ -510,8 +540,10 @@ console.log("user modal form data",formData);
                 </div>
 
                 <div className="flex items-center justify-end w-full gap-3 mt-8">
-                    <Button size="sm" onClick={handleAddUser}>
-                        Save User
+                    <Button size="sm" onClick={type==="add" ? handleAddUser:handleEdit}>
+                        {
+                            type==="add" ? "Create User" : "Update User"
+                        }
                     </Button>
                     <Button size="sm" variant="outline" onClick={() => {
                         handleModalClose();
