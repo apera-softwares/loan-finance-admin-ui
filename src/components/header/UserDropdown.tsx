@@ -10,6 +10,8 @@ import { useAppDispatch,useAppSelector } from "@/lib/redux/hooks";
 import { logout } from "@/lib/redux/slices/userSlice";
 import { resetUserProfile } from "@/lib/redux/slices/loginPersonProfile";
 import LogoutConfirmationModal from "@/components/common/LogoutConfirmationModal";
+import { FaUser } from "react-icons/fa";
+
 
 export default function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
@@ -57,12 +59,13 @@ export default function UserDropdown() {
       <button
         onClick={toggleDropdown}
         className="flex items-center text-gray-700 dark:text-gray-400 dropdown-toggle">
-        <span className="mr-3 overflow-hidden rounded-full h-11 w-11">
-          <Image
+        <span className="mr-3 overflow-hidden rounded-full h-11 w-11 flex items-center justify-center text-gray-300">
+          {/* <Image
             width={44}
             height={44}
             src="/images/user/useradmin.png"
-            alt="User" />
+            alt="User" /> */}
+            <FaUser className=" w-8 h-8 "/>
         </span>
         <div className="">
           <div className="flex items-center w-full">

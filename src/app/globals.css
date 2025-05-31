@@ -34,8 +34,8 @@
   --text-theme-xs: 12px;
   --text-theme-xs--line-height: 18px;
   
-  --color-primary : #FF9912;
-  --color-primary-hover: #E68810;
+  --color-primary : #e4e7ec ;
+  --color-primary-hover: #e4e7ec;
   --color-gradient-start : #FF7403;
   --color-gradient-end : #FFC624 ;
   --color-btn-outline : #151D48;
@@ -201,15 +201,15 @@
 }
 
 @utility menu-item {
-  @apply relative flex items-center w-full gap-3 px-3 py-2 font-medium rounded-lg text-theme-sm;
+  @apply relative flex items-center justify-center  w-full gap-3 px-4 py-5   ;
 }
 
 @utility menu-item-active {
-  @apply bg-gradient-to-r from-gradient-start to-gradient-end rounded-lg shadow-[0px_28px_44.79999923706055px_0px_rgba(255,148,16,0.34)] text-white dark:bg-brand-500/[0.12] dark:text-white;
+  @apply text-gray-700 font-bold hover:bg-gray-100  ;
 }
 
 @utility menu-item-inactive {
-  @apply text-gray-700 hover:bg-gray-100 group-hover:text-gray-700 dark:text-gray-300 dark:hover:bg-white/5 dark:hover:text-gray-300;
+  @apply text-gray-700 hover:bg-gray-100 group-hover:text-gray-700 dark:text-gray-300 dark:hover:bg-white/5 dark:hover:text-gray-300 font-medium ;
 }
 
 @utility menu-item-icon {
@@ -217,7 +217,7 @@
 }
 
 @utility menu-item-icon-active {
-  @apply text-white dark:text-white;
+  @apply text-gray-500 group-hover:text-gray-700 dark:text-gray-400;
 }
 
 @utility menu-item-icon-inactive {

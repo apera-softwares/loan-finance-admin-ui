@@ -155,7 +155,7 @@ const AppSidebar: React.FC = () => {
     navItems: NavItem[],
     menuType: "main" | "others"
   ) => (
-    <ul className="flex flex-col gap-3">
+    <ul className="flex flex-col">
       {navItems.map((nav, index) => (
         <li key={nav.name}>
           {nav.subItems ? (
@@ -194,19 +194,19 @@ const AppSidebar: React.FC = () => {
             nav.path && (
               <Link
                 href={nav.path}
-                className={`menu-item group p-2 ${isActive(nav.path) ? "menu-item-active" : "menu-item-inactive"
+                className={`menu-item  group border-y border-gray-100 ${isActive(nav.path) ? "menu-item-active  " : "menu-item-inactive"
                   }`}
               >
-                <span
+                {/* <span
                   className={`${isActive(nav.path)
                     ? "menu-item-icon-active"
                     : "menu-item-icon-inactive"
                     }`}
                 >
                   {nav.icon}
-                </span>
+                </span> */}
                 {(isExpanded || isHovered || isMobileOpen) && (
-                  <span className={`menu-item-text`}>{nav.name}</span>
+                  <span className={`text-lg    `}>{nav.name}</span>
                 )}
               </Link>
             )
@@ -359,26 +359,13 @@ const AppSidebar: React.FC = () => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <div
-        className={` h-auto py-6 flex  ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
+        className={` h-auto py-8 flex   ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
           }`}
       >
         <Link href="/">
           {isExpanded || isHovered || isMobileOpen ? (
             <>
-              <Image
-                className="dark:hidden"
-                src={Logo}
-                alt="Logo"
-                width={200}
-                height={40}
-              />
-              <Image
-                className="hidden dark:block"
-                src={Logo}
-                alt="Logo"
-                width={150}
-                height={40}
-              />
+             <h2 className="text-xl md:text-2xl font-bold">Lending Square</h2>
             </>
           ) : (
             <Image

@@ -8,6 +8,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Logo from '../assets/logo/logo.png'
 import { useAppSelector } from "@/lib/redux/hooks";
 
+
 const AppHeader: React.FC = () => {
 
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
@@ -87,21 +88,8 @@ const AppHeader: React.FC = () => {
             )}
           </button>
 
-          <Link href="/" className="lg:hidden">
-            <Image
-              width={154}
-              height={32}
-              className="dark:hidden"
-              src={Logo}
-              alt="Logo"
-            />
-            <Image
-              width={154}
-              height={32}
-              className="hidden dark:block"
-              src={Logo}
-              alt="Logo"
-            />
+          <Link href="/" className="lg:hidden  ">
+             <h2 className="text-xl md:text-2xl font-bold">Lending Square</h2>
           </Link>
 
           <button
@@ -132,7 +120,7 @@ const AppHeader: React.FC = () => {
           <div className="h-10 w-[1.5px] bg-gray-300 hidden lg:block"></div>
           <div className="hidden lg:flex items-center w-full">
             <span>Current Rank</span>
-            <div className="h-10 w-10 rounded-full bg-orange-400 flex justify-center items-center text-white ml-3">L3</div>
+            <div className="h-10 w-10 rounded-full bg-primary flex justify-center items-center text-white ml-3">L3</div>
           </div>
 
         </div>

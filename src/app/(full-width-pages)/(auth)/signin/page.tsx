@@ -104,15 +104,15 @@ export default function Login() {
         <div className="flex flex-col md:flex-row min-h-screen">
             {/* Left side - Form */}
 
-            <div className="w-full md:w-1/2 flex flex-col justify-center items-center   px-3 sm:px-6  py-10 ">
+            <div className="w-full  flex flex-col justify-center items-center   px-3 sm:px-6  py-10 ">
                 <div className="absolute top-8 left-1/2 md:left-8 transform -translate-x-1/2 md:translate-x-0 ">
-                    <Image src={Logo} alt="Logo" width={230} height={60} />
+                  <h1 className=" text-3xl md:text-4xl font-bold ">Lending Square</h1>
                 </div>
                  <div className="w-full max-w-[482px] mx-auto  mt-12 sm:mt-24  ">
                         <h2 className=" text-center md:text-start text-2xl md:text-3xl font-bold text-slate-800 mb-4">
                     Login                </h2>
                 <p className="text-center md:text-start text-base sm:text-lg text-slate-800 mb-8">
-                    Log in to track your referrals, check commissions, and grow your hive — one buzz at a time.
+                  
                 </p>
                 <form onSubmit={handleSubmit} className="space-y-6">
 
@@ -125,7 +125,7 @@ export default function Login() {
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
-                            placeholder="Catherine.chen@honeybeen.com"
+                            placeholder="Enter your email"
                             className={`${INPUT_CLASS}`}
                         />
                           <span className={`${INPUT_REQUIRED_ERROR_CLASS}`}>{errors.email||""}</span>
@@ -140,7 +140,7 @@ export default function Login() {
                             name="password"
                             value={formData.password}
                             onChange={handleChange}
-                            placeholder="Type your password"
+                            placeholder="Enter your password"
                             className={`${INPUT_CLASS} `}
                         />
                          <span className={`${INPUT_REQUIRED_ERROR_CLASS}`}>{errors.password||""}</span>
@@ -162,7 +162,7 @@ export default function Login() {
 
                     <button
                         type="submit"
-                        className="flex justify-center items-center  w-full h-14 text-white bg-gradient-to-r from-gradient-start to-gradient-end rounded-full shadow-lg font-bold hover:cursor-pointer"
+                        className="flex justify-center items-center  w-full h-14 bg-primary hover:bg-primary-hover rounded-full shadow-lg font-bold hover:cursor-pointer transition-all duration-500"
                     >
                     
 
@@ -181,9 +181,9 @@ export default function Login() {
             </div>
 
             {/* Right side - Hidden on small screens */}
-            <div className="hidden md:block md:w-1/2 p-4">
+            {/* <div className="hidden md:block md:w-1/2 p-4">
                 <AuthRigthSidebar />
-            </div>
+            </div> */}
         </div>
     );
 }

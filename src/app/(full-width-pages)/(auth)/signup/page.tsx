@@ -137,17 +137,16 @@ export default function CreateAccountPage() {
     return (
         <div className="flex flex-col md:flex-row min-h-screen">
             {/* Left side - Form */}
-            <div className="w-full md:w-1/2 flex flex-col justify-center items-center   px-3 sm:px-6  py-10 ">
+            <div className="w-full  flex flex-col justify-center items-center   px-3 sm:px-6  py-10 ">
                 <div className="absolute top-8 left-1/2 md:left-8 transform -translate-x-1/2 md:translate-x-0 ">
-                    <Image src={Logo} alt="Logo" width={230} height={60} />
+                    <h1 className=" text-3xl md:text-4xl font-bold ">Lending Square</h1>
                 </div>
                 <div className="w-full max-w-[482px] mx-auto  mt-12 sm:mt-24 ">
                     <h2 className="text-center md:text-start text-2xl sm:text-3xl font-bold text-slate-800 mb-4">
                         Create an account
                     </h2>
                     <p className=" text-base  sm:text-lg md:text-start text-slate-800 mb-8">
-                        Your account will be activated by an Admin. Fill out the info below to
-                        request access to Honeybee Harry.
+                        
                     </p>
                     <form onSubmit={handleSubmit} className="space-y-6">
 
@@ -160,7 +159,7 @@ export default function CreateAccountPage() {
                                 name="firstName"
                                 value={formData.firstName}
                                 onChange={handleChange}
-                                placeholder="Catherine Chen"
+                                placeholder="Enter your first name"
                                 className={`${INPUT_CLASS} `}
                             />
                             <span className={`${INPUT_REQUIRED_ERROR_CLASS}`}>{errors.firstName || ""}</span>
@@ -175,7 +174,7 @@ export default function CreateAccountPage() {
                                 name="lastName"
                                 value={formData.lastName}
                                 onChange={handleChange}
-                                placeholder="Catherine Chen"
+                                placeholder="Enter your last name"
                                 className={`${INPUT_CLASS}`}
                             />
                             <span className={`${INPUT_REQUIRED_ERROR_CLASS}`} >{errors.lastName || ""}</span>
@@ -190,7 +189,7 @@ export default function CreateAccountPage() {
                                 name="email"
                                 value={formData.email}
                                 onChange={handleChange}
-                                placeholder="Catherine.chen@honeybeen.com"
+                                placeholder="Enter your email"
                                 className={`${INPUT_CLASS}`}
                             />
                             <span className={`${INPUT_REQUIRED_ERROR_CLASS}`} >{errors.email || ""}</span>
@@ -205,7 +204,7 @@ export default function CreateAccountPage() {
                                 name="password"
                                 value={formData.password}
                                 onChange={handleChange}
-                                placeholder="Type your password"
+                                placeholder="Enter your password"
                                 className={`${INPUT_CLASS}`}
                             />
                             <span className={`${INPUT_REQUIRED_ERROR_CLASS}`} >{errors.password || ""}</span>
@@ -230,7 +229,7 @@ export default function CreateAccountPage() {
 
                         <button
                             type="submit"
-                            className="flex justify-center  items-center w-full h-14 text-white bg-gradient-to-r from-gradient-start to-gradient-end rounded-full shadow-lg font-bold hover:cursor-pointer"
+                            className="flex justify-center  items-center w-full h-14 bg-primary hover:bg-primary-hover rounded-full shadow-lg font-bold hover:cursor-pointer transition-all duration-500"
                         >
                             {loading ? (<Loader />
                             ) : ("Create account")}
@@ -249,9 +248,9 @@ export default function CreateAccountPage() {
             </div>
 
             {/* Right side - Hidden on small screens */}
-            <div className="hidden md:block md:w-1/2 p-4">
+            {/* <div className="hidden md:block md:w-1/2 p-4">
                 <AuthRigthSidebar />
-            </div>
+            </div> */}
         </div>
     );
 }

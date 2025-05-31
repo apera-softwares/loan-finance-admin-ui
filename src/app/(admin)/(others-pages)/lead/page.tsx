@@ -9,6 +9,7 @@ import ServiceCard from "@/components/ServiceCard";
 import { SERVICES } from "@/data/services";
 import ReferralTable from "@/components/referral/ReferralTable";
 import LeadCard from "@/components/LeadCard";
+import Button from "@/components/ui/button/Button";
 
 export default function UserManagement() {
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -22,13 +23,13 @@ export default function UserManagement() {
                 {/* Left: Heading */}
                 <div className="w-full lg:w-1/2 ">
                     <CommonHeading
-                        pageTitle="A-Team member"
+                        pageTitle="Lead"
                     // description="Manage all users across Bee-Team, A-Team, Managers, and Admins."
                     />
                 </div>
 
                 {/* Right: Actions */}
-                <div className=" w-full lg:w-1/2 flex flex-wrap justify-start lg:justify-end items-center gap-3  ">
+                <div className=" w-full lg:w-1/2 flex flex-wrap justify-start lg:justify-end items-center gap-3   ">
                     {/* Search Input */}
                     <div className="relative h-11">
                         <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
@@ -36,11 +37,11 @@ export default function UserManagement() {
                         </span>
                         <input
                             type="text"
-                            placeholder="Search by name, product, date"
+                            placeholder="Search by name"
                             name="SearchInput"
                             value={SearchInput}
                             onChange={(e) => setSearchInput(e.target.value)}
-                            className="pl-10 h-11 pr-4 py-2 border border-gray-300 rounded-md focus:outline-primary"
+                            className="pl-10 h-11 pr-4 py-2 border border-gray-300 rounded-md outline-none focus:border-gray-400 transition-all duration-300"
                         />
                     </div>
                     {/* Create User Button */}
@@ -73,15 +74,13 @@ export default function UserManagement() {
                         <option value="desc">des to asc</option>
                     </select> */}
 
-                    <button
-                        //    onClick={() => setIsAddModalOpen(true)}
-                        className="h-11 bg-primary text-white rounded-md text-md px-4 justify-center text-center outline-none flex items-center gap-1 hover:bg-primary-hover ">
-                        Filter by referral source
-                    </button>
+                    <Button variant="primary" onClick={()=>{}}>
+                    Filter by referral source
+                    </Button>
 
                 </div>
             </div>
-            <div className="w-full  grid grid-cols-1  lg:grid-cols-4 justify-center gap-6 mb-6 ">
+            {/* <div className="w-full  grid grid-cols-1  lg:grid-cols-4 justify-center gap-6 mb-6 ">
                 <LeadCard
                     title="New Referrals"
                     value="30"
@@ -108,13 +107,13 @@ export default function UserManagement() {
                     active={false}
 
                 />
-            </div>
+            </div> */}
             {/* Table */}
             <div className="w-full">
                 {/* <UserTable searchText={SearchInput} role="A_TEAM" order="" from="team-a" /> */}
                 <ReferralTable searchText={SearchInput} />
 
-                         <div className=" overflow-x-auto  no-scrollbar my-6 ">
+                         {/* <div className=" overflow-x-auto  no-scrollbar my-6 ">
                           <div className=" max-w-[900px] flex space-x-5 ">
                 {SERVICES && SERVICES?.length > 0 ? (
                     SERVICES?.map((serviceItems: any) => (
@@ -129,7 +128,7 @@ export default function UserManagement() {
                     <div></div>
                 )}
             </div>
-            </div>
+            </div> */}
                 <UserAddEditModal isOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} type="add" />
             </div>
         </div>

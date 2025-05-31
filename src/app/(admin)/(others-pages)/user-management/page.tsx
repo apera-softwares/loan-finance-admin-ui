@@ -39,7 +39,7 @@ export default function UserManagement() {
                             name="SearchInput"
                             value={SearchInput}
                             onChange={(e) => setSearchInput(e.target.value)}
-                            className="pl-10 h-11 pr-4 py-2 border border-gray-300 rounded-md outline-primary "
+                            className="pl-10 h-11 pr-4 py-2 border border-gray-300 rounded-md outline-none focus:border-gray-400 transition-all duration-300 "
                         />
                     </div>
                     {/* Create User Button */}
@@ -66,7 +66,7 @@ export default function UserManagement() {
                     <select
                         value={order}
                         onChange={(e) => setOrder(e.target.value)}
-                        className="border border-[#151D48] w-32 h-11 text-[#151D48] rounded-md text-sm justify-center text-center outline-none">
+                        className="border border-[#151D48] w-32 h-11 text-[#151D48] rounded-md text-sm justify-center text-center outline-none ">
                         <option value="">Short By</option>
                         <option value="asc">asc to des</option>
                         <option value="desc">des to asc</option>

@@ -9,11 +9,8 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title:
-    "Honeybee Harry's",
+    "Lending Square",
   description: "Admin Dashboard",
-  icons: {
-    icon: "/favicon.ico",
-  },
 };
 
 const montserrat = Montserrat({

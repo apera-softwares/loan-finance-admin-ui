@@ -108,17 +108,16 @@ const UserTable: React.FC<UserTableProps> = ({ searchText, role, order, from }) 
                                                     {user?.verified ? "Verified" : "Not verified"}
                                                 </Badge>
                                             </TableCell>
-                                            {from !== "team-a" &&
-                                                <TableCell className="px-4 py-3 text-primary text-theme-sm dark:text-gray-400">
+                                           
+                                                <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                                                     <div className="flex items-center gap-1 cursor-pointer" onClick={() => {
                                                         setEditUserData(user)
                                                         setIsModalOpen(true)
                                                     }}>
-                                                        <FiEdit className="h-5 w-5 text-primary" />Edit
+                                                        <FiEdit className="h-5 w-5 " />Edit
                                                     </div>
                                                 </TableCell>
-                                            }
-
+                                        
                                         </TableRow>
 
                                     ))
