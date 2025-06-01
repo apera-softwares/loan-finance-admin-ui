@@ -53,6 +53,11 @@ const navItems: NavItem[] = [
     name: "Lead",
     path: "/lead",
   },
+  {
+    icon: <CoinHand />,
+    name: "Sales Representative",
+    path: "/sales-reps",
+  },
 ];
 const userNavItem: NavItem[] = [
   {

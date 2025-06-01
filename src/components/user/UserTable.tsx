@@ -88,8 +88,8 @@ const UserTable: React.FC<UserTableProps> = ({ searchText,isCreateUserModalOpen}
                                                     {(currentPage - 1) * ITEM_PER_PAGE + index + 1}
                                                 </span>
                                             </TableCell>
-                                            <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                                {`${user?.firstName||""} ${user?.lastName||""}`}
+                                            <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400" >
+                                                <span style={{textTransform: 'capitalize'}}>{`${user?.firstName||""} ${user?.lastName||""}`}</span>
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                                {`${user?.email||""}`}
@@ -107,7 +107,7 @@ const UserTable: React.FC<UserTableProps> = ({ searchText,isCreateUserModalOpen}
                                                 {`${user?.UserDetails?.[0]?.interestRate||""}`}
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                                                {`${user?.UserDetails?.[0]?.assignedSalesRep||""}`}
+                                                <span style={{textTransform: 'capitalize'}}>{`${user?.UserDetails?.[0]?.assignedSalesRep||""}`} </span>
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                                 {`${user?.UserDetails?.[0]?.status||""}`}

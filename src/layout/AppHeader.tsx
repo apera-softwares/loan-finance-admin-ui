@@ -49,7 +49,7 @@ const AppHeader: React.FC = () => {
   return (
     <header className="sticky top-0 flex w-full bg-white z-9999 shadow-xs">
       <div className="flex flex-col items-center justify-between grow lg:flex-row lg:px-6">
-        <div className="flex items-center justify-between w-full gap-2 px-3 py-3 border-b border-gray-200 dark:border-gray-800 sm:gap-4 lg:justify-normal lg:border-b-0 lg:px-0 lg:py-4">
+        <div className="flex items-center justify-between w-full gap-2 px-1 py-1 border-b border-gray-200 dark:border-gray-800 sm:gap-4 lg:justify-normal lg:border-b-0 lg:px-0 lg:py-4">
           <button
             className="items-center justify-center w-10 h-10 text-gray-500 border-gray-200 rounded-lg z-99999 dark:border-gray-800 flex lg:hidden dark:text-gray-400 lg:h-11 lg:w-11 lg:border"
             onClick={handleToggle}
@@ -88,7 +88,7 @@ const AppHeader: React.FC = () => {
             )}
           </button>
 
-          <Link href="/" className="lg:hidden  ">
+          <Link href="/" className="lg:hidden">
              <h2 className="text-xl md:text-2xl font-bold">Lending Square</h2>
           </Link>
 
@@ -112,16 +112,8 @@ const AppHeader: React.FC = () => {
             </svg>
           </button>
 
-          <div className="w-1/3 hidden lg:block">
-            <span className="block mr-1 text-theme-xs">Hello {userProfile?.firstName} {userProfile?.lastName}</span>
-            <span className="block mr-1 font-medium text-theme-md">Welcome to dashboard</span>
-
-          </div>
-          <div className="h-10 w-[1.5px] bg-gray-300 hidden lg:block"></div>
-          <div className="hidden  items-center w-full">
-            <span>Current Rank</span>
-            <div className="h-10 w-10 rounded-full bg-primary flex justify-center items-center text-white ml-3">L3</div>
-          </div>
+         
+          
 
         </div>
         <div

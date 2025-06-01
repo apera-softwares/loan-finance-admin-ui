@@ -14,6 +14,12 @@ import toast,{ Toaster } from "react-hot-toast";
 
 const FORM_INPUT_CLASS = "w-full h-10 text-base bg-white border-b border-gray-200 focus:border-gray-300  text-gray-600 outline-none   transition-all duration-500 " ;
 const FORM_INPUT_LABEL = " block w-full  text-sm font-medium text-gray-600";
+
+const USDollar = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+});
+
 export default function Dashboard() {
 
   const dispatch = useAppDispatch();
@@ -186,9 +192,8 @@ console.log("loggedINuserprofile dashboardpage",loggedInUserProfile);
                <div className="w-full flex flex-col lg:flex-row items-start justify-start lg:justify-between  gap-6  mb-6">
                   <div className=" w-full lg:w-1/2 "  >
                     <CommonHeading
-                    pageTitle="Dashboard"
-                   
-                      />
+                    pageTitle="Dashboard"                   
+                    />
                    </div>
             </div>
           </div>):(
@@ -196,31 +201,31 @@ console.log("loggedINuserprofile dashboardpage",loggedInUserProfile);
             <div className="w-full">
               {/* Top Bar: Left (Heading), Right (Search + Actions) */}
             <div className="w-full  mb-20 "> 
-            <div className="w-full flex flex-col lg:flex-row items-start justify-start lg:justify-between  gap-6  mb-6">
+            {/* <div className="w-full flex flex-col lg:flex-row items-start justify-start lg:justify-between  gap-6  mb-6">
                   <div className=" w-full lg:w-1/2 "  >
                     <CommonHeading
-                    pageTitle="Dashboard"
+                    pageTitle=""
                    
                       />
                    </div>
 
-            </div>
+            </div> */}
 
              <div className="w-full flex gap-8 ">
                   <div className="max-w-xl p-6 bg-white rounded-xl border border-gray-200 shadow-lg shrink-0 ">
               <div className="w-full grid grid-cols-2  gap-x-10  gap-y-8 ">
 
                 <div className="w-full  flex flex-col ">
-                 <h5 className="text-base font-bold">Avaialable Credit</h5>
+                 <h5 className="text-base font-bold">Available Credit</h5>
                  <span className="text-base font-semibold text-gray-600 ">  {
-                    `${loggedInUserProfile?.UserDetails?.[0]?.availableCredit||"0"}`
+                    USDollar.format(`${loggedInUserProfile?.UserDetails?.[0]?.availableCredit||"0"}`)
                   }
                   </span>
                 </div>
                 <div className="w-full  flex flex-col ">
                  <h5 className="text-base font-bold">Utilized Credit</h5>
                  <span className="text-base font-semibold text-gray-600 ">  {
-                    `${loggedInUserProfile?.UserDetails?.[0]?.utilizedCredit||"N"}`
+                    USDollar.format(`${loggedInUserProfile?.UserDetails?.[0]?.utilizedCredit|| 0}`)
                   }
                   </span>
                 </div>
@@ -234,7 +239,8 @@ console.log("loggedINuserprofile dashboardpage",loggedInUserProfile);
                 </div>
                 <div className="w-full  flex flex-col">
                  <h5 className="text-base font-bold">Assigned Sales Representive</h5>
-                 <span className="text-base font-semibold text-gray-600 ">  {
+
+                 <span className="text-base font-semibold text-gray-600 " style={{textTransform: 'capitalize'}}>  {
                     `${loggedInUserProfile?.UserDetails?.[0]?.assignedSalesRep||"NA"}`
                   }
                   </span>

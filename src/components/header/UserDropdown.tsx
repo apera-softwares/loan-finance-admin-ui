@@ -59,7 +59,7 @@ export default function UserDropdown() {
       <button
         onClick={toggleDropdown}
         className="flex items-center text-gray-700 dark:text-gray-400 dropdown-toggle">
-        <span className="mr-3 overflow-hidden rounded-full h-11 w-11 flex items-center justify-center text-gray-300">
+        <span className="mr-3 overflow-hidden rounded-full h-5 w-5 flex items-center justify-center text-gray-300">
           {/* <Image
             width={44}
             height={44}
