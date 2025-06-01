@@ -50,8 +50,8 @@ const navItems: NavItem[] = [
   },
     {
     icon: <CoinHand />,
-    name: "Lead",
-    path: "/lead",
+    name: "Applications",
+    path: "/applications",
   },
   {
     icon: <CoinHand />,

@@ -13,7 +13,10 @@ import { fetchReferrals } from "@/lib/redux/slices/referralSlice";
 import Spinner from "../common/Spinner";
 import Pagination from "../tables/Pagination";
 import { Toaster } from "react-hot-toast";
-
+const USDollar = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+});
 interface ReferralTableProps {
     searchText: string;
 }
@@ -97,7 +100,7 @@ const ReferralTable: React.FC<ReferralTableProps> = ({ searchText }) => {
                                      <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Business Revenue</TableCell>
                                      <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Business Tenure</TableCell>
                                      <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Credit Score</TableCell>
-                                      <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Submitted On</TableCell>
+                                    
                         
                                 </TableRow>
                             </TableHeader>
@@ -124,11 +127,11 @@ const ReferralTable: React.FC<ReferralTableProps> = ({ searchText }) => {
                                              }
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                              {`${item?.amountNeeded ||""}`}
+                                              {USDollar.format(`${item?.amountNeeded ||""}`)}
                                             </TableCell>
                                              <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
 
-                                                 {`${item?.annualRevenue ||""}`}
+                                                 {USDollar.format(`${item?.annualRevenue ||""}`)}
                                               
                                             </TableCell>
                                              <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
@@ -140,15 +143,7 @@ const ReferralTable: React.FC<ReferralTableProps> = ({ searchText }) => {
 
                                                  {`${item?.creditScore ||""}`}
                                               
-                                            </TableCell>
-                                             <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-
-                                        
-                                                  {
-                                                    `${item?.createdAt?.slice(0,10)||""}`
-                                                   
-                                                  }
-                                            </TableCell>
+                                            </TableCell>                                             
                                         
                                         </TableRow>
 

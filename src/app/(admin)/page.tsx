@@ -1,6 +1,5 @@
 "use client"
 import React, { useState,  useEffect } from "react";
-import CommonHeading from "@/components/common/CommonHeading";
 import {  REQUIRED_ERROR } from "@/constant/constantClassName";
 import Button from "@/components/ui/button/Button";
 import { BACKEND_API } from "@/api";
@@ -10,6 +9,7 @@ import { getUserProfile } from "@/lib/redux/slices/loginPersonProfile";
 import { FiEdit } from "react-icons/fi";
 
 import toast,{ Toaster } from "react-hot-toast";
+import { AdminDashboard } from "@/components/dashbaord/AdminDashboard";
 
 
 const FORM_INPUT_CLASS = "w-full h-10 text-base bg-white border-b border-gray-200 focus:border-gray-300  text-gray-600 outline-none   transition-all duration-500 " ;
@@ -183,19 +183,9 @@ console.log("loggedINuserprofile dashboardpage",loggedInUserProfile);
 
     <div className="w-full">
       <Toaster/>
-
-
-
       {
-          loggedInUser?.role==="ADMIN" ? (<div className="w-full">
-
-               <div className="w-full flex flex-col lg:flex-row items-start justify-start lg:justify-between  gap-6  mb-6">
-                  <div className=" w-full lg:w-1/2 "  >
-                    <CommonHeading
-                    pageTitle="Dashboard"                   
-                    />
-                   </div>
-            </div>
+          loggedInUser?.role==="ADMIN" ? (<div className="w-full">              
+            <AdminDashboard/>
           </div>):(
             
             <div className="w-full">
