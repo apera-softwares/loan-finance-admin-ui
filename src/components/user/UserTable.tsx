@@ -18,10 +18,11 @@ import { Toaster } from "react-hot-toast";
 
 interface UserTableProps {
     searchText: string;
+    isCreateUserModalOpen?:boolean;
     from?: string;
 }
 
-const UserTable: React.FC<UserTableProps> = ({ searchText}) => {
+const UserTable: React.FC<UserTableProps> = ({ searchText,isCreateUserModalOpen}) => {
     const ITEM_PER_PAGE = 5;
     const dispatch = useDispatch<AppDispatch>();
     const [usersData, setUsersData] = useState<any[]>([]);
@@ -48,7 +49,7 @@ const UserTable: React.FC<UserTableProps> = ({ searchText}) => {
                 setUsersData([])
             }
         });
-    }, [dispatch, currentPage, searchText , isModalOpen ]);
+    }, [dispatch, currentPage, searchText , isModalOpen,isCreateUserModalOpen ]);
 
     const handlePageChange = (page: any) => {
         setCurrentPage(page);

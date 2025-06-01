@@ -63,7 +63,7 @@ export default function UserManagement() {
 
             {/* Table */}
             <div className="w-full">
-                <UserTable searchText={SearchInput}   />
+                <UserTable searchText={SearchInput} isCreateUserModalOpen={isModalOpen}  />
                 <UserAddEditModal isOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} type="add" />
 
             </div>
