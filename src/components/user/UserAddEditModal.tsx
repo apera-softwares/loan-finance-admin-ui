@@ -209,8 +209,8 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
           closeModal();
     }
 
-    console.log("user data",userData);
-    console.log("form data",formData);
+    //console.log("user data",userData);
+    //console.log("form data",formData);
     return (
         <Modal
             isOpen={isOpen}

@@ -118,7 +118,7 @@ const AppHeader: React.FC = () => {
 
           </div>
           <div className="h-10 w-[1.5px] bg-gray-300 hidden lg:block"></div>
-          <div className="hidden lg:flex items-center w-full">
+          <div className="hidden  items-center w-full">
             <span>Current Rank</span>
             <div className="h-10 w-10 rounded-full bg-primary flex justify-center items-center text-white ml-3">L3</div>
           </div>
@@ -132,7 +132,7 @@ const AppHeader: React.FC = () => {
             {/* <!-- Dark Mode Toggler --> */}
             {/* <ThemeToggleButton /> */}
             {/* <!-- Dark Mode Toggler --> */}
-            <div className="hidden lg:block">
+            <div className="hidden ">
               <form>
                 <div className="relative">
                   <span className="absolute -translate-y-1/2 left-4 top-1/2 pointer-events-none">

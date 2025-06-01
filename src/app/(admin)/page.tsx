@@ -4,7 +4,7 @@ import CommonHeading from "@/components/common/CommonHeading";
 import {  REQUIRED_ERROR } from "@/constant/constantClassName";
 import Button from "@/components/ui/button/Button";
 import { BACKEND_API } from "@/api";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { useAppDispatch,useAppSelector } from "@/lib/redux/hooks";
 import { getUserProfile } from "@/lib/redux/slices/loginPersonProfile";
 import { FiEdit } from "react-icons/fi";
@@ -47,13 +47,12 @@ const handleSubmitBankdDetails = async ()=> {
   try {
    
 
-  //const id =loggedInUserProfile?.UserDetails?.[0]?.id;
   const id =loggedInUser?.userId;
    const payload = {id:id,
     email:loggedInUserProfile?.email,
     ...formData};
    const token = loggedInUser?.token;
-   console.log("payload for bank details update",payload);
+   //console.log("payload for bank details update",payload);
   
    
     const response = await axios.put(
@@ -100,7 +99,6 @@ const handleWithdrawFund = async ()=> {
    const payload = {
     amount:parseFloat(amount)||0
    };
-   console.log("payload for amoutn withdraw",payload);
 
     const response = await axios.put(
       `${BACKEND_API}user/available-credit/withdraw`,
@@ -170,9 +168,9 @@ const handleToggleEdit = ()=>{
 
 
 
-console.log("loggedinuser dashboard page",loggedInUser);
-console.log("loggedINuserprofile dashboardpage",loggedInUserProfile);
-console.log("form data admin page",formData);
+//console.log("loggedinuser dashboard page",loggedInUser);
+//console.log("loggedINuserprofile dashboardpage",loggedInUserProfile);
+//console.log("form data admin page",formData);
 
 
   return (

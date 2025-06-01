@@ -7,7 +7,7 @@ import { useSidebar } from "../context/SidebarContext";
 import {
   BoxCubeIcon,
   ChevronDownIcon,
-  GridIcon,
+  // GridIcon,
   HorizontaLDots,
   // ListIcon,
   // PageIcon,
@@ -15,8 +15,8 @@ import {
   PlugInIcon,
   // TableIcon,
   Graph,
-  Send,
-  Users,
+  // Send,
+  // Users,
   CoinHand,
   AudioSetting,
 } from "../icons/index";
@@ -54,8 +54,7 @@ const navItems: NavItem[] = [
     path: "/lead",
   },
 ];
-
-const team_A: NavItem[] = [
+const userNavItem: NavItem[] = [
   {
     icon: <Graph />,
     name: "Dashboard",
@@ -63,53 +62,9 @@ const team_A: NavItem[] = [
     path: "/",
 
   },
-  // {
-  //   icon: <Send />,
-  //   name: "Landing page and submit referral",
-  //   path: "/referral",
-  // },
-  {
-    icon: <Users />,
-    name: "Member",
-    path: "/members",
-  },
-  {
-    icon: <CoinHand />,
-    name: "A-Team",
-    path: "/a-team",
-  },
-
-  {
-    icon: <GridIcon />,
-    name: "Product Catalog",
-    path: "/product-catalog",
-  },
-
 ];
 
-const team_B: NavItem[] = [
-  {
-    icon: <Graph />,
-    name: "Dashboard",
-    // subItems: [{ name: "Ecommerce", path: "/", pro: false }],
-    path: "/",
 
-  },
-  {
-    icon: <Send />,
-    name: "Landing page and submit referral",
-    path: "/referral",
-  },
-
-  {
-    icon: <CoinHand />,
-    name: "A-Team",
-    path: "/a-team",
-  },
-
-
-
-];
 
 const othersItems: NavItem[] = [
   {
@@ -394,11 +349,8 @@ const AppSidebar: React.FC = () => {
                 )}
               </h2>
               {renderMenuItems(
-                userProfile?.role === "A_TEAM"
-                  ? team_A
-                  : userProfile?.role === "B_TEAM"
-                    ? team_B
-                    : navItems,
+                userProfile?.role === "USER"
+                  ? userNavItem: navItems,
                 "main"
               )}
 
