@@ -6,7 +6,7 @@ import {
     TableHeader,
     TableRow,
 } from "../ui/table";
-import Badge from "../ui/badge/Badge";
+// import Badge from "../ui/badge/Badge";
 import { FiEdit } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/redux/store";

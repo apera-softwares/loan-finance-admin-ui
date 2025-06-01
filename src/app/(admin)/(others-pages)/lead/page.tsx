@@ -5,11 +5,11 @@ import { CiSearch } from "react-icons/ci";
 import UserAddEditModal from "@/components/user/UserAddEditModal";
 // import UserTable from "@/components/user/UserTable";
 import { Toaster } from "react-hot-toast";
-import ServiceCard from "@/components/ServiceCard";
-import { SERVICES } from "@/data/services";
+// import ServiceCard from "@/components/ServiceCard";
+// import { SERVICES } from "@/data/services";
 import ReferralTable from "@/components/referral/ReferralTable";
-import LeadCard from "@/components/LeadCard";
-import Button from "@/components/ui/button/Button";
+// import LeadCard from "@/components/LeadCard";
+// import Button from "@/components/ui/button/Button";
 
 export default function UserManagement() {
     const [isModalOpen, setIsModalOpen] = useState(false)

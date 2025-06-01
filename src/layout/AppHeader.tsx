@@ -2,10 +2,10 @@
 import NotificationDropdown from "@/components/header/NotificationDropdown";
 import UserDropdown from "@/components/header/UserDropdown";
 import { useSidebar } from "@/context/SidebarContext";
-import Image from "next/image";
+// import Image from "next/image";
 import Link from "next/link";
 import React, { useState, useEffect, useRef } from "react";
-import Logo from '../assets/logo/logo.png'
+// import Logo from '../assets/logo/logo.png'
 import { useAppSelector } from "@/lib/redux/hooks";
 
 

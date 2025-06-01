@@ -1,16 +1,16 @@
 "use client";
-import AuthRigthSidebar from "@/components/AuthRigthSidebar";
+// import AuthRigthSidebar from "@/components/AuthRigthSidebar";
 import { INPUT_CLASS,INPUT_REQUIRED_ERROR_CLASS } from "@/constant/constantClassName";
-import Image from "next/image";
+// import Image from "next/image";
 import { useState,useEffect } from "react";
-import Logo from '../../../../assets/logo/logo.png'
+// import Logo from '../../../../assets/logo/logo.png'
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { loginUser } from "@/lib/redux/slices/userSlice";
 import { useAppDispatch,useAppSelector } from "@/lib/redux/hooks";
 import Loader from "@/components/ui/loader/Loader";
 import { getUserProfile } from "@/lib/redux/slices/loginPersonProfile";
-import Checkbox from "@/components/form/input/Checkbox";
+// import Checkbox from "@/components/form/input/Checkbox";
 
 export default function Login() {
     const [formData, setFormData] = useState({

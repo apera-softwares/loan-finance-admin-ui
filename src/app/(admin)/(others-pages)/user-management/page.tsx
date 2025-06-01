@@ -6,13 +6,13 @@ import { HiOutlinePlus } from "react-icons/hi";
 import UserAddEditModal from "@/components/user/UserAddEditModal";
 import UserTable from "@/components/user/UserTable";
 import { Toaster } from "react-hot-toast";
-import { useAppDispatch,useAppSelector } from "@/lib/redux/hooks";
+import { useAppSelector } from "@/lib/redux/hooks";
 
 export default function UserManagement() {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [SearchInput, setSearchInput] = useState("")
-    const [filterRole, setFilterRole] = useState("")
-    const [order, setOrder] = useState("")
+    // const [filterRole, setFilterRole] = useState("")
+    // const [order, setOrder] = useState("")
     const loggedInUser = useAppSelector((state)=>state.user.user);
     console.log("loggedUser",loggedInUser);
  

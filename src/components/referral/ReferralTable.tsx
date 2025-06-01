@@ -6,7 +6,7 @@ import {
     TableHeader,
     TableRow,
 } from "../ui/table";
-import Badge from "../ui/badge/Badge";
+// import Badge from "../ui/badge/Badge";
 // import { FiEdit } from "react-icons/fi";
 import { useAppDispatch,useAppSelector } from "@/lib/redux/hooks";
 import { fetchReferrals } from "@/lib/redux/slices/referralSlice";
@@ -17,14 +17,14 @@ import { Toaster } from "react-hot-toast";
 interface ReferralTableProps {
     searchText: string;
 }
-type BadgeColor =
-  | "primary"
-  | "success"
-  | "error"
-  | "warning"
-  | "info"
-  | "light"
-  | "dark";
+// type BadgeColor =
+//   | "primary"
+//   | "success"
+//   | "error"
+//   | "warning"
+//   | "info"
+//   | "light"
+//   | "dark";
 
 const ReferralTable: React.FC<ReferralTableProps> = ({ searchText }) => {
     const ITEM_PER_PAGE = 5;
@@ -62,20 +62,20 @@ const ReferralTable: React.FC<ReferralTableProps> = ({ searchText }) => {
         setCurrentPage(page);
     };
 
-    const getBadgeColor = (status: string):BadgeColor => {
-        switch (status.toLowerCase()) {
-            case 'pitched':
-                return 'primary';
-            case 'pending':
-                return 'info';
-            case 'sold':
-                return 'light';
-            case 'payout':
-                return 'success';
-            default:
-                return 'light'; 
-        }
-    };
+    // const getBadgeColor = (status: string):BadgeColor => {
+    //     switch (status.toLowerCase()) {
+    //         case 'pitched':
+    //             return 'primary';
+    //         case 'pending':
+    //             return 'info';
+    //         case 'sold':
+    //             return 'light';
+    //         case 'payout':
+    //             return 'success';
+    //         default:
+    //             return 'light'; 
+    //     }
+    // };
 
     return (
         <div className="w-full overflow-hidden rounded-xl bg-white dark:bg-white/[0.03] shadow-md">
