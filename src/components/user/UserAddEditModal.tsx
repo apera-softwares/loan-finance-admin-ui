@@ -45,7 +45,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
         phone:"",
         password:"",
         status:"",
-        availableFunding:"",
+        availableCredit:"",
         interestRate:"",
         bankAccountNumber:"",
         routingNumber:"",
@@ -63,7 +63,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
         phone:"",
         password:"",
          status:"",
-        availableFunding:"",
+        availableCredit:"",
         interestRate:"",
         bankAccountNumber:"",
         routingNumber:"",
@@ -86,7 +86,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
             phone:userData?.phone||"",
             password:userData?.password||"",
             status:userData?.UserDetails?.[0]?.status||"",
-            availableFunding:userData?.UserDetails?.[0]?.availableFunding?.toString()||"",
+            availableCredit:userData?.UserDetails?.[0]?.availableCredit?.toString()||"",
             interestRate:userData?.UserDetails?.[0]?.interestRate?.toString()||"",
             bankAccountNumber:userData?.UserDetails?.[0]?.bankAccountNumber||"",
             routingNumber:userData?.UserDetails?.[0]?.routingNumber||"",
@@ -111,18 +111,18 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
             lastName:formData.lastName,
             email:formData.email,
             phone:formData.phone,
-            availableFunding: parseFloat(formData.availableFunding)||undefined,
+            availableCredit: parseFloat(formData.availableCredit)||undefined,
             interestRate: parseFloat(formData.interestRate)||undefined,
             assignedSalesRep:formData.assignedSalesRep||undefined,
             status:formData.status||undefined
         }
         
         console.log("user edit payload",payload);
-        return ;
+
         dispatch(UpdateUser(payload)).then((res: any) => {
             if (res.meta.requestStatus === "fulfilled") {
                 if (res.payload) {
-                    toast.success("User Updated successful!");
+                    toast.success("User Updated successfully");
 
                     console.log(res.payload)
                     closeModal();
@@ -144,17 +144,17 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
             email:formData.email,
             phone:formData.phone,
             password:formData.password,
-            availableFunding: parseFloat(formData.availableFunding)||undefined,
+            availableCredit: parseFloat(formData.availableCredit)||undefined,
             interestRate: parseFloat(formData.interestRate)||undefined,
             assignedSalesRep:formData.assignedSalesRep||undefined,
         }
         
         console.log("user create payload",payload);
-        return ;
+
         dispatch(CreateUser(payload)).then((res: any) => {
             if (res.meta.requestStatus === "fulfilled") {
                 if (res.payload) {
-                    toast.success("User Created successful!");
+                    toast.success("User Created successfully");
                     console.log("User Created successful!");
 
                     console.log(res.payload)
@@ -178,7 +178,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
             phone:"",
             password:"",
             status:"",
-            availableFunding:"",
+            availableCredit:"",
             interestRate:"",
             bankAccountNumber:"",
             routingNumber:"",
@@ -194,7 +194,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
             phone:"",
             password:"",
             status:"",
-            availableFunding:"",
+            availableCredit:"",
             interestRate:"",
             bankAccountNumber:"",
             routingNumber:"",
@@ -320,25 +320,25 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
 
                              <div className="w-full">
                                  <label className={FORM_INPUT_LABEL}>
-                                 Available Funding
+                                 Available Credit
                                 </label>
                             <input
                                 type="text"
                                 name="availableFunding"
-                                value={formData.availableFunding}
+                                value={formData.availableCredit}
                                 onChange={(e) => {
                                 const value = e.target.value;
                                  // Allow only digits (optionally, you can add `.` if you want decimals)
                                 if (/^\d*$/.test(value)) {
                                     setFormData((prev) => ({
                                                            ...prev,
-                                                           availableFunding: value,
+                                                           availableCredit: value,
                                                            }));
                                 }
                                 }}
                                 className={FORM_INPUT_CLASS}
                             />
-                            <span className={REQUIRED_ERROR}>{errors.availableFunding|| ""}</span>
+                            <span className={REQUIRED_ERROR}>{errors.availableCredit|| ""}</span>
                              </div>
 
 

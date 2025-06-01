@@ -45,27 +45,7 @@ const UserTable: React.FC<UserTableProps> = ({ searchText}) => {
                 }
             } else {
                 console.log("Failed to fetch users:", res.payload || "Unknown error");
-                setUsersData([{
-                       id: "12qwqw12qw",
-                       firstName: "testfname",
-                       lastName: "testlname",
-                       email: "test@gmai.com",
-                       phone:"8787878787",
-                       password:"",
-                       UserDetails:[
-                        {
-                       status:"PENDING",
-                       availableFunding:50000,
-                       interestRate:7.8,
-                       bankAccountNumber:"121212121212",
-                       routingNumber:"12345678",
-                       assignedSalesRep:"test sales res",
-                       utilizedCredit:30000,
-
-                        }
-                       ]
-                      
-                }])
+                setUsersData([])
             }
         });
     }, [dispatch, currentPage, searchText,isModalOpen]);
@@ -90,7 +70,7 @@ const UserTable: React.FC<UserTableProps> = ({ searchText}) => {
                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Name</TableCell>
                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Email</TableCell>
                                       <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Phone</TableCell>
-                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Available Funding</TableCell>
+                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Available Credit</TableCell>
                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Utilized Credit</TableCell>
                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Interest Rate</TableCell>
                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Assigned Sales Rep</TableCell>
@@ -117,13 +97,13 @@ const UserTable: React.FC<UserTableProps> = ({ searchText}) => {
                                                {`${user?.phone||""}`}
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                                                {`${user?.UserDetails[0]?.availableFunding||""}`}
+                                                {`${user?.UserDetails[0]?.availableCredit||""}`}
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                                                {`${user?.UserDetails?.[0]?.utilizedCredit||""}`}
+                                                {`${user?.UserDetails?.[0]?.utilizedCredit||"0"}`}
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                                                {`${user?.UserDetails?.[0]?.interestRate||""}`}
+                                                {`${user?.UserDetails?.[0]?.interestRate||"0"}`}
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                                                 {`${user?.UserDetails?.[0]?.assignedSalesRep||""}`}

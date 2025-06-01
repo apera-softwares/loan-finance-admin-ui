@@ -3,27 +3,143 @@ import React, { useState, useRef, useEffect } from "react";
 import CommonHeading from "@/components/common/CommonHeading";
 import {  REQUIRED_ERROR } from "@/constant/constantClassName";
 import Button from "@/components/ui/button/Button";
+import { BACKEND_API } from "@/api";
+import axios, { AxiosError } from "axios";
+import { useAppDispatch,useAppSelector } from "@/lib/redux/hooks";
+import { getUserProfile } from "@/lib/redux/slices/loginPersonProfile";
+
+import toast,{ Toaster } from "react-hot-toast";
 
 
 const FORM_INPUT_CLASS = "w-full h-10 text-base bg-white border-b border-gray-200 focus:border-gray-300  text-gray-600 outline-none   transition-all duration-500 " ;
 const FORM_INPUT_LABEL = " block w-full  text-sm font-medium text-gray-600";
 export default function Dashboard() {
 
-
+  const dispatch = useAppDispatch();
+  const loggedInUser = useAppSelector((state)=>state.user.user);
+  const loggedInUserProfile = useAppSelector((state)=>state.userProfile.userProfile);
   const [amount,setAmount] = useState<string>("");
+  const [ammountError,setAmountError] = useState("");
   const [formData,setFormData]=useState({
     bankAccountNumber:"",
     routingNumber:"",
   }) 
 
 
+const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
+};
 
-  const handleSubmit = async ()=>{
+const handleSubmitBankdDetails = async ()=> {
+  try {
+
+   const payload = {...formData};
+   const token = loggedInUser?.token;
+    const response = await axios.put(
+      `${BACKEND_API}`,
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+           'ngrok-skip-browser-warning': 'true',
+        },
+      }
+    );
+
+    console.log(" response of bank details update:", response.data);
+    toast.success("Update bank details successfully");
+  } catch (error) {
+    console.log("error while withdraw fund");
+    toast.error("Failed to update bank details");
+  
+  }
+};
+
+const handleWithdrawFund = async ()=> {
+  try {
+
+   if(!validateAmount()) return ;
+   const token = loggedInUser?.token;
+   const payload = {
+    amount:parseFloat(amount)||0
+   };
+   console.log("payload for amoutn withdraw",payload);
+
+    const response = await axios.put(
+      `${BACKEND_API}user/available-credit/withdraw`,
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+           'ngrok-skip-browser-warning': 'true',
+        },
+      }
+    );
+     console.log("resonse of fund withdraw",response);
+     dispatch(getUserProfile());
+    toast.success("Fund widhdraw successfully");
+    setAmount("");
+  } catch (error) {
+
+    console.log("error while withdraw fund",error);
+
+     if (axios.isAxiosError(error)) {
+      if (error.response) {
+        toast.error(error.response.data.message||"Failed to withdraw fund" )
+      } else {
+        toast.error("Failed to withdraw fund" )
+      }
+    } else {
+     toast.error("Failed to withdraw fund" )
+    }
+
+  
+  }
+};
+
+
+function validateAmount(){
+  const numericAmount = parseInt(amount);
+  const availableCredit = loggedInUserProfile?.UserDetails?.[0]?.availableCredit||0;
+
+  if (!amount.trim()) {
+    
+    setAmountError("Enter amount");
+    return false;
+  }
+
+
+  if (numericAmount <= 0) {
+   
+    setAmountError("Amount must be greater than zero ")
+    return false;
+  }
+
+  if (numericAmount > availableCredit) {
+    setAmountError("Amount cannot exceed available credit.")
+    return false;
+    
 
   }
+  
+  setAmountError("");
+  return true;
+}
+
+
+
+console.log("loggedinuser dashboard page",loggedInUser);
+console.log("loggedINuserprofile dashboardpage",loggedInUserProfile);
+console.log("amount error",ammountError);
+console.log("amont type",typeof parseInt(amount),"type of avalalble credit",typeof loggedInUserProfile?.UserDetails?.[0]?.availableCredit)
+
   return (
 
     <div className="w-full">
+      <Toaster/>
 
 
 
@@ -41,10 +157,13 @@ export default function Dashboard() {
             <div className="w-full lg:w-1/2 flex flex-wrap justify-start lg:justify-end items-center gap-3  ">
               <div className="flex flex-col items-end font-semibold text-lg ">
                 <span className=" ">
-                  Available Fund
+                  Available Credit
                 </span>
                 <span className="">
-                  50000
+                  {
+                    `${loggedInUserProfile?.UserDetails?.[0]?.availableCredit||"0"}`
+
+                  }
                 </span>
               </div>
 
@@ -70,12 +189,13 @@ export default function Dashboard() {
               }}
               
               />
-              <span className="block text-red-500 text-sm">erorr</span>
+              <span className="block text-red-500 text-sm">{ammountError}</span>
             </div>
-              <button className="w-40 px-4 py-2 rounded-lg bg-gray-200 font-medium">
-                
-                Withdraw Now
-              </button>
+          
+       
+                 <Button size="sm" onClick={handleWithdrawFund}>
+                                Withdraw Now
+                              </Button>
 
             </div>
         
@@ -107,6 +227,7 @@ export default function Dashboard() {
                                 name="bankAccountNumber"
                               
                                 value={formData.bankAccountNumber}
+                                onChange={handleInputChange}
                                
                                 className={FORM_INPUT_CLASS}
                             />
@@ -120,8 +241,8 @@ export default function Dashboard() {
                                 <input
                                 type="text"
                                 name="routingNumber"
-                            
                                 value={formData.routingNumber}
+                                onChange={handleInputChange}
                             
                                 className={FORM_INPUT_CLASS}
                             />
@@ -129,7 +250,7 @@ export default function Dashboard() {
                             </div>
 
                             <div className="flex items-center justify-end w-full gap-3 mt-8">
-                              <Button size="sm" onClick={handleSubmit}>
+                              <Button size="sm" onClick={handleSubmitBankdDetails}>
                                Update
                               </Button>
                             </div>
