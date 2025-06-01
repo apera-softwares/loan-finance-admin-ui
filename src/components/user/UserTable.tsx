@@ -103,7 +103,7 @@ const UserTable: React.FC<UserTableProps> = ({ searchText}) => {
                                                 {`${user?.UserDetails?.[0]?.utilizedCredit||"0"}`}
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                                                {`${user?.UserDetails?.[0]?.interestRate||"0"}`}
+                                                {`${user?.UserDetails?.[0]?.interestRate||""}`}
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                                                 {`${user?.UserDetails?.[0]?.assignedSalesRep||""}`}
