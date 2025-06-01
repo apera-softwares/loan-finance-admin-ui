@@ -82,7 +82,7 @@ const ReferralTable: React.FC<ReferralTableProps> = ({ searchText }) => {
             <div className="w-full overflow-x-auto">
                 <Toaster />
 
-                <div className="w-full">
+                <div className="w-full max-w-[900px]">
                     {loading ? (
                         <Spinner />
                     ) : (
