@@ -169,7 +169,7 @@ const handleToggleEdit = ()=>{
 
 
 //console.log("loggedinuser dashboard page",loggedInUser);
-//console.log("loggedINuserprofile dashboardpage",loggedInUserProfile);
+console.log("loggedINuserprofile dashboardpage",loggedInUserProfile);
 //console.log("form data admin page",formData);
 
 
@@ -191,9 +191,11 @@ const handleToggleEdit = ()=>{
                       />
                    </div>
             </div>
-          </div>):(<div className="w-full">
+          </div>):(
+            
+            <div className="w-full">
               {/* Top Bar: Left (Heading), Right (Search + Actions) */}
-        <div className="w-full  mb-20 ">
+            <div className="w-full  mb-20 "> 
             <div className="w-full flex flex-col lg:flex-row items-start justify-start lg:justify-between  gap-6  mb-6">
                   <div className=" w-full lg:w-1/2 "  >
                     <CommonHeading
@@ -202,26 +204,49 @@ const handleToggleEdit = ()=>{
                       />
                    </div>
 
-            {/* Right: Actions */}
-            <div className="w-full lg:w-1/2 flex flex-wrap justify-start lg:justify-end items-center gap-3  ">
-              <div className="flex flex-col items-end font-semibold text-lg ">
-                <span className=" ">
-                  Available Credit
-                </span>
-                <span className="">
-                  {
-                    `${loggedInUserProfile?.UserDetails?.[0]?.availableCredit||"0"}`
+            </div>
 
+             <div className="w-full flex gap-8 ">
+                  <div className="max-w-xl p-6 bg-white rounded-xl border border-gray-200 shadow-lg shrink-0 ">
+              <div className="w-full grid grid-cols-2  gap-x-10  gap-y-8 ">
+
+                <div className="w-full  flex flex-col ">
+                 <h5 className="text-base font-bold">Avaialable Credit</h5>
+                 <span className="text-base font-semibold text-gray-600 ">  {
+                    `${loggedInUserProfile?.UserDetails?.[0]?.availableCredit||"0"}`
                   }
-                </span>
+                  </span>
+                </div>
+                <div className="w-full  flex flex-col ">
+                 <h5 className="text-base font-bold">Utilized Credit</h5>
+                 <span className="text-base font-semibold text-gray-600 ">  {
+                    `${loggedInUserProfile?.UserDetails?.[0]?.utilizedCredit||"N"}`
+                  }
+                  </span>
+                </div>
+                <div className="w-full  flex flex-col ">
+                 <h5 className="text-base font-bold">Interest Rate</h5>
+                 <span className="text-base font-semibold text-gray-600 "> 
+                   {loggedInUserProfile?.UserDetails?.[0]?.interestRate != null
+                  ? `${loggedInUserProfile.UserDetails[0].interestRate}%`
+                  : "N/A"}
+                  </span>
+                </div>
+                <div className="w-full  flex flex-col">
+                 <h5 className="text-base font-bold">Assigned Sales Representive</h5>
+                 <span className="text-base font-semibold text-gray-600 ">  {
+                    `${loggedInUserProfile?.UserDetails?.[0]?.assignedSalesRep||"NA"}`
+                  }
+                  </span>
+                </div>
+        
               </div>
 
-            </div>
-            </div>
-            <div className="max-w-sm p-6 bg-white rounded-xl border border-gray-100 shadow-md">
+                   </div>
+                 <div className="max-w-sm p-6 bg-white rounded-xl border border-gray-200 shadow-lg shrink-0 ">
 
             <div className="w-full mb-6">
-              <label className="block w-full text-lg font-medium mb-1">
+              <label className="block w-full text-base font-bold mb-1">
                 Withdraw Fund 
               </label>
               <input type="text" placeholder="Enter amount" className="w-40 h-10 px-2 border-b border-gray-200 focus:border-gray-300   outline-none transition-all duration-500 "
@@ -246,15 +271,18 @@ const handleToggleEdit = ()=>{
                                 Withdraw Now
                               </Button>
 
-            </div>
+                 </div>
+            
+
+             </div>
         
-        </div>
+            </div>
 
 
 
         {/* add or edit product form */}
 
-        <div className="w-full  max-w-xl" >
+           <div className="w-full  max-w-xl" >
             <div className="w-full flex  items-start sm:items-center justify-between gap-6 mb-6 ">
                 <h1 className=" text-xl sm:text-2xl  font-semibold text-gray-800 dark:text-white/90"
                     x-text="pageName">
@@ -265,7 +293,7 @@ const handleToggleEdit = ()=>{
                     Edit
                 </button>
             </div>
-            <div className="w-full  bg-white border border-gray-100 px-6 py-8 rounded-xl shadow-md ">
+            <div className="w-full  bg-white border border-gray-200 px-6 py-8 rounded-xl shadow-md ">
 
                            <div className="w-full mb-8">
                                 <label className={FORM_INPUT_LABEL}>
@@ -318,7 +346,7 @@ const handleToggleEdit = ()=>{
 
        
 
-        </div>
+           </div>
           </div>)
       }
 

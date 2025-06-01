@@ -48,7 +48,7 @@ const UserTable: React.FC<UserTableProps> = ({ searchText}) => {
                 setUsersData([])
             }
         });
-    }, [dispatch, currentPage, searchText,isModalOpen]);
+    }, [dispatch, currentPage, searchText , isModalOpen ]);
 
     const handlePageChange = (page: any) => {
         setCurrentPage(page);

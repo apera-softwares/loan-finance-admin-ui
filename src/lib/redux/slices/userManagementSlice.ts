@@ -15,6 +15,7 @@ export const fetchUsers = createAsyncThunk(
       const queryParams = new URLSearchParams({
           page: String(page),
           limit: String(limit),
+          order:"desc",
       });
 
       if (name) {
