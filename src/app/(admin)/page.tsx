@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState,  useEffect } from "react";
 import CommonHeading from "@/components/common/CommonHeading";
 import {  REQUIRED_ERROR } from "@/constant/constantClassName";
 import Button from "@/components/ui/button/Button";
@@ -7,6 +7,7 @@ import { BACKEND_API } from "@/api";
 import axios, { AxiosError } from "axios";
 import { useAppDispatch,useAppSelector } from "@/lib/redux/hooks";
 import { getUserProfile } from "@/lib/redux/slices/loginPersonProfile";
+import { FiEdit } from "react-icons/fi";
 
 import toast,{ Toaster } from "react-hot-toast";
 
@@ -21,9 +22,20 @@ export default function Dashboard() {
   const [amount,setAmount] = useState<string>("");
   const [ammountError,setAmountError] = useState("");
   const [formData,setFormData]=useState({
-    bankAccountNumber:"",
-    routingNumber:"",
+    bankAccountNumber:loggedInUserProfile?.UserDetails?.[0]?.bankAccountNumber||"",
+    routingNumber:loggedInUserProfile?.UserDetails?.[0]?.routingNumber||"",
   }) 
+  const[isEditMode,setIsEditMode] = useState<boolean>(false);
+
+
+  useEffect(()=>{
+
+    setFormData({
+    bankAccountNumber:loggedInUserProfile?.UserDetails?.[0]?.bankAccountNumber||"",
+    routingNumber:loggedInUserProfile?.UserDetails?.[0]?.routingNumber||"",
+  });
+
+  },[isEditMode])
 
 
 const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,11 +45,19 @@ const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
 const handleSubmitBankdDetails = async ()=> {
   try {
+   
 
-   const payload = {...formData};
+  //const id =loggedInUserProfile?.UserDetails?.[0]?.id;
+  const id =loggedInUser?.userId;
+   const payload = {id:id,
+    email:loggedInUserProfile?.email,
+    ...formData};
    const token = loggedInUser?.token;
+   console.log("payload for bank details update",payload);
+  
+   
     const response = await axios.put(
-      `${BACKEND_API}`,
+      `${BACKEND_API}admin/user/${id}`,
       payload,
       {
         headers: {
@@ -49,10 +69,25 @@ const handleSubmitBankdDetails = async ()=> {
     );
 
     console.log(" response of bank details update:", response.data);
+    dispatch(getUserProfile());
     toast.success("Update bank details successfully");
+    setIsEditMode(false);
   } catch (error) {
-    console.log("error while withdraw fund");
-    toast.error("Failed to update bank details");
+    console.log("error while update bank details",error);
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        toast.error(error.response.data.message||"Failed to update bank details" )
+      } else {
+         toast.error("Failed to update bank details");
+      }
+    } else {
+      toast.error("Failed to update bank details");
+    }
+    setIsEditMode(false);
+    setFormData({
+    bankAccountNumber:loggedInUserProfile?.UserDetails?.[0]?.bankAccountNumber||"",
+    routingNumber:loggedInUserProfile?.UserDetails?.[0]?.routingNumber||"",
+  })
   
   }
 };
@@ -129,12 +164,16 @@ function validateAmount(){
   return true;
 }
 
+const handleToggleEdit = ()=>{
+  setIsEditMode(!isEditMode);
+}
+
 
 
 console.log("loggedinuser dashboard page",loggedInUser);
 console.log("loggedINuserprofile dashboardpage",loggedInUserProfile);
-console.log("amount error",ammountError);
-console.log("amont type",typeof parseInt(amount),"type of avalalble credit",typeof loggedInUserProfile?.UserDetails?.[0]?.availableCredit)
+console.log("form data admin page",formData);
+
 
   return (
 
@@ -143,7 +182,19 @@ console.log("amont type",typeof parseInt(amount),"type of avalalble credit",type
 
 
 
-        {/* Top Bar: Left (Heading), Right (Search + Actions) */}
+      {
+          loggedInUser?.role==="ADMIN" ? (<div className="w-full">
+
+               <div className="w-full flex flex-col lg:flex-row items-start justify-start lg:justify-between  gap-6  mb-6">
+                  <div className=" w-full lg:w-1/2 "  >
+                    <CommonHeading
+                    pageTitle="Dashboard"
+                   
+                      />
+                   </div>
+            </div>
+          </div>):(<div className="w-full">
+              {/* Top Bar: Left (Heading), Right (Search + Actions) */}
         <div className="w-full  mb-20 ">
             <div className="w-full flex flex-col lg:flex-row items-start justify-start lg:justify-between  gap-6  mb-6">
                   <div className=" w-full lg:w-1/2 "  >
@@ -205,18 +256,18 @@ console.log("amont type",typeof parseInt(amount),"type of avalalble credit",type
 
         {/* add or edit product form */}
 
-        <div className="w-full " >
+        <div className="w-full  max-w-xl" >
             <div className="w-full flex  items-start sm:items-center justify-between gap-6 mb-6 ">
                 <h1 className=" text-xl sm:text-2xl  font-semibold text-gray-800 dark:text-white/90"
                     x-text="pageName">
                     Update Bank Details
                 </h1>
-                {/* <button className="flex items-center flex-nowrap gap text-primary text-base font-medium  ">
-                    <FiEdit className=" mr-1.5" />
+                <button onClick={handleToggleEdit} className="flex items-center flex-nowrap gap text-gray-800 text-base font-medium  ">
+                    <FiEdit className=" mr-1.5  " />
                     Edit
-                </button> */}
+                </button>
             </div>
-            <div className="w-full lg:w-1/2 bg-white border border-gray-100 px-6 py-8 rounded-xl shadow-md ">
+            <div className="w-full  bg-white border border-gray-100 px-6 py-8 rounded-xl shadow-md ">
 
                            <div className="w-full mb-8">
                                 <label className={FORM_INPUT_LABEL}>
@@ -225,6 +276,8 @@ console.log("amont type",typeof parseInt(amount),"type of avalalble credit",type
                                 <input
                                 type="text"
                                 name="bankAccountNumber"
+                                readOnly={!isEditMode}
+                                placeholder={loggedInUserProfile?.UserDetails?.[0]?.bankAccountNumber||""}
                               
                                 value={formData.bankAccountNumber}
                                 onChange={handleInputChange}
@@ -241,6 +294,8 @@ console.log("amont type",typeof parseInt(amount),"type of avalalble credit",type
                                 <input
                                 type="text"
                                 name="routingNumber"
+                                placeholder={loggedInUserProfile?.UserDetails?.[0]?.routingNumber||""}
+                                readOnly={!isEditMode}
                                 value={formData.routingNumber}
                                 onChange={handleInputChange}
                             
@@ -249,16 +304,16 @@ console.log("amont type",typeof parseInt(amount),"type of avalalble credit",type
                             <span className={REQUIRED_ERROR}></span>
                             </div>
 
+
+                       
+
                             <div className="flex items-center justify-end w-full gap-3 mt-8">
-                              <Button size="sm" onClick={handleSubmitBankdDetails}>
+                                      {
+                              isEditMode && (      <Button size="sm" onClick={handleSubmitBankdDetails}>
                                Update
-                              </Button>
+                              </Button>)
+                            }
                             </div>
-
-
-
-
-
 
             
             </div>
@@ -266,6 +321,8 @@ console.log("amont type",typeof parseInt(amount),"type of avalalble credit",type
        
 
         </div>
+          </div>)
+      }
 
 
     </div>
