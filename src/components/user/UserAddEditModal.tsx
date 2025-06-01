@@ -3,13 +3,14 @@ import React, { useEffect, useState } from "react";
 import Button from "../ui/button/Button";
 import { Modal } from "../ui/modal";
 import { Users1 } from "../../icons/index";
-import { FORM_INPUT_CLASS, REQUIRED_ERROR } from "@/constant/constantClassName";
+import {  REQUIRED_ERROR } from "@/constant/constantClassName";
 import Select from "../form/Select";
 
 import { CreateUser, UpdateUser } from "@/lib/redux/slices/userManagementSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/redux/store";
 import toast from "react-hot-toast";
+
 
 const Status = [
      { value: "PENDING", label: "Pending" },
@@ -26,6 +27,11 @@ interface UserAddEditModalProps {
     userData?: any
     type?: string
 }
+
+
+const FORM_INPUT_CLASS = "w-full h-10 text-base bg-white border-b border-gray-200 focus:border-gray-300  text-gray-600 outline-none   transition-all duration-500 " ;
+const FORM_INPUT_LABEL = " block w-full  text-sm font-medium text-gray-600";
+
 
 const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal, userData, type }) => {
 
@@ -64,7 +70,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
         assignedSalesRep:"",
         utilizedCredit:"",
     })
-    const isEditMode = userData ? true : false ;
+    const isEditMode = type==="update" ? true : false ;
 
 
 
@@ -74,10 +80,10 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
         if (userData) {
             setFormData({
             id: userData?.id,
-            firstName: userData?.firstName,
-            lastName: userData?.lastName,
-            email: userData?.email,
-            phone:userData?.phone,
+            firstName: userData?.firstName||"",
+            lastName: userData?.lastName||"",
+            email: userData?.email||"",
+            phone:userData?.phone||"",
             password:userData?.password||"",
             status:userData?.UserDetails?.[0]?.status||"",
             availableFunding:userData?.UserDetails?.[0]?.availableFunding?.toString()||"",
@@ -96,17 +102,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleSelectChange = (name: "role" | "team", value: string) => {
-        setFormData((prev) => ({ ...prev, [name]: value }));
-    };
 
-
-    const handleVerifiedChange = (value: string) => {
-        setFormData((prev) => ({
-            ...prev,
-            verified: value === "yes",
-        }));
-    };
 
     const validateAddUserFormData = () => {
         let isValidData = true;
@@ -210,18 +206,21 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
 
 
     const handleEdit = () => {
-        console.log("Form Data: Update User", formData);
-           const transformPayload={
-            ...formData,
-            interestRate: parseFloat(formData.interestRate)||0,
-            availableFunding: parseFloat(formData.availableFunding)||0,
-            utilizedCredit: parseFloat(formData.utilizedCredit)||0,
+        const payload={
+            id:formData.id,
+            firstName:formData.firstName,
+            lastName:formData.lastName,
+            email:formData.email,
+            phone:formData.phone,
+            availableFunding: parseFloat(formData.availableFunding)||undefined,
+            interestRate: parseFloat(formData.interestRate)||undefined,
+            assignedSalesRep:formData.assignedSalesRep||undefined,
+            status:formData.status||undefined
         }
-       if (!validateEditUserFormData()){
-        console.log("validation failed",);
+        
+        console.log("user edit payload",payload);
         return ;
-       }
-        dispatch(UpdateUser(transformPayload)).then((res: any) => {
+        dispatch(UpdateUser(payload)).then((res: any) => {
             if (res.meta.requestStatus === "fulfilled") {
                 if (res.payload) {
                     toast.success("User Updated successful!");
@@ -240,16 +239,20 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
     };
 
     const handleAddUser = () => {
-        const transformPayload={
-            ...formData,
-            interestRate: parseFloat(formData.interestRate)||0,
-            availableFunding: parseFloat(formData.availableFunding)||0,
-            utilizedCredit: parseFloat(formData.utilizedCredit)||0,
+        const payload={
+            firstName:formData.firstName,
+            lastName:formData.lastName,
+            email:formData.email,
+            phone:formData.phone,
+            password:formData.password,
+            availableFunding: parseFloat(formData.availableFunding)||undefined,
+            interestRate: parseFloat(formData.interestRate)||undefined,
+            assignedSalesRep:formData.assignedSalesRep||undefined,
         }
         
-        // console.log("trnansformform data",transformPayload);
-        if (!validateAddUserFormData()) return;
-        dispatch(CreateUser(transformPayload)).then((res: any) => {
+        console.log("user create payload",payload);
+        return ;
+        dispatch(CreateUser(payload)).then((res: any) => {
             if (res.meta.requestStatus === "fulfilled") {
                 if (res.payload) {
                     toast.success("User Created successful!");
@@ -339,11 +342,12 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
 
                         <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6">
                             <div className="w-full ">
-                            <input
+                                <label className={FORM_INPUT_LABEL}>
+                                 First Name
+                                </label>
+                                <input
                                 type="text"
                                 name="firstName"
-                                placeholder="First name"
-                                readOnly={isEditMode}
                                 value={formData.firstName}
                                 onChange={handleInputChange}
                                 className={FORM_INPUT_CLASS}
@@ -352,11 +356,12 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                             </div>
 
                              <div className="w-full ">
-                            <input
+                                 <label className={FORM_INPUT_LABEL}>
+                                 Last Name
+                                </label>
+                                <input
                                 type="text"
                                 name="lastName"
-                                placeholder="Last name"
-                                readOnly={isEditMode}
                                 value={formData.lastName}
                                 onChange={handleInputChange}
                                 className={FORM_INPUT_CLASS}
@@ -364,11 +369,12 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                             <span className={REQUIRED_ERROR}>{errors.lastName || ""}</span>
                              </div>
                             <div className="w-full">
-                            <input
+                                 <label className={FORM_INPUT_LABEL}>
+                                 Email
+                                </label>
+                                <input
                                 type="email"
                                 name="email"
-                                placeholder="Email address"
-                                readOnly={isEditMode}
                                 value={formData.email}
                                 onChange={handleInputChange}
                                 className={FORM_INPUT_CLASS}
@@ -376,12 +382,13 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                             <span className={REQUIRED_ERROR}>{errors.email || ""}</span>
                             </div>
                             <div className="w-full">
-                            <input
+                                 <label className={FORM_INPUT_LABEL}>
+                                 Phone
+                                </label>
+                                <input
                                 type="text"
                                 name="phone"
-                                placeholder="Phone"
                                 className={FORM_INPUT_CLASS}
-                                readOnly={isEditMode}
                                 value={formData.phone}
                                 
                                  onChange={(e) => {
@@ -396,11 +403,13 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                             </div>
 
                              {
-                                !isEditMode && ( <div className="w-full">
+                                type==="add" && ( <div className="w-full">
+                                <label className={FORM_INPUT_LABEL}>
+                                 Password
+                                </label>
                                 <input
                                 type="text"
                                 name="password"
-                                placeholder="Password"
                                 value={formData.password}
                                 onChange={handleInputChange}
                                 className={FORM_INPUT_CLASS}
@@ -410,22 +419,13 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
 )
                              }
 
-                            <div className="w-full">
-                            <Select
-                                options={Status}
-                                defaultValue={formData.status}
-                                placeholder="Select status"
-                                onChange={(value: string) => setFormData((prev)=>({...prev,status:value}))}
-                                className="dark:bg-dark-900"
-                            />
-                            <span className={REQUIRED_ERROR}>{errors.status || ""}</span>
-                             </div>
-
                              <div className="w-full">
+                                 <label className={FORM_INPUT_LABEL}>
+                                 Available Funding
+                                </label>
                             <input
                                 type="text"
                                 name="availableFunding"
-                                placeholder="Available Funding"
                                 value={formData.availableFunding}
                                 onChange={(e) => {
                                 const value = e.target.value;
@@ -441,32 +441,15 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                             />
                             <span className={REQUIRED_ERROR}>{errors.availableFunding|| ""}</span>
                              </div>
-                            <div className="w-full">
-                            <input
-                                type="text"
-                                name="utilizedCredit"
-                                placeholder="Utilized credit"
-                                value={formData.utilizedCredit}
-                                onChange={(e) => {
-                                const value = e.target.value;
-                                 // Allow only digits (optionally, you can add `.` if you want decimals)
-                                if (/^\d*$/.test(value)) {
-                                    setFormData((prev) => ({
-                                                           ...prev,
-                                                           utilizedCredit: value,
-                                                           }));
-                                }
-                                }}
-                                className={FORM_INPUT_CLASS}
-                            />
-                            <span className={REQUIRED_ERROR}>{errors.utilizedCredit|| ""}</span>
-                            </div>
 
-                            <div className="w-full ">
-                            <input
+
+                                <div className="w-full ">
+                                <label className={FORM_INPUT_LABEL}>
+                                 Interest Rate
+                                </label>
+                               <input
                                 type="text"
                                 name="interestRate"
-                                placeholder="Interest rate"
                                 value={formData.interestRate}
                                 onChange={(e) => {
                                 const rateValue = e.target.value;
@@ -485,22 +468,74 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                              </div>
 
                             <div className="w-full ">
-                            <input
+                                <label className={FORM_INPUT_LABEL}>
+                                 Assigned Sales Rep
+                                </label>
+                                <input
                                 type="text"
                                 name="assignedSalesRep"
-                                placeholder="Assigned sales rep"
                                 value={formData.assignedSalesRep}
                                 onChange={handleInputChange}
                                 className={FORM_INPUT_CLASS}
                             />
                             <span className={REQUIRED_ERROR}>{errors.assignedSalesRep || ""}</span>
                             </div>
+                      
 
+
+                            {
+                                type==="update" && <>
+
+
+                                
                             <div className="w-full">
-                            <input
+                            <label className={FORM_INPUT_LABEL}>
+                                 Status
+                            </label>
+                            <Select
+                                options={Status}
+                                defaultValue={formData.status}
+                                placeholder="Select status"
+                                onChange={(value: string) => setFormData((prev)=>({...prev,status:value}))}
+                                className="dark:bg-dark-900"
+                            />
+                            <span className={REQUIRED_ERROR}>{errors.status || ""}</span>
+                             </div>
+
+
+                                <div className="w-full">
+                                <label className={FORM_INPUT_LABEL}>
+                                 Utilized Credit
+                                </label>
+                                 <input
+                                type="text"
+                                name="utilizedCredit"
+                                value={formData.utilizedCredit}
+                                readOnly={isEditMode}
+                                onChange={(e) => {
+                                const value = e.target.value;
+                                 // Allow only digits (optionally, you can add `.` if you want decimals)
+                                if (/^\d*$/.test(value)) {
+                                    setFormData((prev) => ({
+                                                           ...prev,
+                                                           utilizedCredit: value,
+                                                           }));
+                                }
+                                }}
+                                className={FORM_INPUT_CLASS}
+                            />
+                            <span className={REQUIRED_ERROR}>{errors.utilizedCredit|| ""}</span>
+                            </div>
+
+                                
+                            <div className="w-full">
+                                <label className={FORM_INPUT_LABEL}>
+                                 Bank Account Number
+                                </label>
+                                <input
                                 type="text"
                                 name="bankAccountNumber"
-                                placeholder="Bank account number"
+                                readOnly={isEditMode}
                                 value={formData.bankAccountNumber}
                                 onChange={handleInputChange}
                                 className={FORM_INPUT_CLASS}
@@ -508,16 +543,26 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                             <span className={REQUIRED_ERROR}>{errors.bankAccountNumber|| ""}</span>
                            </div>
                             <div className="w-full">
-                            <input
+
+                                 <label className={FORM_INPUT_LABEL}>
+                                 Routing Number
+                                </label>
+                                <input
                                 type="text"
                                 name="routingNumber"
-                                placeholder="Routing number"
+                                readOnly={isEditMode}
                                 value={formData.routingNumber}
                                 onChange={handleInputChange}
                                 className={FORM_INPUT_CLASS}
                             />
                             <span className={REQUIRED_ERROR}>{errors.routingNumber|| ""}</span>
                             </div>
+                                
+                                </>
+                            }
+
+                     
+
 
                         </div>
                    
@@ -537,9 +582,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
 
                
                     </div>
-                </div>
-
-                <div className="flex items-center justify-end w-full gap-3 mt-8">
+                    <div className="flex items-center justify-end w-full gap-3 mt-8">
                     <Button size="sm" onClick={type==="add" ? handleAddUser:handleEdit}>
                         {
                             type==="add" ? "Create User" : "Update User"
@@ -551,7 +594,10 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                     }}>
                         Cancel
                     </Button>
+                    </div>
                 </div>
+
+             
 
             </div>
         </Modal>

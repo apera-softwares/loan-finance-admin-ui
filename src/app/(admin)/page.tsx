@@ -16,30 +16,11 @@ export const metadata: Metadata = {
 export default function Ecommerce() {
   return (
     <div className="w-full">
-      {/* <div className="col-span-12 space-y-6 xl:col-span-7">
-        <EcommerceMetrics />
-
-        <MonthlySalesChart />
-      </div> */}
-
-      <div className="lg:flex justify-between w-full">
-        <div className="lg:w-[39%]"><MonthlyTarget /></div>
-        <div className="lg:w-[59%]"><StatisticsChart /></div>
+    
 
 
-      </div>
-      {/* 
-      <div className="col-span-12">
-        <StatisticsChart />
-      </div>
 
-      <div className="col-span-12 xl:col-span-5">
-        <DemographicCard />
-      </div> */}
-
-      <div className="col-span-12 xl:col-span-7 mt-4">
-        <RecentOrders />
-      </div>
+  
     </div>
   );
 }

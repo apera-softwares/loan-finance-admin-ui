@@ -20,12 +20,12 @@ export default function UserManagement() {
         <div className="w-full ">
             <Toaster />
             {/* Top Bar: Left (Heading), Right (Search + Actions) */}
-            <div className="w-full flex flex-col lg:flex-row items-start justify-between  gap-6 mb-6 ">
+            <div className="w-full flex flex-col lg:flex-row items-start justify-between  gap-6 mb-8 ">
                 {/* Left: Heading */}
                 <div className="w-full lg:w-1/2 ">
                     <CommonHeading
                         pageTitle="User Management"
-                        description="Manage all users across Bee-Team, A-Team, Managers, and Admins."
+                        description=""
                     />
                 </div>
 
