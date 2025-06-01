@@ -97,7 +97,7 @@ const UserTable: React.FC<UserTableProps> = ({ searchText}) => {
                                                {`${user?.phone||""}`}
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                                                {`${user?.UserDetails[0]?.availableCredit||""}`}
+                                                {`${user?.UserDetails[0]?.availableCredit||"0"}`}
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                                                 {`${user?.UserDetails?.[0]?.utilizedCredit||"0"}`}
@@ -114,6 +114,8 @@ const UserTable: React.FC<UserTableProps> = ({ searchText}) => {
                                            
                                                 <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                                                     <div className="flex items-center gap-1 cursor-pointer" onClick={() => {
+
+                                                        if(user?.role==="ADMIN") return ;
                                                         setEditUserData(user)
                                                         setIsModalOpen(true)
                                                     }}>
