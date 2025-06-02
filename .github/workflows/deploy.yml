@@ -1,4 +1,4 @@
-name: Node.js and React Project for `honeybee-admin-dashboard` CI with Docker and SSDNode
+name: Node.js and React Project for `lending-square-admin-panel` CI with Docker and SSDNode
 
 on:
   push:
@@ -29,7 +29,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: aperrasolutions/honeybee-admin-dashboard:latest
+          tags: aperrasolutions/lending-square-admin-panel:latest
 
   build-and-deploy:
     needs: docker-setup
@@ -42,8 +42,8 @@ jobs:
           username: ${{ secrets.SSDNODE_USERNAME }}
           password: ${{ secrets.SSDNODE_PASSWORD }}
           script: |
-            sudo docker stop honeybee-admin-dashboard || true
-            sudo docker rm honeybee-admin-dashboard || true
-            sudo docker image rm aperrasolutions/honeybee-admin-dashboard:latest || true
-            sudo docker run --name honeybee-admin-dashboard -d -p 3030:3000 \
-              aperrasolutions/honeybee-admin-dashboard:latest
+            sudo docker stop lending-square-admin-panel || true
+            sudo docker rm lending-square-admin-panel || true
+            sudo docker image rm aperrasolutions/lending-square-admin-panel:latest || true
+            sudo docker run --name lending-square-admin-panel -d -p 4046:3000 \
+              aperrasolutions/lending-square-admin-panel:latest
