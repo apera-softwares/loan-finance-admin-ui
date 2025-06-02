@@ -3,7 +3,7 @@ name: Node.js and React Project for `lending-square-admin-panel` CI with Docker 
 on:
   push:
     branches:
-      - "release/**"
+      - "main"
 
 jobs:
   docker-setup:
