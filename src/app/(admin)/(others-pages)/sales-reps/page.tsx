@@ -52,11 +52,7 @@ export default function UserManagement() {
                         className="border border-[#151D48] w-32 h-11 text-[#151D48] rounded-md text-sm justify-center text-center outline-none flex items-center gap-1">
                         <HiOutlinePlus />
                         Create New
-                    </button>
-
-        
-
-           
+                    </button>           
 
                 </div>
             </div>
