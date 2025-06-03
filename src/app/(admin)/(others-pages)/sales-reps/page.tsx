@@ -3,10 +3,10 @@ import React, { useState } from "react";
 import CommonHeading from "@/components/common/CommonHeading";
 import { CiSearch } from "react-icons/ci";
 import { HiOutlinePlus } from "react-icons/hi";
-import UserAddEditModal from "@/components/user/UserAddEditModal";
-import UserTable from "@/components/user/UserTable";
 import { Toaster } from "react-hot-toast";
 import { useAppSelector } from "@/lib/redux/hooks";
+import SaeslRepsTable from "@/components/sales-reps/SalesRepsTable";
+import SalesRepsAddEditModal from "@/components/sales-reps/SalesRepAddEditModal";
 
 export default function UserManagement() {
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -59,8 +59,8 @@ export default function UserManagement() {
 
             {/* Table */}
             <div className="w-full">
-                <UserTable searchText={SearchInput} isCreateUserModalOpen={isModalOpen}  />
-                <UserAddEditModal isOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} type="add" />
+                <SaeslRepsTable searchText={SearchInput} isCreateUserModalOpen={isModalOpen}  />
+                <SalesRepsAddEditModal isOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} type="add" />
 
             </div>
         </div>
