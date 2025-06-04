@@ -11,6 +11,7 @@ import { logout } from "@/lib/redux/slices/userSlice";
 import { resetUserProfile } from "@/lib/redux/slices/loginPersonProfile";
 import LogoutConfirmationModal from "@/components/common/LogoutConfirmationModal";
 import { FaUser } from "react-icons/fa";
+import { LANDING_PAGE_URL } from "@/api";
 
 
 export default function UserDropdown() {
@@ -51,7 +52,8 @@ export default function UserDropdown() {
     localStorage.removeItem("user");
     dispatch(logout());
     dispatch(resetUserProfile());
-    router.replace("/")
+    // router.replace(LANDING_PAGE_URL)
+    window.location.href = LANDING_PAGE_URL;
   
   }
   return (

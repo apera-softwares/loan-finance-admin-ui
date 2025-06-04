@@ -26,6 +26,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { logout } from "@/lib/redux/slices/userSlice";
 import { resetUserProfile } from "@/lib/redux/slices/loginPersonProfile";
 import LogoutConfirmationModal from "@/components/common/LogoutConfirmationModal";
+import { LANDING_PAGE_URL } from "@/api";
 
 type NavItem = {
   name: string;
@@ -300,7 +301,9 @@ const AppSidebar: React.FC = () => {
     localStorage.removeItem("user");
     dispatch(logout());
     dispatch(resetUserProfile());
-    router.replace("/")
+    alert("Logout")
+    // router.replace(LANDING_PAGE_URL)
+    window.location.href = LANDING_PAGE_URL;
 
   }
 
