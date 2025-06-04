@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useSidebar } from "../context/SidebarContext";
 import {
   BoxCubeIcon,
@@ -108,7 +108,6 @@ const AppSidebar: React.FC = () => {
   const [isLogoutConfirmModalOpen, setIsLogoutConfirmModalOpen] = useState<boolean>(false);
   const { userProfile } = useAppSelector((state) => state.userProfile);
 
-  const router = useRouter();
   const pathname = usePathname();
   const dispatch = useAppDispatch();
 

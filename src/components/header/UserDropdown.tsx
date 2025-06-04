@@ -1,7 +1,6 @@
 "use client";
 // import Image from "next/image";
 // import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Dropdown } from "../ui/dropdown/Dropdown";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
@@ -17,7 +16,6 @@ import { LANDING_PAGE_URL } from "@/api";
 export default function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const [isLogoutConfirmModalOpen,setIsLogoutConfirmModalOpen] = useState<boolean>(false);
-  const router = useRouter();
   const { userProfile } = useAppSelector((state) => state.userProfile);
   const dispatch = useAppDispatch();
 
