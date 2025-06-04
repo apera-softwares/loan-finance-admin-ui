@@ -13,6 +13,8 @@ import { fetchReferrals } from "@/lib/redux/slices/referralSlice";
 import Spinner from "../common/Spinner";
 import Pagination from "../tables/Pagination";
 import { Toaster } from "react-hot-toast";
+import { FiUser } from "react-icons/fi";
+import UserAddEditModal from "../user/UserAddEditModal";
 const USDollar = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -35,6 +37,10 @@ const ReferralTable: React.FC<ReferralTableProps> = ({ searchText }) => {
     const {referralList,loading} = useAppSelector((state)=>state.referral)
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    
+    const [editUserData, setEditUserData] = useState<any|null>(null);
+    
 
     useEffect(()=>{
        getReferrals(currentPage);
@@ -100,7 +106,8 @@ const ReferralTable: React.FC<ReferralTableProps> = ({ searchText }) => {
                                      <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Business Revenue</TableCell>
                                      <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Business Tenure</TableCell>
                                      <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Credit Score</TableCell>
-                                    
+                                     
+                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Action</TableCell>
                         
                                 </TableRow>
                             </TableHeader>
@@ -114,9 +121,10 @@ const ReferralTable: React.FC<ReferralTableProps> = ({ searchText }) => {
                                                 </span>
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                                                <span style={{textTransform: 'capitalize'}}>
                                              {
                                                 `${item?.firstName||""} ${item?.lastName||""}`
-                                             }
+                                             }</span>
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                                 {item?.email||""}
@@ -143,7 +151,14 @@ const ReferralTable: React.FC<ReferralTableProps> = ({ searchText }) => {
 
                                                  {`${item?.creditScore ||""}`}
                                               
-                                            </TableCell>                                             
+                                            </TableCell>   
+                                            <TableCell>
+                                                <div className="flex items-center gap-1 cursor-pointer text-xs" onClick={() => {
+                                                    setEditUserData(item);
+                                                    setIsModalOpen(true);
+                                                    }}>
+                                                    <FiUser className="h-5 w-5 " />Create User </div>
+                                             </TableCell>                                          
                                         
                                         </TableRow>
 
@@ -163,6 +178,9 @@ const ReferralTable: React.FC<ReferralTableProps> = ({ searchText }) => {
             <div className=" w-full flex justify-end px-4 py-6 ">
                 <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
             </div>
+           { isModalOpen && <UserAddEditModal isOpen={isModalOpen} closeModal={() => {
+                setIsModalOpen(false)
+            }} userData={editUserData}  type="add" /> }
 
         </div>
     );

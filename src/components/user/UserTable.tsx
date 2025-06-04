@@ -22,6 +22,11 @@ interface UserTableProps {
     from?: string;
 }
 
+const USDollar = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+});
+
 const UserTable: React.FC<UserTableProps> = ({ searchText,isCreateUserModalOpen}) => {
     const ITEM_PER_PAGE = 5;
     const dispatch = useDispatch<AppDispatch>();
@@ -34,6 +39,8 @@ const UserTable: React.FC<UserTableProps> = ({ searchText,isCreateUserModalOpen}
 
 
     useEffect(() => {
+        
+
         dispatch(fetchUsers({ page: currentPage, limit: ITEM_PER_PAGE,name:searchText})).then((res: any) => {
             if (res.meta.requestStatus === "fulfilled") {
                 if (res.payload) {
@@ -51,6 +58,7 @@ const UserTable: React.FC<UserTableProps> = ({ searchText,isCreateUserModalOpen}
         });
     }, [dispatch, currentPage, searchText , isModalOpen,isCreateUserModalOpen ]);
 
+   
     const handlePageChange = (page: any) => {
         setCurrentPage(page);
     };
@@ -98,16 +106,16 @@ const UserTable: React.FC<UserTableProps> = ({ searchText,isCreateUserModalOpen}
                                                {`${user?.phone||""}`}
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                                                {`${user?.UserDetails[0]?.availableCredit||"0"}`}
+                                                {USDollar.format(`${user?.UserDetails[0]?.availableCredit||0}`)}
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                                                {`${user?.UserDetails?.[0]?.utilizedCredit||"0"}`}
+                                                {USDollar.format(`${user?.UserDetails?.[0]?.utilizedCredit|| 0}`)}
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                                                {`${user?.UserDetails?.[0]?.interestRate||""}`}
+                                                {`${user?.UserDetails?.[0]?.interestRate||""}`} %
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                                                <span style={{textTransform: 'capitalize'}}>{`${user?.UserDetails?.[0]?.assignedSalesRep||""}`} </span>
+                                                <span style={{textTransform: 'capitalize'}}>{`${user?.UserDetails?.[0]?.salesRep?.name||""}`} </span>
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                                 {`${user?.UserDetails?.[0]?.status||""}`}

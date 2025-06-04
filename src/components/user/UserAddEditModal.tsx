@@ -10,6 +10,7 @@ import { CreateUser, UpdateUser } from "@/lib/redux/slices/userManagementSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/redux/store";
 import toast from "react-hot-toast";
+import { fetchSalesReps } from "@/lib/redux/slices/salesRepSlice";
 
 
 const Status = [
@@ -35,8 +36,14 @@ const FORM_INPUT_LABEL = " block w-full  text-sm font-medium text-gray-600";
 
 const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal, userData, type }) => {
 
+    console.log(userData, 'userDatasssss');
+
 
     const dispatch = useDispatch<AppDispatch>();
+
+    const [salesReps, setSalesReps] = useState<any[]>([]);
+
+    
     const [formData, setFormData] = useState({
         id: "",
         firstName: "",
@@ -51,13 +58,11 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
         routingNumber:"",
         assignedSalesRep:"",
         utilizedCredit:"",
-        
-
     });
 
     const [errors, setErrors] = useState({
        id: "",
-        firstName: "",
+        firstName: '',
         lastName: "",
         email: "",
         phone:"",
@@ -70,11 +75,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
         assignedSalesRep:"",
         utilizedCredit:"",
     })
-    const isEditMode = type==="update" ? true : false ;
-
-
-
- 
+    const isEditMode = type==="update" ? true : false ; 
 
     useEffect(() => {
         if (userData) {
@@ -97,7 +98,30 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
     }, [userData]);
 
 
+    useEffect(() => {
+    dispatch(fetchSalesReps({ page: 1, limit: 1000, name:''})).then((res: any) => {
+                    if (res.meta.requestStatus === "fulfilled") {
+                        if (res.payload) {
+                            setSalesReps(res.payload.data || []);                                                        
+                        } else {
+                            setSalesReps([]);
+                        }
+                    } else {
+                        console.log("Failed to fetch users:", res.payload || "Unknown error");
+                        setSalesReps([])
+                    }
+                });
+        setSalesReps(salesReps);
+        console.log(salesReps, "salesReps11111")
+     }, []);
+
+
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
@@ -340,11 +364,9 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                             />
                             <span className={REQUIRED_ERROR}>{errors.availableCredit|| ""}</span>
                              </div>
-
-
                                 <div className="w-full ">
                                 <label className={FORM_INPUT_LABEL}>
-                                 Interest Rate
+                                 Interest Rate (%)
                                 </label>
                                <input
                                 type="text"
@@ -368,15 +390,22 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
 
                             <div className="w-full ">
                                 <label className={FORM_INPUT_LABEL}>
-                                 Assigned Sales Rep
+                                 Assigned Sales Rep {salesReps?.length}
                                 </label>
-                                <input
+
+                                <select name="assignedSalesRep" 
+                                className={FORM_INPUT_CLASS} onChange={handleSelectChange} value={formData.assignedSalesRep}>
+                                    {salesReps?.map((_salesRep:any)=>(
+                                        <option key={_salesRep.id} value={_salesRep.id}>{_salesRep.name}</option>
+                                    ))}
+                                </select>
+                                {/* <input
                                 type="text"
                                 name="assignedSalesRep"
                                 value={formData.assignedSalesRep}
                                 onChange={handleInputChange}
                                 className={FORM_INPUT_CLASS}
-                            />
+                            /> */}
                             <span className={REQUIRED_ERROR}>{errors.assignedSalesRep || ""}</span>
                             </div>
                       
@@ -389,7 +418,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                                 
                             <div className="w-full">
                             <label className={FORM_INPUT_LABEL}>
-                                 Status
+                                 Status 
                             </label>
                             <Select
                                 options={Status}
@@ -426,7 +455,6 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                             <span className={REQUIRED_ERROR}>{errors.utilizedCredit|| ""}</span>
                             </div>
 
-                                
                             <div className="w-full">
                                 <label className={FORM_INPUT_LABEL}>
                                  Bank Account Number
@@ -464,25 +492,9 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
 
 
                         </div>
-                   
-                   
-        
-     
-          
-                      
-                     
-
-                 
-
-
-    
-
-                
-
-               
                     </div>
                     <div className="flex items-center justify-end w-full gap-3 mt-8">
-                    <Button size="sm" onClick={type==="add" ? handleAddUser:handleEdit}>
+                    <Button size="sm" className="btn-primary" onClick={type==="add" ? handleAddUser:handleEdit}>
                         {
                             type==="add" ? "Create User" : "Update User"
                         }
