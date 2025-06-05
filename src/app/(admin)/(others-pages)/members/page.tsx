@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import CommonHeading from "@/components/common/CommonHeading";
 import { CiSearch } from "react-icons/ci";
 import { Toaster } from "react-hot-toast";
+import MembersTable from "@/components/members/MembersTable";
 export default function UserManagement() {
 
   const [SearchInput, setSearchInput] = useState("");
@@ -42,7 +43,7 @@ export default function UserManagement() {
 
       {/* Table */}
       <div className="w-full">
-   
+       <MembersTable searchText={SearchInput}/>
       </div>
     </div>
   );
