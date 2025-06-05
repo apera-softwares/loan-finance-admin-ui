@@ -10,7 +10,7 @@ export const createSalesRepresentative = createAsyncThunk(
       const state: any = thunkAPI.getState();
       const token = state.user?.user?.token;
       const response = await axios.post(
-        `${BACKEND_API}sales-representative`,
+        `${BACKEND_API}admin/user`,
         data,
         {
           headers: {
@@ -48,7 +48,7 @@ export const fetchSalesRepresentatives = createAsyncThunk(
       }
 
       const response = await axios.get(
-        `${BACKEND_API}sales-representative?${queryParams.toString()}`,
+        `${BACKEND_API}sales-reps?${queryParams.toString()}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -76,7 +76,7 @@ export const updateSalesRepresentative = createAsyncThunk(
       const { id, ...restData } = data;
 
       const response = await axios.put(
-        `${BACKEND_API}sales-representative/${id}`,
+        `${BACKEND_API}admin/user/${id}`,
         restData,
         {
           headers: {
@@ -104,7 +104,7 @@ export const deleteSalesRepresentative = createAsyncThunk(
       const token = state.user?.user?.token;
 
       const response = await axios.delete(
-        `${BACKEND_API}sales-representative/${id}`,
+        `${BACKEND_API}user/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -112,7 +112,6 @@ export const deleteSalesRepresentative = createAsyncThunk(
           },
         }
       );
-      console.log(response, "delete response");
 
       return id;
     } catch (error: any) {
@@ -130,14 +129,7 @@ interface SalesRepresentativeState {
 }
 
 const initialState: SalesRepresentativeState = {
-  salesRepresentativesList: [
-    { id: "101", firstName: "shubham",lastName:"sonawane",email:"ss@gmai.com", commission: "8" },
-    { id: "102",firstName: "akshay", lastName:"tamte",email:"at@gmail.com", commission: "9.5" },
-    { id: "103",firstName: "akshay", lastName:"tamte",email:"at@gmail.com", commission:undefined },
-    { id: "104",firstName: "akshay", lastName:"tamte",email:"at@gmail.com", commission: null },
-    { id: "105",firstName: "akshay", lastName:"tamte",email:"at@gmail.com", commission:"0" },
-    { id: "106",firstName: "akshay", lastName:"tamte",email:"at@gmail.com", commission:"" },
-  ],
+  salesRepresentativesList: [],
   loading: false,
   error: null,
 };

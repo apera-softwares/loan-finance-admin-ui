@@ -7,7 +7,8 @@ import { REQUIRED_ERROR } from "@/constant/constantClassName";
 import { createSalesRepresentative,updateSalesRepresentative } from "@/lib/redux/slices/salesRepresentativeSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/redux/store";
-import toast from "react-hot-toast";
+import { Roles } from "@/constant/roles";
+import toast,{Toaster} from "react-hot-toast";
 
 interface SalesRepresentativeAddEditModalProps {
   isOpen: boolean;
@@ -26,6 +27,7 @@ interface FormData {
   firstName:string;
   lastName:string;
   email:string;
+  phone:string;
   password?:string;
   commission:string;
 }
@@ -39,6 +41,7 @@ const SalesRepresentativeAddEditModal: React.FC<
     firstName: "",
     lastName:"",
     email:"",
+    phone:"",
     password:"",
     commission: "",
   });
@@ -47,6 +50,7 @@ const SalesRepresentativeAddEditModal: React.FC<
     firstName: "",
     lastName:"",
     email:"",
+    phone:"",
     password:"",
     commission: "",
   });
@@ -58,6 +62,7 @@ const SalesRepresentativeAddEditModal: React.FC<
            firstName:userData.firstName||"",
            lastName:userData.lastName||"",
            email:userData.email||"",
+           phone:userData.phone||"",
            commission: userData?.commission || "",
       });
     }
@@ -74,14 +79,14 @@ const SalesRepresentativeAddEditModal: React.FC<
         firstName:formData.firstName,
         lastName:formData.lastName,
         email:formData.email,
+        phone:formData.phone,
         password:formData.password,
         commission: formData.commission,
-        role:"SALES_REPS",
+        role:Roles.SALES_REP,
       };
-      console.log("add payload ",addPayload);
-      return ;
       await dispatch(createSalesRepresentative(addPayload)).unwrap();
       toast.success("Created sales representative successfully");
+      handleModalClose();
     } catch (error: any) {
       console.error("Error while creating sales representative:", error);
       toast.error(
@@ -90,7 +95,7 @@ const SalesRepresentativeAddEditModal: React.FC<
           : "Failed to create sales representative"
       );
     } finally {
-      handleModalClose();
+     
     }
   };
 
@@ -101,11 +106,10 @@ const SalesRepresentativeAddEditModal: React.FC<
         firstName:formData.firstName,
         lastName:formData.lastName,
         email:formData.email,
+        phone:formData.phone,
         commission: formData.commission,
-        role:"SALES_REPS",
+        role:Roles.SALES_REP,
       };
-      console.log("edit payload ",editPayload);
-      return ;
 
       await dispatch(updateSalesRepresentative(editPayload)).unwrap();
       toast.success("Updated sales representative successfully");
@@ -118,7 +122,6 @@ const SalesRepresentativeAddEditModal: React.FC<
           : "Failed to update sales representative"
       );
     } finally {
-      handleModalClose();
     }
   };
 
@@ -128,6 +131,7 @@ const SalesRepresentativeAddEditModal: React.FC<
       firstName: "",
       lastName:"",
       email:"",
+      phone:"",
       password:"",
       commission: "",
     });
@@ -136,6 +140,7 @@ const SalesRepresentativeAddEditModal: React.FC<
       firstName: "",
       lastName:"",
       email:"",
+      phone:"",
       password:"",
       commission: "",
     });
@@ -146,9 +151,6 @@ const SalesRepresentativeAddEditModal: React.FC<
     clear();
   };
 
-  console.log("user data", userData);
-  console.log("form data", formData);
-
   return (
     <Modal
       isOpen={isOpen}
@@ -157,7 +159,7 @@ const SalesRepresentativeAddEditModal: React.FC<
       }}
       className="max-w-[800px] p-6 lg:p-10 pt-10 "
     >
-      {/* <Toaster /> */}
+      <Toaster />
 
       <div className="w-full">
         <div className="w-full flex items-center mb-6">
@@ -210,6 +212,23 @@ const SalesRepresentativeAddEditModal: React.FC<
                   className={FORM_INPUT_CLASS}
                 />
                 <span className={REQUIRED_ERROR}>{errors.email || ""}</span>
+              </div>
+              <div className="w-full ">
+                <label className={FORM_INPUT_LABEL}>Phone Number</label>
+                <input
+                  type="text"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={(e) => {
+                      const value = e.target.value;
+                      // Allow only numbers and max 10 digits
+                      if (/^\d{0,10}$/.test(value)) {
+                        setFormData((prev) => ({ ...prev, phone: value }))
+                      }
+                  }}
+                  className={FORM_INPUT_CLASS}
+                />
+                <span className={REQUIRED_ERROR}>{errors.phone || ""}</span>
               </div>
               {
                 type === "add" && (   <div className="w-full ">

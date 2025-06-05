@@ -32,8 +32,7 @@ const SalesRepresentativeTable: React.FC<SalesRepresentativeTableProps> = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [showAddEditModal, setShowAddEditModal] = useState(false);
-  const [showDeleteConfirmModal, setShowDeleteConfirmShowModal] =
-    useState(false);
+  const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false);
   const [editUserData, setEditUserData] = useState<any | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
@@ -68,7 +67,7 @@ const SalesRepresentativeTable: React.FC<SalesRepresentativeTableProps> = ({
 
   const confirmDelete = (id: string) => {
     setSelectedId(id);
-    setShowDeleteConfirmShowModal(true);
+    setShowDeleteConfirmModal(true);
   };
 
   const handleDelete = async () => {
@@ -86,7 +85,7 @@ const SalesRepresentativeTable: React.FC<SalesRepresentativeTableProps> = ({
           : "Failed to delete sales representative"
       );
     } finally {
-      setShowDeleteConfirmShowModal(false);
+      setShowDeleteConfirmModal(false);
       setDeleteLoading(false);
       setSelectedId(null);
     }
@@ -126,6 +125,12 @@ const SalesRepresentativeTable: React.FC<SalesRepresentativeTableProps> = ({
                     isHeader
                     className="px-5 py-4 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400"
                   >
+                    Phone
+                  </TableCell>
+                  <TableCell
+                    isHeader
+                    className="px-5 py-4 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400"
+                  >
                     Commission
                   </TableCell>
                   <TableCell
@@ -151,9 +156,14 @@ const SalesRepresentativeTable: React.FC<SalesRepresentativeTableProps> = ({
                         </span>
                       </TableCell>
                       <TableCell className="px-5 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                        <span className="uppercase">
+                        <span >
                           {`${user.email||""}`}
                         </span>
+                      </TableCell>
+                      <TableCell className="px-5 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                    
+                          {`${user.phone||""}`}
+                      
                       </TableCell>
                       <TableCell className="px-5 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                         {user.commission ? `${user.commission} %` : "N/A"}
@@ -216,7 +226,7 @@ const SalesRepresentativeTable: React.FC<SalesRepresentativeTableProps> = ({
       <DeleteConfirmModal
         isOpen={showDeleteConfirmModal}
         closeModal={() => {
-          setShowDeleteConfirmShowModal(false);
+          setShowDeleteConfirmModal(false);
           setSelectedId(null);
         }}
         onDeleteConfirm={handleDelete}
