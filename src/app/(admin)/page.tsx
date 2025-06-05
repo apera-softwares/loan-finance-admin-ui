@@ -10,6 +10,8 @@ import { FiEdit } from "react-icons/fi";
 
 import toast,{ Toaster } from "react-hot-toast";
 import { AdminDashboard } from "@/components/dashbaord/AdminDashboard";
+import SalesRepDashboard from "@/components/dashbaord/SalesResDashboard";
+import { Roles } from "@/constant/roles";
 
 
 const FORM_INPUT_CLASS = "w-full h-10 text-base bg-white border-b border-gray-200 focus:border-gray-300  text-gray-600 outline-none   transition-all duration-500 " ;
@@ -184,11 +186,9 @@ console.log("loggedINuserprofile dashboardpage",loggedInUserProfile);
     <div className="w-full">
       <Toaster/>
       {
-          loggedInUser?.role==="ADMIN" ? (<div className="w-full">              
+         loggedInUser?.role === Roles.ADMIN ? (<div className="w-full">              
             <AdminDashboard/>
-          </div>):(
-            
-            <div className="w-full">
+          </div>): loggedInUser?.role === Roles.SALES_REP ? (<div className="w-full"><SalesRepDashboard/></div>):(    <div className="w-full">
               {/* Top Bar: Left (Heading), Right (Search + Actions) */}
             <div className="w-full  mb-20 "> 
             {/* <div className="w-full flex flex-col lg:flex-row items-start justify-start lg:justify-between  gap-6  mb-6">
@@ -343,8 +343,9 @@ console.log("loggedINuserprofile dashboardpage",loggedInUserProfile);
        
 
            </div>
-          </div>)
+          </div>) 
       }
+
 
 
     </div>

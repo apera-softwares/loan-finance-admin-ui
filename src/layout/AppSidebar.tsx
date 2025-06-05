@@ -27,6 +27,7 @@ import { logout } from "@/lib/redux/slices/userSlice";
 import { resetUserProfile } from "@/lib/redux/slices/loginPersonProfile";
 import LogoutConfirmationModal from "@/components/common/LogoutConfirmationModal";
 import { LANDING_PAGE_URL } from "@/api";
+import { Roles } from "@/constant/roles";
 
 type NavItem = {
   name: string;
@@ -60,12 +61,40 @@ const navItems: NavItem[] = [
     path: "/sales-reps",
   },
 ];
-const userNavItem: NavItem[] = [
+
+const userNavMenu: NavItem[] = [
   {
     icon: <Graph />,
     name: "Dashboard",
     // subItems: [{ name: "Ecommerce", path: "/", pro: false }],
     path: "/",
+  },
+    {
+    icon: <Graph />,
+    name: "Withdrawal Request",
+    path: "/withdrawal-request",
+
+  },
+];
+
+const salesRepNavMenu: NavItem[] = [
+  {
+    icon: <Graph />,
+    name: "Dashboard",
+    // subItems: [{ name: "Ecommerce", path: "/", pro: false }],
+    path: "/",
+
+  },
+  {
+    icon: <Graph />,
+    name: "Members",
+    path: "/members",
+
+  },
+  {
+    icon: <Graph />,
+    name: "Withdrawal Request",
+    path: "/withdrawal-request",
 
   },
 ];
@@ -106,7 +135,8 @@ const othersItems: NavItem[] = [
 const AppSidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const [isLogoutConfirmModalOpen, setIsLogoutConfirmModalOpen] = useState<boolean>(false);
-  const { userProfile } = useAppSelector((state) => state.userProfile);
+  //const { userProfile } = useAppSelector((state) => state.userProfile);
+  const loggedUser = useAppSelector((state)=>state.user.user);
 
   const pathname = usePathname();
   const dispatch = useAppDispatch();
@@ -300,7 +330,7 @@ const AppSidebar: React.FC = () => {
     localStorage.removeItem("user");
     dispatch(logout());
     dispatch(resetUserProfile());
-    alert("Logout")
+    //alert("Logout")
     // router.replace(LANDING_PAGE_URL)
     window.location.href = LANDING_PAGE_URL;
 
@@ -356,8 +386,7 @@ const AppSidebar: React.FC = () => {
                 )}
               </h2>
               {renderMenuItems(
-                userProfile?.role === "USER"
-                  ? userNavItem: navItems,
+                loggedUser?.role === Roles.ADMIN ? navItems : loggedUser?.role === Roles.SALES_REP ? salesRepNavMenu : userNavMenu,
                 "main"
               )}
 

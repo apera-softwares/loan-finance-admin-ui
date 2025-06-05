@@ -15,8 +15,8 @@ export default function UserManagement() {
         {/* Left: Heading */}
         <div className="w-full lg:w-1/2 ">
           <CommonHeading
-            pageTitle="Members"
-            description="Manage members"
+            pageTitle="withdrawal request"
+            description="Manage withdrawal request"
           />
         </div>
 
