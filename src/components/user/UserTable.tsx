@@ -115,7 +115,7 @@ const UserTable: React.FC<UserTableProps> = ({ searchText,isCreateUserModalOpen}
                                                 {`${user?.UserDetails?.[0]?.interestRate||""}`} %
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                                                <span style={{textTransform: 'capitalize'}}>{`${user?.UserDetails?.[0]?.salesRep?.name||""}`} </span>
+                                                <span style={{textTransform: 'capitalize'}}>{`${user?.UserDetails?.[0]?.salesRep?.firstName||""} ${user?.UserDetails?.[0]?.salesRep?.lastName||""}`} </span>
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                                 {`${user?.UserDetails?.[0]?.status||""}`}
@@ -152,6 +152,7 @@ const UserTable: React.FC<UserTableProps> = ({ searchText,isCreateUserModalOpen}
             </div>
             <UserAddEditModal isOpen={isModalOpen} closeModal={() => {
                 setIsModalOpen(false)
+                setEditUserData(null);
             }} userData={editUserData}  type="update" />
 
         </div>

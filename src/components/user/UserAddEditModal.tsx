@@ -1,16 +1,16 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef } from "react";
 import Button from "../ui/button/Button";
 import { Modal } from "../ui/modal";
 import { Users1 } from "../../icons/index";
 import {  REQUIRED_ERROR } from "@/constant/constantClassName";
 import Select from "../form/Select";
-
 import { CreateUser, UpdateUser } from "@/lib/redux/slices/userManagementSlice";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/lib/redux/store";
+import { useAppDispatch,useAppSelector } from "@/lib/redux/hooks";
 import toast from "react-hot-toast";
-import { fetchSalesReps } from "@/lib/redux/slices/salesRepSlice";
+import axios from "axios";
+import { BACKEND_API } from "@/api";
+import { Roles } from "@/constant/roles";
 
 
 const Status = [
@@ -36,14 +36,8 @@ const FORM_INPUT_LABEL = " block w-full  text-sm font-medium text-gray-600";
 
 const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal, userData, type }) => {
 
-    console.log(userData, 'userDatasssss');
-
-
-    const dispatch = useDispatch<AppDispatch>();
-
-    const [salesReps, setSalesReps] = useState<any[]>([]);
-
-    
+    const dispatch = useAppDispatch();
+    const loggedInUser = useAppSelector((state)=>state.user.user);
     const [formData, setFormData] = useState({
         id: "",
         firstName: "",
@@ -56,7 +50,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
         interestRate:"",
         bankAccountNumber:"",
         routingNumber:"",
-        assignedSalesRep:"",
+        salesRepUserId:"",
         utilizedCredit:"",
     });
 
@@ -67,15 +61,25 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
         email: "",
         phone:"",
         password:"",
-         status:"",
+        status:"",
         availableCredit:"",
         interestRate:"",
         bankAccountNumber:"",
         routingNumber:"",
-        assignedSalesRep:"",
+        salesRepUserId:"",
         utilizedCredit:"",
     })
+    const [salesRepList,setSalesRepList] = useState<any[]>([]);
+    const [salesRepName,setSalesRepName]=useState<string>("");
+    const[selectedSalesRep,setSelectedSalesRep]= useState<any>(null);
+    const[showSalesRepDropdown,setShowSalesRepDropdown] = useState<boolean>(false)
+    const salesRepDropdownRef = useRef<HTMLDivElement | null>(null);
     const isEditMode = type==="update" ? true : false ; 
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
 
     useEffect(() => {
         if (userData) {
@@ -91,29 +95,27 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
             interestRate:userData?.UserDetails?.[0]?.interestRate?.toString()||"",
             bankAccountNumber:userData?.UserDetails?.[0]?.bankAccountNumber||"",
             routingNumber:userData?.UserDetails?.[0]?.routingNumber||"",
-            assignedSalesRep:userData?.UserDetails?.[0]?.assignedSalesRep||"",
+            salesRepUserId:userData?.UserDetails?.[0]?.salesRepUserId||undefined,
             utilizedCredit:userData?.UserDetails?.[0]?.utilizedCredit?.toString()||"",
             });
+            if(userData?.UserDetails?.[0]?.salesRep)
+            {
+              setSelectedSalesRep(userData?.UserDetails?.[0]?.salesRep);
+            }
         }
     }, [userData]);
-
-
+   
     useEffect(() => {
-    dispatch(fetchSalesReps({ page: 1, limit: 1000, name:''})).then((res: any) => {
-                    if (res.meta.requestStatus === "fulfilled") {
-                        if (res.payload) {
-                            setSalesReps(res.payload.data || []);                                                        
-                        } else {
-                            setSalesReps([]);
-                        }
-                    } else {
-                        console.log("Failed to fetch users:", res.payload || "Unknown error");
-                        setSalesReps([])
-                    }
-                });
-        setSalesReps(salesReps);
-        console.log(salesReps, "salesReps11111")
-     }, []);
+
+    const timeoutId = setTimeout(() => {
+      fetchSalesRep();
+    }, 200); 
+
+    return () => clearTimeout(timeoutId);
+    }, [salesRepName]);
+
+
+
 
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -121,15 +123,70 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
-    };
+
+  const handleOpenSalesRepDropdown = () => {
+    setShowSalesRepDropdown(true);
+  };
+
+    const handleSelectSalesRep = (value: any) => {
+
+    if (value) {
+      setSelectedSalesRep(value);
+      setShowSalesRepDropdown(false);
+      setFormData((prev) => ({
+        ...prev,
+        salesRepUserId:value?.id
+      }));
+      setSalesRepList([]);
+      setSalesRepName("");
+      return;
+    }
+    setSelectedSalesRep(undefined);
+    setFormData((prev) => ({
+      ...prev,
+      salesRepUserId:"",
+    }));
 
 
+  };
 
+    const handleClickOutside = (e: MouseEvent) => {
+    if (salesRepDropdownRef.current && !salesRepDropdownRef.current.contains(e.target as Node)) {
+      setShowSalesRepDropdown(false);
+      setSalesRepName("");
+      setSalesRepList([])
+    }
+  };
+
+
+      const fetchSalesRep = async () => {
+
+    if (salesRepName.trim()==="") {
+      setSalesRepList([]);
+      return;
+    }
+  
+    try {
+      const token = loggedInUser?.token;
+      const response = await axios.get(`${BACKEND_API}sales-reps?page=1&limit=20&name=${salesRepName}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'ngrok-skip-browser-warning': 'true',
+          },
+        }
+      );
+      setSalesRepList(response?.data?.data||[]);
+
+    } catch (error: any) {
+      console.log("error while fetching sales reps", error)
+
+    } 
+  };
     const handleEdit = () => {
+
         const payload={
+
             id:formData.id,
             firstName:formData.firstName,
             lastName:formData.lastName,
@@ -137,8 +194,9 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
             phone:formData.phone,
             availableCredit: parseFloat(formData.availableCredit)||undefined,
             interestRate: parseFloat(formData.interestRate)||undefined,
-            assignedSalesRep:formData.assignedSalesRep||undefined,
-            status:formData.status||undefined
+            salesRepUserId:formData.salesRepUserId||userData?.UserDetails?.[0]?.salesRepUserId||undefined,
+            status:formData.status,
+            role:Roles.USER
         }
         
         console.log("user edit payload",payload);
@@ -170,7 +228,8 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
             password:formData.password,
             availableCredit: parseFloat(formData.availableCredit)||undefined,
             interestRate: parseFloat(formData.interestRate)||undefined,
-            assignedSalesRep:formData.assignedSalesRep||undefined,
+            salesRepUserId:formData.salesRepUserId||undefined,
+            role:Roles.USER
         }
         
         console.log("user create payload",payload);
@@ -206,7 +265,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
             interestRate:"",
             bankAccountNumber:"",
             routingNumber:"",
-            assignedSalesRep:"",
+            salesRepUserId:"",
              utilizedCredit:"",
             });
 
@@ -222,9 +281,10 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
             interestRate:"",
             bankAccountNumber:"",
             routingNumber:"",
-            assignedSalesRep:"",
-             utilizedCredit:"",
+            salesRepUserId:"",
+            utilizedCredit:"",
             });
+            setSelectedSalesRep(undefined);
     }
 
     const handleModalClose = ()=>{
@@ -233,8 +293,8 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
           closeModal();
     }
 
-    //console.log("user data",userData);
-    //console.log("form data",formData);
+    console.log("user data",userData);
+    console.log("form data",formData);
     return (
         <Modal
             isOpen={isOpen}
@@ -388,32 +448,69 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                             <span className={REQUIRED_ERROR}>{errors.interestRate|| ""}</span>
                              </div>
 
-                            <div className="w-full ">
-                                <label className={FORM_INPUT_LABEL}>
-                                 Assigned Sales Rep {salesReps?.length}
+                <div className="relative w-full" ref={salesRepDropdownRef}>
+                     <label className={FORM_INPUT_LABEL}>
+                                 Assigned Sales Rep
                                 </label>
+              <input
+                type="text"
+                readOnly
+                value={
+                  selectedSalesRep
+                  ? `${selectedSalesRep?.firstName||""} ${selectedSalesRep?.lastName||""}`   
+                    : ""
+                }
+                onClick={handleOpenSalesRepDropdown}
+                placeholder=""
+                className={`${FORM_INPUT_CLASS} cursor-pointer`}
+              />
+              <span className={`${REQUIRED_ERROR}`}>{""}</span>
 
-                                <select name="assignedSalesRep" 
-                                className={FORM_INPUT_CLASS} onChange={handleSelectChange} value={formData.assignedSalesRep}>
-                                    {salesReps?.map((_salesRep:any)=>(
-                                        <option key={_salesRep.id} value={_salesRep.id}>{_salesRep.name}</option>
-                                    ))}
-                                </select>
-                                {/* <input
-                                type="text"
-                                name="assignedSalesRep"
-                                value={formData.assignedSalesRep}
-                                onChange={handleInputChange}
-                                className={FORM_INPUT_CLASS}
-                            /> */}
-                            <span className={REQUIRED_ERROR}>{errors.assignedSalesRep || ""}</span>
-                            </div>
-                      
-
+              {showSalesRepDropdown && (
+                <div className="absolute z-50 top-full left-0 w-full bg-white border border-gray-200 rounded-md shadow-lg mt-1 px-2 py-2">
+                  {selectedSalesRep && (
+                    <div className="mb-2 flex items-center justify-between gap-2 px-3 py-1 bg-gray-100 rounded">
+                      <span className="text-sm text-gray-800">
+                        {`${selectedSalesRep?.firstName||""} ${selectedSalesRep?.lastName||""}`
+                        }
+                      </span>
+                      <button
+                        onClick={() => handleSelectSalesRep(null)}
+                        className="ml-2 text-gray-500 hover:text-red-500 transition-all duration-300 "
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  )}
+                  <input
+                    type="text"
+                    placeholder="Search "
+                    value={salesRepName}
+                    onChange={(e) => setSalesRepName(e.target.value)}
+                    className="w-full px-3 py-2 rounded-md outline-none border border-gray-200 mb-1 "
+                    autoFocus
+                  />
+                  <ul className="max-h-48 overflow-y-auto">
+                    {salesRepList.length > 0 ? (
+                      salesRepList.map((salesRepUser) => (
+                        <li
+                          key={salesRepUser.id}
+                          onClick={() => handleSelectSalesRep(salesRepUser)}
+                          className="px-3 py-2 hover:bg-gray-100 rounded cursor-pointer"
+                        >
+                          {`${salesRepUser?.firstName||""} ${salesRepUser?.firstName||""}`}
+                        </li>
+                      ))
+                    ) : (
+                      <li className=" px-3 py-1 text-gray-400">{salesRepName.trim().length > 0 && salesRepList.length === 0 ? "No result found" : ""}</li>
+                    )}
+                  </ul>
+                </div>
+              )}
+            </div>
 
                             {
                                 type==="update" && <>
-
 
                                 
                             <div className="w-full">
