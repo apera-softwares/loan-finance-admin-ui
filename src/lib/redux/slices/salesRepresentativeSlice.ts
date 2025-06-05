@@ -103,7 +103,7 @@ export const deleteSalesRepresentative = createAsyncThunk(
       const state: any = thunkAPI.getState();
       const token = state.user?.user?.token;
 
-      const response = await axios.delete(
+      await axios.delete(
         `${BACKEND_API}user/${id}`,
         {
           headers: {

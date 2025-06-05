@@ -152,6 +152,7 @@ const UserTable: React.FC<UserTableProps> = ({ searchText,isCreateUserModalOpen}
             </div>
             <UserAddEditModal isOpen={isModalOpen} closeModal={() => {
                 setIsModalOpen(false)
+                setEditUserData(null);
             }} userData={editUserData}  type="update" />
 
         </div>
