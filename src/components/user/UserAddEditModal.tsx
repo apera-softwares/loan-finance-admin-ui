@@ -95,9 +95,13 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
             interestRate:userData?.UserDetails?.[0]?.interestRate?.toString()||"",
             bankAccountNumber:userData?.UserDetails?.[0]?.bankAccountNumber||"",
             routingNumber:userData?.UserDetails?.[0]?.routingNumber||"",
-            salesRepUserId:userData?.UserDetails?.[0]?.salesRepUserId||"",
+            salesRepUserId:userData?.UserDetails?.[0]?.salesRepUserId||undefined,
             utilizedCredit:userData?.UserDetails?.[0]?.utilizedCredit?.toString()||"",
             });
+            if(userData?.UserDetails?.[0]?.salesRep)
+            {
+              setSelectedSalesRep(userData?.UserDetails?.[0]?.salesRep);
+            }
         }
     }, [userData]);
    
@@ -137,10 +141,10 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
       setSalesRepName("");
       return;
     }
-    setSelectedSalesRep(null);
+    setSelectedSalesRep(undefined);
     setFormData((prev) => ({
       ...prev,
-      teamMemberId:"",
+      salesRepUserId:"",
     }));
 
 
@@ -190,7 +194,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
             phone:formData.phone,
             availableCredit: parseFloat(formData.availableCredit)||undefined,
             interestRate: parseFloat(formData.interestRate)||undefined,
-            salesRepUserId:formData.salesRepUserId||undefined,
+            salesRepUserId:formData.salesRepUserId||userData?.UserDetails?.[0]?.salesRepUserId||undefined,
             status:formData.status,
             role:Roles.USER
         }
@@ -280,7 +284,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
             salesRepUserId:"",
             utilizedCredit:"",
             });
-            setSelectedSalesRep(null);
+            setSelectedSalesRep(undefined);
     }
 
     const handleModalClose = ()=>{
