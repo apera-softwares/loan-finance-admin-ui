@@ -59,7 +59,7 @@ export default function UserDropdown() {
       <button
         onClick={toggleDropdown}
         className="flex items-center text-gray-700 dark:text-gray-400 dropdown-toggle">
-        <span className="mr-3 overflow-hidden rounded-full h-5 w-5 flex items-center justify-center text-gray-300">
+        <span className="mr-1 overflow-hidden rounded-full h-5 w-5 flex items-center justify-center text-gray-300">
           {/* <Image
             width={44}
             height={44}
@@ -69,12 +69,12 @@ export default function UserDropdown() {
         </span>
         <div className="">
           <div className="flex items-center w-full">
-            <span className="block mr-1 font-medium text-theme-sm">{userProfile?.firstName}</span>
+            {/* <span className="block mr-1 font-medium text-theme-sm">{userProfile?.firstName}</span> */}
             <svg
               className={`stroke-gray-500 dark:stroke-gray-400 transition-transform duration-200 ${isOpen ? "rotate-180" : ""
                 }`}
-              width="18"
-              height="20"
+              width="24"
+              height="24"
               viewBox="0 0 18 20"
               fill="none"
               xmlns="http://www.w3.org/2000/svg">
@@ -86,7 +86,7 @@ export default function UserDropdown() {
                 strokeLinejoin="round" />
             </svg>
           </div>
-          <span className="text-theme-xs text-start  w-full flex justify-start">{userProfile?.role}</span>
+          {/* <span className="text-theme-xs text-start  w-full flex justify-start">{userProfile?.role}</span> */}
         </div>
 
       </button>
