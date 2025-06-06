@@ -7,7 +7,7 @@ import {
     TableRow,
 } from "../ui/table";
 // import Badge from "../ui/badge/Badge";
-import { FiEdit } from "react-icons/fi";
+// import { FiEdit } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/redux/store";
 import { fetchUsers } from "@/lib/redux/slices/userManagementSlice";
@@ -15,6 +15,7 @@ import Spinner from "../common/Spinner";
 import Pagination from "../tables/Pagination";
 import UserAddEditModal from "./UserAddEditModal";
 import { Toaster } from "react-hot-toast";
+import { TABLE_ACTION_BUTTON_CLASS,TABLE_CELL_HEADER_CLASS, TABLE_CELL_REGULAR_CLASS, TABLE_HEADER_CLASS, TABLE_RAW_CLASS } from "@/constant/constantClassName";
 
 interface UserTableProps {
     searchText: string;
@@ -73,63 +74,63 @@ const UserTable: React.FC<UserTableProps> = ({ searchText,isCreateUserModalOpen}
                         <Spinner />
                     ) : (
                         <Table className="">
-                            <TableHeader className="border-b border-gray-100  dark:border-white/[0.05]">
+                            <TableHeader className={`${TABLE_HEADER_CLASS}`}>
                                 <TableRow>
-                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">S.No</TableCell>
-                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Name</TableCell>
-                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Email</TableCell>
-                                      <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Phone</TableCell>
-                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Available Credit</TableCell>
-                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Utilized Credit</TableCell>
-                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Interest Rate</TableCell>
-                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Assigned Sales Rep</TableCell>
-                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Status</TableCell>
-                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Action</TableCell>
+                                    <TableCell isHeader className={`${TABLE_CELL_HEADER_CLASS}`}>S.No</TableCell>
+                                    <TableCell isHeader className={`${TABLE_CELL_HEADER_CLASS}`}>Name</TableCell>
+                                    <TableCell isHeader className={`${TABLE_CELL_HEADER_CLASS}`}>Email</TableCell>
+                                      <TableCell isHeader className={`${TABLE_CELL_HEADER_CLASS}`}>Phone</TableCell>
+                                    <TableCell isHeader className={`${TABLE_CELL_HEADER_CLASS}`}>Available Credit</TableCell>
+                                    <TableCell isHeader className={`${TABLE_CELL_HEADER_CLASS}`}>Utilized Credit</TableCell>
+                                    <TableCell isHeader className={`${TABLE_CELL_HEADER_CLASS}`}>Interest Rate</TableCell>
+                                    <TableCell isHeader className={`${TABLE_CELL_HEADER_CLASS}`}>Assigned Sales Rep</TableCell>
+                                    <TableCell isHeader className={`${TABLE_CELL_HEADER_CLASS}`}>Status</TableCell>
+                                    <TableCell isHeader className={`${TABLE_CELL_HEADER_CLASS}`}>Action</TableCell>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 {usersData.length > 0 ? (
                                     usersData.map((user: any, index: number) => (
-                                        <TableRow key={user?.id}>
-                                            <TableCell className="px-5 py-4 text-start">
-                                                <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
+                                        <TableRow key={user?.id} className={`${TABLE_RAW_CLASS}`}>
+                                            <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
+                                                <span className="font-medium text-[#2A2A2A]">
                                                     {(currentPage - 1) * ITEM_PER_PAGE + index + 1}
                                                 </span>
                                             </TableCell>
-                                            <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400" >
+                                            <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`} >
                                                 <span style={{textTransform: 'capitalize'}}>{`${user?.firstName||""} ${user?.lastName||""}`}</span>
                                             </TableCell>
-                                            <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                                            <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
                                                {`${user?.email||""}`}
                                             </TableCell>
-                                            <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                                            <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
                                                {`${user?.phone||""}`}
                                             </TableCell>
-                                            <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+                                            <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
                                                 {USDollar.format(`${user?.UserDetails[0]?.availableCredit||0}`)}
                                             </TableCell>
-                                            <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+                                            <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
                                                 {USDollar.format(`${user?.UserDetails?.[0]?.utilizedCredit|| 0}`)}
                                             </TableCell>
-                                            <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+                                            <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
                                                 {`${user?.UserDetails?.[0]?.interestRate||""}`} %
                                             </TableCell>
-                                            <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+                                            <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
                                                 <span style={{textTransform: 'capitalize'}}>{`${user?.UserDetails?.[0]?.salesRep?.firstName||""} ${user?.UserDetails?.[0]?.salesRep?.lastName||""}`} </span>
                                             </TableCell>
-                                            <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                                            <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
                                                 {`${user?.UserDetails?.[0]?.status||""}`}
                                             </TableCell>
                                            
-                                                <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                                                    <div className="flex items-center gap-1 cursor-pointer" onClick={() => {
+                                                <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
+                                                    <button className={`${TABLE_ACTION_BUTTON_CLASS}`} onClick={() => {
 
                                                         if(user?.role==="ADMIN") return ;
                                                         setEditUserData(user)
                                                         setIsModalOpen(true)
                                                     }}>
-                                                        <FiEdit className="h-5 w-5 " />Edit
-                                                    </div>
+                                                        Edit
+                                                    </button>
                                                 </TableCell>
                                         
                                         </TableRow>
@@ -137,7 +138,7 @@ const UserTable: React.FC<UserTableProps> = ({ searchText,isCreateUserModalOpen}
                                     ))
                                 ) : (
                                     <TableRow>
-                                        <TableCell className="text-center py-6 text-gray-500">
+                                        <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
                                             No users found.
                                         </TableCell>
                                     </TableRow>

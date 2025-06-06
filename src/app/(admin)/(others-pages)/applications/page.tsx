@@ -110,25 +110,7 @@ export default function UserManagement() {
             </div> */}
             {/* Table */}
             <div className="w-full">
-                {/* <UserTable searchText={SearchInput} role="A_TEAM" order="" from="team-a" /> */}
                 <ReferralTable searchText={SearchInput} />
-
-                         {/* <div className=" overflow-x-auto  no-scrollbar my-6 ">
-                          <div className=" max-w-[900px] flex space-x-5 ">
-                {SERVICES && SERVICES?.length > 0 ? (
-                    SERVICES?.map((serviceItems: any) => (
-                        <ServiceCard
-                            key={serviceItems?.id}
-                            title={serviceItems?.title}
-                            points={serviceItems?.servicesPoints}
-                            images={serviceItems?.images}
-                        />
-                    ))
-                ) : (
-                    <div></div>
-                )}
-            </div>
-            </div> */}
                 <UserAddEditModal isOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} type="add" />
             </div>
         </div>
