@@ -15,7 +15,7 @@ import Pagination from "../tables/Pagination";
 import SalesRepresentativeAddEditModal from "./SalesRepresentativeAddEditModal";
 import DeleteConfirmModal from "../common/DeleteConfirmModal";
 import toast, { Toaster } from "react-hot-toast";
-import { TABLE_ACTION_BUTTON_CLASS,TABLE_CELL_HEADER_CLASS, TABLE_CELL_REGULAR_CLASS, TABLE_HEADER_CLASS, TABLE_RAW_CLASS } from "@/constant/constantClassName";
+import {TABLE_CLASS, TABLE_ACTION_BUTTON_CLASS,TABLE_CELL_HEADER_CLASS, TABLE_CELL_REGULAR_CLASS, TABLE_HEADER_CLASS, TABLE_RAW_CLASS } from "@/constant/constantClassName";
 
 interface SalesRepresentativeTableProps {
   searchText: string;
@@ -93,17 +93,18 @@ const SalesRepresentativeTable: React.FC<SalesRepresentativeTableProps> = ({
   };
 
   return (
-    <div className="w-full overflow-hidden rounded-xl bg-white dark:bg-white/[0.03] shadow-md">
-      <div className="w-full overflow-x-auto">
+    <div className="w-full ">
+      <div className="w-full overflow-hidden  rounded-t-[14px]  dark:bg-white/[0.03]">
+        <div className="w-full overflow-x-auto">
         <Toaster />
 
         <div className="w-full  ">
           {loading ? (
             <Spinner />
           ) : (
-            <Table>
-              <TableHeader className={`${TABLE_HEADER_CLASS}`}>
-                <TableRow>
+            <Table className={`${TABLE_CLASS}`}>
+              <TableHeader>
+                <TableRow className={`${TABLE_HEADER_CLASS}`}>
                   <TableCell
                     isHeader
                     className={`${TABLE_CELL_HEADER_CLASS}`}
@@ -145,7 +146,7 @@ const SalesRepresentativeTable: React.FC<SalesRepresentativeTableProps> = ({
               <TableBody>
                 {salesRepresentativesList.length > 0 ? (
                   salesRepresentativesList.map((user: any, index: number) => (
-                    <TableRow key={user?.id} className={`${TABLE_RAW_CLASS} mb-2`}>
+                    <TableRow key={user?.id} className={`${TABLE_RAW_CLASS}`}>
                       <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
                         <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
                           {(currentPage - 1) * ITEM_PER_PAGE + index + 1}
@@ -206,7 +207,8 @@ const SalesRepresentativeTable: React.FC<SalesRepresentativeTableProps> = ({
           )}
         </div>
       </div>
-      <div className=" w-full flex justify-end px-4 py-6">
+      </div>
+      <div className=" w-full flex justify-end px-3 py-5">
         {totalPages > 0 && (
           <Pagination
             currentPage={currentPage}

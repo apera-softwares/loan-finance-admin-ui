@@ -15,7 +15,7 @@ import Spinner from "../common/Spinner";
 import Pagination from "../tables/Pagination";
 import UserAddEditModal from "./UserAddEditModal";
 import { Toaster } from "react-hot-toast";
-import { TABLE_ACTION_BUTTON_CLASS,TABLE_CELL_HEADER_CLASS, TABLE_CELL_REGULAR_CLASS, TABLE_HEADER_CLASS, TABLE_RAW_CLASS } from "@/constant/constantClassName";
+import { TABLE_CLASS,TABLE_ACTION_BUTTON_CLASS,TABLE_CELL_HEADER_CLASS, TABLE_CELL_REGULAR_CLASS, TABLE_HEADER_CLASS, TABLE_RAW_CLASS } from "@/constant/constantClassName";
 
 interface UserTableProps {
     searchText: string;
@@ -65,17 +65,17 @@ const UserTable: React.FC<UserTableProps> = ({ searchText,isCreateUserModalOpen}
     };
 
     return (
-        <div className="w-full overflow-hidden rounded-xl bg-white dark:bg-white/[0.03] shadow-md">
-            <div className="w-full overflow-x-auto">
+        <div className="w-full">
+            <div className="w-full overflow-hidden rounded-t-[14px] dark:bg-white/[0.03]">
+                <div className="w-full overflow-x-auto">
                 <Toaster />
-
-                <div className="w-full max-w-[900px] ">
+                <div className="w-full  ">
                     {loading ? (
                         <Spinner />
                     ) : (
-                        <Table className="">
-                            <TableHeader className={`${TABLE_HEADER_CLASS}`}>
-                                <TableRow>
+                        <Table className={`${TABLE_CLASS}`}>
+                            <TableHeader >
+                                <TableRow className={`${TABLE_HEADER_CLASS}`}>
                                     <TableCell isHeader className={`${TABLE_CELL_HEADER_CLASS}`}>S.No</TableCell>
                                     <TableCell isHeader className={`${TABLE_CELL_HEADER_CLASS}`}>Name</TableCell>
                                     <TableCell isHeader className={`${TABLE_CELL_HEADER_CLASS}`}>Email</TableCell>
@@ -148,8 +148,12 @@ const UserTable: React.FC<UserTableProps> = ({ searchText,isCreateUserModalOpen}
                     )}
                 </div>
             </div>
-            <div className=" w-full flex justify-end px-4 py-6">
-                <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+            </div>
+            <div className=" w-full flex justify-end px-3 py-5">
+                {
+                   totalPages > 0 && (  <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />)
+                }
+              
             </div>
             <UserAddEditModal isOpen={isModalOpen} closeModal={() => {
                 setIsModalOpen(false)

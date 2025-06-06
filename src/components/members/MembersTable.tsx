@@ -11,7 +11,7 @@ import Spinner from "../common/Spinner";
 import Pagination from "../tables/Pagination";
 import { BACKEND_API } from "@/api";
 import axios from "axios";
-import { TABLE_CELL_HEADER_CLASS, TABLE_CELL_REGULAR_CLASS, TABLE_HEADER_CLASS, TABLE_RAW_CLASS } from "@/constant/constantClassName";
+import { TABLE_CLASS,TABLE_CELL_HEADER_CLASS, TABLE_CELL_REGULAR_CLASS, TABLE_HEADER_CLASS, TABLE_RAW_CLASS } from "@/constant/constantClassName";
 
 
 interface MembersTableProps {
@@ -77,15 +77,16 @@ const MembersTable: React.FC<MembersTableProps> = ({
 
 
   return (
-    <div className="w-full overflow-hidden rounded-xl bg-white dark:bg-white/[0.03] shadow-md">
-      <div className="w-full overflow-x-auto">
+    <div className="w-full">
+      <div className="w-full overflow-hidden rounded-t-[14px] dark:bg-white/[0.03]">
+        <div className="w-full overflow-x-auto">
         <div className="w-full  ">
           {loading ? (
             <Spinner />
           ) : (
-            <Table>
-              <TableHeader className={`${TABLE_HEADER_CLASS}`}>
-                <TableRow>
+            <Table className={`${TABLE_CLASS}`}>
+              <TableHeader >
+                <TableRow className={`${TABLE_HEADER_CLASS}`}>
                   <TableCell
                     isHeader
                     className={`${TABLE_CELL_HEADER_CLASS}`}
@@ -152,7 +153,8 @@ const MembersTable: React.FC<MembersTableProps> = ({
           )}
         </div>
       </div>
-      <div className=" w-full flex justify-end px-4 py-6">
+      </div>
+      <div className=" w-full flex justify-end px-4 py-5">
         {totalPages > 0 && (
           <Pagination
             currentPage={currentPage}
