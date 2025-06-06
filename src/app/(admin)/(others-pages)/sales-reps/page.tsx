@@ -16,6 +16,11 @@ export default function SalesReps() {
           searchText={SearchInput}
           isCreateUserModalOpen={isModalOpen}
         />
+                <div className="w-full flex items-center justify-end mt-8 md:mt-12 ">
+                    <button onClick={()=>setIsModalOpen(true)} className=" px-5 py-3 bg-primary text-white text-sm font-medium rounded-full ">
+                        Create New
+                    </button>
+                </div>
         <SalesRepresentativeAddEditModal
           isOpen={isModalOpen}
           closeModal={() => setIsModalOpen(false)}

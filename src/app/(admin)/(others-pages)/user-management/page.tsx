@@ -12,6 +12,11 @@ export default function UserManagement() {
             <Toaster />
             <div className="w-full">
                 <UserTable searchText={searchInput} isCreateUserModalOpen={isModalOpen}  />
+                <div className="w-full flex items-center justify-end mt-8 md:mt-12 ">
+                    <button onClick={()=>setIsModalOpen(true)} className=" px-5 py-3 bg-primary text-white text-sm font-medium rounded-full ">
+                        Create User
+                    </button>
+                </div>
                 <UserAddEditModal isOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} type="add" />
 
             </div>
