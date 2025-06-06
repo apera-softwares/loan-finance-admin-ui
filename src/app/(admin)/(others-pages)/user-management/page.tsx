@@ -6,12 +6,12 @@ import { Toaster } from "react-hot-toast";
 
 export default function UserManagement() {
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const [SearchInput, setSearchInput] = useState("")
+    const [searchInput,] = useState("")
     return (
         <div className="w-full ">
             <Toaster />
             <div className="w-full">
-                <UserTable searchText={SearchInput} isCreateUserModalOpen={isModalOpen}  />
+                <UserTable searchText={searchInput} isCreateUserModalOpen={isModalOpen}  />
                 <UserAddEditModal isOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} type="add" />
 
             </div>

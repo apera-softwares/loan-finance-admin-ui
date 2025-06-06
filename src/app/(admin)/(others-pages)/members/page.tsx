@@ -2,9 +2,11 @@
 import React, { useState } from "react";
 import { Toaster } from "react-hot-toast";
 import MembersTable from "@/components/members/MembersTable";
-export default function UserManagement() {
 
-  const [SearchInput, setSearchInput] = useState("");
+
+export default function Members() {
+
+  const [SearchInput] = useState("");
 
   return (
     <div className="w-full ">

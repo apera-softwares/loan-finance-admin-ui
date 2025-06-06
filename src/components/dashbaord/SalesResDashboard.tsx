@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import CommonHeading from "../common/CommonHeading";
 
 const  SalesRepDashboard = () => {
     return (

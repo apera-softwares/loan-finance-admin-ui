@@ -1,9 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { Toaster } from "react-hot-toast";
-export default function UserManagement() {
-
-  const [SearchInput, setSearchInput] = useState("");
+export default function WithdrawalRequest() {
 
   return (
     <div className="w-full ">
