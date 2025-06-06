@@ -3,7 +3,7 @@ import React, { useEffect, useState,useRef } from "react";
 import Button from "../ui/button/Button";
 import { Modal } from "../ui/modal";
 import { Users1 } from "../../icons/index";
-import {  REQUIRED_ERROR } from "@/constant/constantClassName";
+import { MODAL_FORM_INPUT_CLASS,MODAL_INPUT_LABEL_CLASS, REQUIRED_ERROR } from "@/constant/constantClassName";
 import Select from "../form/Select";
 import { CreateUser, UpdateUser } from "@/lib/redux/slices/userManagementSlice";
 import { useAppDispatch,useAppSelector } from "@/lib/redux/hooks";
@@ -29,9 +29,6 @@ interface UserAddEditModalProps {
     type?: string
 }
 
-
-const FORM_INPUT_CLASS = "w-full h-10 text-base bg-white border-b border-gray-200 focus:border-gray-300  text-gray-600 outline-none   transition-all duration-500 " ;
-const FORM_INPUT_LABEL = " block w-full  text-sm font-medium text-gray-600";
 
 
 const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal, userData, type }) => {
@@ -325,7 +322,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
 
                         <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6">
                             <div className="w-full ">
-                                <label className={FORM_INPUT_LABEL}>
+                                <label className={MODAL_INPUT_LABEL_CLASS}>
                                  First Name
                                 </label>
                                 <input
@@ -333,13 +330,13 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                                 name="firstName"
                                 value={formData.firstName}
                                 onChange={handleInputChange}
-                                className={FORM_INPUT_CLASS}
+                                className={MODAL_FORM_INPUT_CLASS}
                             />
                             <span className={REQUIRED_ERROR}>{errors.firstName || ""}</span>
                             </div>
 
                              <div className="w-full ">
-                                 <label className={FORM_INPUT_LABEL}>
+                                 <label className={MODAL_INPUT_LABEL_CLASS}>
                                  Last Name
                                 </label>
                                 <input
@@ -347,12 +344,12 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                                 name="lastName"
                                 value={formData.lastName}
                                 onChange={handleInputChange}
-                                className={FORM_INPUT_CLASS}
+                                className={MODAL_FORM_INPUT_CLASS}
                             />
                             <span className={REQUIRED_ERROR}>{errors.lastName || ""}</span>
                              </div>
                             <div className="w-full">
-                                 <label className={FORM_INPUT_LABEL}>
+                                 <label className={MODAL_INPUT_LABEL_CLASS}>
                                  Email
                                 </label>
                                 <input
@@ -360,18 +357,18 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                                 name="email"
                                 value={formData.email}
                                 onChange={handleInputChange}
-                                className={FORM_INPUT_CLASS}
+                                className={MODAL_FORM_INPUT_CLASS}
                             />
                             <span className={REQUIRED_ERROR}>{errors.email || ""}</span>
                             </div>
                             <div className="w-full">
-                                 <label className={FORM_INPUT_LABEL}>
+                                 <label className={MODAL_INPUT_LABEL_CLASS}>
                                  Phone
                                 </label>
                                 <input
                                 type="text"
                                 name="phone"
-                                className={FORM_INPUT_CLASS}
+                                className={MODAL_FORM_INPUT_CLASS}
                                 value={formData.phone}
                                 
                                  onChange={(e) => {
@@ -387,7 +384,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
 
                              {
                                 type==="add" && ( <div className="w-full">
-                                <label className={FORM_INPUT_LABEL}>
+                                <label className={MODAL_INPUT_LABEL_CLASS}>
                                  Password
                                 </label>
                                 <input
@@ -395,7 +392,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                                 name="password"
                                 value={formData.password}
                                 onChange={handleInputChange}
-                                className={FORM_INPUT_CLASS}
+                                className={MODAL_FORM_INPUT_CLASS}
                                  />
                                  <span className={REQUIRED_ERROR}>{errors.password|| ""}</span>
                                  </div>
@@ -403,7 +400,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                              }
 
                              <div className="w-full">
-                                 <label className={FORM_INPUT_LABEL}>
+                                 <label className={MODAL_INPUT_LABEL_CLASS}>
                                  Available Credit
                                 </label>
                             <input
@@ -420,12 +417,12 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                                                            }));
                                 }
                                 }}
-                                className={FORM_INPUT_CLASS}
+                                className={MODAL_FORM_INPUT_CLASS}
                             />
                             <span className={REQUIRED_ERROR}>{errors.availableCredit|| ""}</span>
                              </div>
                                 <div className="w-full ">
-                                <label className={FORM_INPUT_LABEL}>
+                                <label className={MODAL_INPUT_LABEL_CLASS}>
                                  Interest Rate (%)
                                 </label>
                                <input
@@ -443,13 +440,13 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                                   }
                                  }
                                 }}
-                                className={FORM_INPUT_CLASS}
+                                className={MODAL_FORM_INPUT_CLASS}
                             />
                             <span className={REQUIRED_ERROR}>{errors.interestRate|| ""}</span>
                              </div>
 
                 <div className="relative w-full" ref={salesRepDropdownRef}>
-                     <label className={FORM_INPUT_LABEL}>
+                     <label className={MODAL_INPUT_LABEL_CLASS}>
                                  Assigned Sales Rep
                                 </label>
               <input
@@ -462,21 +459,21 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                 }
                 onClick={handleOpenSalesRepDropdown}
                 placeholder=""
-                className={`${FORM_INPUT_CLASS} cursor-pointer`}
+                className={`${MODAL_FORM_INPUT_CLASS} cursor-pointer`}
               />
               <span className={`${REQUIRED_ERROR}`}>{""}</span>
 
               {showSalesRepDropdown && (
-                <div className="absolute z-50 top-full left-0 w-full bg-white border border-gray-200 rounded-md shadow-lg mt-1 px-2 py-2">
+                <div className="absolute z-50 top-full left-0 w-full bg-white border border-[#D8D8D8] rounded-md shadow-lg mt-1 px-2 py-2">
                   {selectedSalesRep && (
-                    <div className="mb-2 flex items-center justify-between gap-2 px-3 py-1 bg-gray-100 rounded">
-                      <span className="text-sm text-gray-800">
+                    <div className="mb-2 flex items-center justify-between gap-2 px-3 py-1 bg-primary hover:bg-primary-hover text-white rounded">
+                      <span className="text-sm ">
                         {`${selectedSalesRep?.firstName||""} ${selectedSalesRep?.lastName||""}`
                         }
                       </span>
                       <button
                         onClick={() => handleSelectSalesRep(null)}
-                        className="ml-2 text-gray-500 hover:text-red-500 transition-all duration-300 "
+                        className="ml-2 text-white hover:text-red-500 transition-all duration-300 "
                       >
                         ✕
                       </button>
@@ -487,7 +484,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                     placeholder="Search "
                     value={salesRepName}
                     onChange={(e) => setSalesRepName(e.target.value)}
-                    className="w-full px-3 py-2 rounded-md outline-none border border-gray-200 mb-1 "
+                    className="w-full px-3 py-2 rounded-md outline-none border border-[#D8D8D8] mb-1 "
                     autoFocus
                   />
                   <ul className="max-h-48 overflow-y-auto">
@@ -496,7 +493,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                         <li
                           key={salesRepUser.id}
                           onClick={() => handleSelectSalesRep(salesRepUser)}
-                          className="px-3 py-2 hover:bg-gray-100 rounded cursor-pointer"
+                          className="px-3 py-2  hover:bg-primary hover:text-white rounded cursor-pointer transition-all  duration-300"
                         >
                           {`${salesRepUser?.firstName||""} ${salesRepUser?.firstName||""}`}
                         </li>
@@ -514,7 +511,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
 
                                 
                             <div className="w-full">
-                            <label className={FORM_INPUT_LABEL}>
+                            <label className={MODAL_INPUT_LABEL_CLASS}>
                                  Status 
                             </label>
                             <Select
@@ -529,7 +526,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
 
 
                                 <div className="w-full">
-                                <label className={FORM_INPUT_LABEL}>
+                                <label className={MODAL_INPUT_LABEL_CLASS}>
                                  Utilized Credit
                                 </label>
                                  <input
@@ -547,13 +544,13 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                                                            }));
                                 }
                                 }}
-                                className={FORM_INPUT_CLASS}
+                                className={MODAL_FORM_INPUT_CLASS}
                             />
                             <span className={REQUIRED_ERROR}>{errors.utilizedCredit|| ""}</span>
                             </div>
 
                             <div className="w-full">
-                                <label className={FORM_INPUT_LABEL}>
+                                <label className={MODAL_INPUT_LABEL_CLASS}>
                                  Bank Account Number
                                 </label>
                                 <input
@@ -562,13 +559,13 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                                 readOnly={isEditMode}
                                 value={formData.bankAccountNumber}
                                 onChange={handleInputChange}
-                                className={FORM_INPUT_CLASS}
+                                className={MODAL_FORM_INPUT_CLASS}
                             />
                             <span className={REQUIRED_ERROR}>{errors.bankAccountNumber|| ""}</span>
                            </div>
                             <div className="w-full">
 
-                                 <label className={FORM_INPUT_LABEL}>
+                                 <label className={MODAL_INPUT_LABEL_CLASS}>
                                  Routing Number
                                 </label>
                                 <input
@@ -577,7 +574,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                                 readOnly={isEditMode}
                                 value={formData.routingNumber}
                                 onChange={handleInputChange}
-                                className={FORM_INPUT_CLASS}
+                                className={MODAL_FORM_INPUT_CLASS}
                             />
                             <span className={REQUIRED_ERROR}>{errors.routingNumber|| ""}</span>
                             </div>
@@ -591,7 +588,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                         </div>
                     </div>
                     <div className="flex items-center justify-end w-full gap-3 mt-8">
-                    <Button size="sm" className="btn-primary" onClick={type==="add" ? handleAddUser:handleEdit}>
+                    <Button size="sm" className="" onClick={type==="add" ? handleAddUser:handleEdit}>
                         {
                             type==="add" ? "Create User" : "Update User"
                         }

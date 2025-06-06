@@ -70,11 +70,11 @@ export const Modal: React.FC<ModalProps> = ({
         {showCloseButton && (
           <button
             onClick={onClose}
-            className="absolute right-3 top-3 z-999 flex  items-center justify-center rounded-full transition-colors hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:right-6 md:top-6   "
+            className="absolute right-3 top-3 z-999 flex  items-center justify-center rounded-full transition-colors bg-[#993456] text-white dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:right-6 md:top-6   "
           >
             <svg
-              width="34"
-              height="34"
+              width="24"
+              height="24"
               viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"

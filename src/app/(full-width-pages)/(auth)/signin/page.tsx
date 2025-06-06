@@ -1,6 +1,6 @@
 "use client";
 // import AuthRigthSidebar from "@/components/AuthRigthSidebar";
-import { INPUT_CLASS,INPUT_REQUIRED_ERROR_CLASS } from "@/constant/constantClassName";
+import { INPUT_REQUIRED_ERROR_CLASS } from "@/constant/constantClassName";
 // import Image from "next/image";
 import { useState,useEffect } from "react";
 // import Logo from '../../../../assets/logo/logo.png'
@@ -11,6 +11,7 @@ import { useAppDispatch,useAppSelector } from "@/lib/redux/hooks";
 import Loader from "@/components/ui/loader/Loader";
 import { getUserProfile } from "@/lib/redux/slices/loginPersonProfile";
 // import Checkbox from "@/components/form/input/Checkbox";
+import { FORM_INPUT_CLASS,FORM_INPUT_LABEL_CLASS } from "@/constant/constantClassName";
 
 export default function Login() {
     const [formData, setFormData] = useState({
@@ -101,24 +102,24 @@ export default function Login() {
 
 
     return (
-        <div className="flex flex-col md:flex-row min-h-screen">
-            {/* Left side - Form */}
+        <div className="w-full ">
+        
+            <div className="w-full  flex  justify-center items-center     py-14 lg:py-20 ">
 
-            <div className="w-full  flex flex-col justify-center items-center     py-10 ">
-                <div className=" absolute top-8  md:left-8   ">
-                  <h1 className=" text-3xl md:text-4xl font-bold text-center md:text-start  ">Lending Square</h1>
-                </div>
-                 <div className="w-full max-w-[482px] mx-auto  mt-12 sm:mt-24 border border-gray-100  rounded-2xl px-6 py-8 shadow-lg bg-gray-100  ">
-                        <h2 className=" text-center  text-2xl md:text-3xl font-bold text-slate-800 mb-4">
-                    Login                </h2>
-                <p className="text-center md:text-start text-base sm:text-lg text-slate-800 mb-8">
-                  
-                </p>
-                <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="w-full max-w-[482px] mx-auto  border border-[#AEAEAE]  rounded-2xl px-6 lg:px-12 py-12 lg:py-20 shadow-lg   ">
+                    <div className="w-full ">
+                             <div className="w-full mb-8 text-[#202224] ">
+                     <h2 className=" text-center  text-2xl md:text-3xl font-semibold  mb-4">
+                    Login to Account                </h2>
+                    <p className="text-center  text-base sm:text-lg font-medium ">
+                       Please enter your email and password to continue
+                     </p>
+                 </div>
+                <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8">
 
-                    <div>
-                        <label className="block text-sm font-bold text-black mb-1">
-                            Email
+                    <div className="w-full">
+                        <label className={`${FORM_INPUT_LABEL_CLASS}`}>
+                            Email Address
                         </label>
                         <input
                             type="email"
@@ -126,13 +127,13 @@ export default function Login() {
                             value={formData.email}
                             onChange={handleChange}
                             placeholder="Enter your email"
-                            className={`${INPUT_CLASS}`}
+                            className={`${FORM_INPUT_CLASS} bg-[#F1F4F9] `}
                         />
                           <span className={`${INPUT_REQUIRED_ERROR_CLASS}`}>{errors.email||""}</span>
                     </div>
 
-                    <div>
-                        <label className="block text-sm font-bold text-black mb-1">
+                    <div className="w-full">
+                        <label className={`${FORM_INPUT_LABEL_CLASS}`}>
                             Password
                         </label>
                         <input
@@ -141,7 +142,7 @@ export default function Login() {
                             value={formData.password}
                             onChange={handleChange}
                             placeholder="Enter your password"
-                            className={`${INPUT_CLASS} `}
+                            className={`${FORM_INPUT_CLASS} bg-[#F1F4F9] `}
                         />
                          <span className={`${INPUT_REQUIRED_ERROR_CLASS}`}>{errors.password||""}</span>
                     </div>
@@ -162,11 +163,11 @@ export default function Login() {
 
                     <button
                         type="submit"
-                        className="flex justify-center items-center  w-full h-14 mt-10 bg-primary hover:bg-primary-hover rounded-full shadow-lg font-bold hover:cursor-pointer transition-all duration-500"
+                        className="flex justify-center items-center  w-full h-14 mt-20 text-base mg:text-lg bg-primary hover:bg-primary-hover text-white font-medium rounded-lg cursor-pointer transition-all duration-500"
                     >
                     
 
-                        {loading ? (<Loader/>):("Login")}
+                        {loading ? (<Loader/>):("Sign In")}
                     </button>
                 </form>
 
@@ -177,13 +178,11 @@ export default function Login() {
                         Create now
                     </span>
                 </div> */}
+                    </div>
                  </div>
+         
+             
             </div>
-
-            {/* Right side - Hidden on small screens */}
-            {/* <div className="hidden md:block md:w-1/2 p-4">
-                <AuthRigthSidebar />
-            </div> */}
         </div>
     );
 }

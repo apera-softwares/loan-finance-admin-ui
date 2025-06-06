@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Button from "../ui/button/Button";
 import { Modal } from "../ui/modal";
 import { Users1 } from "../../icons/index";
-import { REQUIRED_ERROR } from "@/constant/constantClassName";
+import {MODAL_FORM_INPUT_CLASS,MODAL_INPUT_LABEL_CLASS, REQUIRED_ERROR } from "@/constant/constantClassName";
 import { createSalesRepresentative,updateSalesRepresentative } from "@/lib/redux/slices/salesRepresentativeSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/redux/store";
@@ -16,11 +16,6 @@ interface SalesRepresentativeAddEditModalProps {
   userData?: any;
   type?: string;
 }
-
-const FORM_INPUT_CLASS =
-  "w-full h-10 text-base bg-white border-b border-gray-200 focus:border-gray-300  text-gray-600 outline-none   transition-all duration-500 ";
-const FORM_INPUT_LABEL = " block w-full  text-sm font-medium text-gray-600";
-
 
 interface FormData {
   id?:string,
@@ -179,42 +174,42 @@ const SalesRepresentativeAddEditModal: React.FC<
           <div className="max-h-[400px] overflow-y-auto space-y-6">
             <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="w-full ">
-                <label className={FORM_INPUT_LABEL}>First Name</label>
+                <label className={MODAL_INPUT_LABEL_CLASS}>First Name</label>
                 <input
                   type="text"
                   name="firstName"
                   value={formData.firstName}
                   onChange={handleInputChange}
-                  className={FORM_INPUT_CLASS}
+                  className={MODAL_FORM_INPUT_CLASS}
                 />
                 <span className={REQUIRED_ERROR}>{errors.firstName || ""}</span>
               </div>
               <div className="w-full ">
-                <label className={FORM_INPUT_LABEL}>Last Name</label>
+                <label className={MODAL_INPUT_LABEL_CLASS}>Last Name</label>
                 <input
                   type="text"
                   name="lastName"
                   value={formData.lastName}
                   onChange={handleInputChange}
-                  className={FORM_INPUT_CLASS}
+                  className={MODAL_FORM_INPUT_CLASS}
                 />
                 <span className={REQUIRED_ERROR}>
                   {errors.lastName || ""}
                 </span>
               </div>
               <div className="w-full ">
-                <label className={FORM_INPUT_LABEL}>Email</label>
+                <label className={MODAL_INPUT_LABEL_CLASS}>Email</label>
                 <input
                   type="text"
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className={FORM_INPUT_CLASS}
+                  className={MODAL_FORM_INPUT_CLASS}
                 />
                 <span className={REQUIRED_ERROR}>{errors.email || ""}</span>
               </div>
               <div className="w-full ">
-                <label className={FORM_INPUT_LABEL}>Phone Number</label>
+                <label className={MODAL_INPUT_LABEL_CLASS}>Phone Number</label>
                 <input
                   type="text"
                   name="phone"
@@ -226,19 +221,19 @@ const SalesRepresentativeAddEditModal: React.FC<
                         setFormData((prev) => ({ ...prev, phone: value }))
                       }
                   }}
-                  className={FORM_INPUT_CLASS}
+                  className={MODAL_FORM_INPUT_CLASS}
                 />
                 <span className={REQUIRED_ERROR}>{errors.phone || ""}</span>
               </div>
               {
                 type === "add" && (   <div className="w-full ">
-                <label className={FORM_INPUT_LABEL}>Password</label>
+                <label className={MODAL_INPUT_LABEL_CLASS}>Password</label>
                 <input
                   type="text"
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
-                  className={FORM_INPUT_CLASS}
+                  className={MODAL_FORM_INPUT_CLASS}
                 />
                 <span className={REQUIRED_ERROR}>
                   {errors.password || ""}
@@ -246,7 +241,7 @@ const SalesRepresentativeAddEditModal: React.FC<
               </div>)
               }
               <div className="w-full ">
-                <label className={FORM_INPUT_LABEL}>Commission</label>
+                <label className={MODAL_INPUT_LABEL_CLASS}>Commission</label>
                 <input
                   type="text"
                   name="commission"
@@ -271,7 +266,7 @@ const SalesRepresentativeAddEditModal: React.FC<
                       }
                     }
                   }}
-                  className={FORM_INPUT_CLASS}
+                  className={MODAL_FORM_INPUT_CLASS}
                 />
                 <span className={REQUIRED_ERROR}>{errors.commission || ""}</span>
               </div>

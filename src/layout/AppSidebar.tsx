@@ -145,9 +145,9 @@ const AppSidebar: React.FC = () => {
     navItems: NavItem[],
     menuType: "main" | "others"
   ) => (
-    <ul className="flex flex-col">
+    <ul className="flex flex-col gap-4">
       {navItems.map((nav, index) => (
-        <li key={nav.name}>
+        <li key={nav.name} className="">
           {nav.subItems ? (
             <button
               onClick={() => handleSubmenuToggle(index, menuType)}
@@ -184,19 +184,19 @@ const AppSidebar: React.FC = () => {
             nav.path && (
               <Link
                 href={nav.path}
-                className={`menu-item  group border-y border-gray-200 ${isActive(nav.path) ? "menu-item-active  " : "menu-item-inactive"
+                className={`menu-item group  ${isActive(nav.path) ? "menu-item-active" : "menu-item-inactive"
                   }`}
               >
-                {/* <span
+                <span
                   className={`${isActive(nav.path)
                     ? "menu-item-icon-active"
                     : "menu-item-icon-inactive"
                     }`}
                 >
                   {nav.icon}
-                </span> */}
+                </span>
                 {(isExpanded || isHovered || isMobileOpen) && (
-                  <span className={`text-lg    `}>{nav.name}</span>
+                  <span className={`menu-item-text`}>{nav.name}</span>
                 )}
               </Link>
             )
@@ -397,7 +397,7 @@ const AppSidebar: React.FC = () => {
 
       </div>
       <div className="hidden lg:block h-auto mt-auto  w-full py-3 border-t ">
-        <button className="flex items-center gap-2 text-gray-700 dark:text-white w-full px-5 py-3 rounded-lg   cursor-pointer " onClick={handleOpenLogoutConfirmationModal}>
+        <button className="flex items-center gap-2 text-red-600 dark:text-white w-full px-5 py-3 rounded-lg   cursor-pointer " onClick={handleOpenLogoutConfirmationModal}>
           <TbLogout2 className="w-5 h-5" />
           {(isExpanded || isHovered || isMobileOpen) && <span>Logout</span>}
         </button>
