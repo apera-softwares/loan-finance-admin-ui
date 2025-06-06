@@ -1,18 +1,17 @@
 "use client";
-import NotificationDropdown from "@/components/header/NotificationDropdown";
 import UserDropdown from "@/components/header/UserDropdown";
 import { useSidebar } from "@/context/SidebarContext";
-import Image from "next/image";
-import Link from "next/link";
 import React, { useState, useEffect, useRef } from "react";
-import Logo from '../assets/logo/logo.png'
 import { useAppSelector } from "@/lib/redux/hooks";
+//import Image from "next/image";
+//import Link from "next/link";
+//import NotificationDropdown from "@/components/header/NotificationDropdown";
+//import Logo from '../assets/logo/logo.png'
 
 const AppHeader: React.FC = () => {
 
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
   const { isMobileOpen, toggleSidebar, toggleMobileSidebar } = useSidebar();
-  const { userProfile } = useAppSelector((state) => state.userProfile);
   const {pageTitle} = useAppSelector((state)=>state.app)
 
   const handleToggle = () => {
