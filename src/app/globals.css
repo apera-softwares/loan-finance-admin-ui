@@ -1,12 +1,9 @@
-@import "./../styles/fonts.css";
 @import 'tailwindcss';
 
 @custom-variant dark (&:is(.dark *));
 
 @theme {
   --font-*: initial;
-  --font-outfit: Outfit, sans-serif;
-  --font-montserrat: Montserrat, sans-serif;
   --breakpoint-*: initial;
   --breakpoint-2xsm: 375px;
   --breakpoint-xsm: 425px;
@@ -34,8 +31,8 @@
   --text-theme-xs: 12px;
   --text-theme-xs--line-height: 18px;
   
-  --color-primary : #e4e7ec ;
-  --color-primary-hover: #e4e7ec;
+  --color-primary : #4379EE ;
+  --color-primary-hover: #3A6BD6;
   --color-gradient-start : #FF7403;
   --color-gradient-end : #FFC624 ;
   --color-btn-outline : #151D48;
@@ -194,22 +191,20 @@
     cursor: pointer;
   }
   body {
-    /* @apply relative font-normal font-outfit z-1 bg-gray-50; */
-    /* @apply relative font-normal font-outfit z-1 bg-gray-50; */
-    @apply relative font-normal font-montserrat z-1 ;
+    @apply relative font-normal z-1 ;
   }
 }
 
 @utility menu-item {
-  @apply relative flex items-center justify-center  w-full gap-3 px-4 py-5   ;
+  @apply relative flex items-center w-full gap-3 px-3.5 py-2.5  rounded-lg text-theme-sm;
 }
 
 @utility menu-item-active {
-  @apply text-gray-700 font-bold hover:bg-gray-100  ;
+  @apply bg-primary  rounded-lg  text-white dark:bg-brand-500/[0.12] dark:text-white;
 }
 
 @utility menu-item-inactive {
-  @apply text-gray-700 hover:bg-gray-100 group-hover:text-gray-700 dark:text-gray-300 dark:hover:bg-white/5 dark:hover:text-gray-300 font-medium ;
+  @apply text-gray-700 hover:bg-gray-100 group-hover:text-gray-700 dark:text-gray-300 dark:hover:bg-white/5 dark:hover:text-gray-300;
 }
 
 @utility menu-item-icon {
@@ -217,7 +212,7 @@
 }
 
 @utility menu-item-icon-active {
-  @apply text-gray-500 group-hover:text-gray-700 dark:text-gray-400;
+  @apply text-white dark:text-white;
 }
 
 @utility menu-item-icon-inactive {

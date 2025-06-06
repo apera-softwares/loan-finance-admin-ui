@@ -59,7 +59,7 @@ export default function UserDropdown() {
       <button
         onClick={toggleDropdown}
         className="flex items-center text-gray-700 dark:text-gray-400 dropdown-toggle">
-        <span className="mr-3 overflow-hidden rounded-full h-5 w-5 flex items-center justify-center text-gray-300">
+        <span className="mr-1 overflow-hidden rounded-full h-5 w-5 flex items-center justify-center text-gray-300">
           {/* <Image
             width={44}
             height={44}
@@ -69,12 +69,12 @@ export default function UserDropdown() {
         </span>
         <div className="">
           <div className="flex items-center w-full">
-            <span className="block mr-1 font-medium text-theme-sm">{userProfile?.firstName}</span>
+            {/* <span className="block mr-1 font-medium text-theme-sm">{userProfile?.firstName}</span> */}
             <svg
               className={`stroke-gray-500 dark:stroke-gray-400 transition-transform duration-200 ${isOpen ? "rotate-180" : ""
                 }`}
-              width="18"
-              height="20"
+              width="24"
+              height="24"
               viewBox="0 0 18 20"
               fill="none"
               xmlns="http://www.w3.org/2000/svg">
@@ -86,7 +86,7 @@ export default function UserDropdown() {
                 strokeLinejoin="round" />
             </svg>
           </div>
-          <span className="text-theme-xs text-start  w-full flex justify-start">{userProfile?.role}</span>
+          {/* <span className="text-theme-xs text-start  w-full flex justify-start">{userProfile?.role}</span> */}
         </div>
 
       </button>
@@ -183,11 +183,11 @@ export default function UserDropdown() {
         </ul>
         <button
           
-          className="flex items-center gap-3 px-3 py-2 mt-3 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300 "
+          className="flex items-center gap-3 px-3 py-2 mt-3 font-medium text-red-600 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-red-600 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300 "
           onClick={handleOpenLogoutConfirmationModal}
         >
           <svg
-            className="fill-gray-500 group-hover:fill-gray-700 dark:group-hover:fill-gray-300"
+            className="fill-current group-hover:fill-current dark:group-hover:fill-gray-300"
             width="24"
             height="24"
             viewBox="0 0 24 24"

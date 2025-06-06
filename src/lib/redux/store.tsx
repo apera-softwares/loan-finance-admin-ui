@@ -7,10 +7,12 @@ import userProfileReducer from "./slices/loginPersonProfile";
 import memberManagementReducer from './slices/membersSlice'
 import referralReducer from "./slices/referralSlice"
 import salesRepresentativeReducer from "./slices/salesRepresentativeSlice";
+import appReducer from "./slices/appSlice"
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
+      app:appReducer,
       user: userReducer,
       UserManagement: userManagementReducer,
       productCatalog: productCatalogReducer,

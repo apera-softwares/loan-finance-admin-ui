@@ -6,8 +6,8 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { FiEdit } from "react-icons/fi";
-import { RiDeleteBin6Line } from "react-icons/ri";
+// import { FiEdit } from "react-icons/fi";
+// import { RiDeleteBin6Line } from "react-icons/ri";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { fetchSalesRepresentatives,deleteSalesRepresentative } from "@/lib/redux/slices/salesRepresentativeSlice";
 import Spinner from "../common/Spinner";
@@ -15,6 +15,7 @@ import Pagination from "../tables/Pagination";
 import SalesRepresentativeAddEditModal from "./SalesRepresentativeAddEditModal";
 import DeleteConfirmModal from "../common/DeleteConfirmModal";
 import toast, { Toaster } from "react-hot-toast";
+import { TABLE_ACTION_BUTTON_CLASS,TABLE_CELL_HEADER_CLASS, TABLE_CELL_REGULAR_CLASS, TABLE_HEADER_CLASS, TABLE_RAW_CLASS } from "@/constant/constantClassName";
 
 interface SalesRepresentativeTableProps {
   searchText: string;
@@ -101,41 +102,41 @@ const SalesRepresentativeTable: React.FC<SalesRepresentativeTableProps> = ({
             <Spinner />
           ) : (
             <Table>
-              <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
+              <TableHeader className={`${TABLE_HEADER_CLASS}`}>
                 <TableRow>
                   <TableCell
                     isHeader
-                    className="px-5 py-4 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400"
+                    className={`${TABLE_CELL_HEADER_CLASS}`}
                   >
                     S.No
                   </TableCell>
                   <TableCell
                     isHeader
-                    className="px-5 py-4 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400"
+                    className={`${TABLE_CELL_HEADER_CLASS}`}
                   >
                     Name
                   </TableCell>
                   <TableCell
                     isHeader
-                    className="px-5 py-4 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400"
+                    className={`${TABLE_CELL_HEADER_CLASS}`}
                   >
                     Email
                   </TableCell>
                   <TableCell
                     isHeader
-                    className="px-5 py-4 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400"
+                    className={`${TABLE_CELL_HEADER_CLASS}`}
                   >
                     Phone
                   </TableCell>
                   <TableCell
                     isHeader
-                    className="px-5 py-4 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400"
+                    className={`${TABLE_CELL_HEADER_CLASS}`}
                   >
                     Commission
                   </TableCell>
                   <TableCell
                     isHeader
-                    className="px-5 py-4 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400"
+                    className={`${TABLE_CELL_HEADER_CLASS}`}
                   >
                     Action
                   </TableCell>
@@ -144,50 +145,49 @@ const SalesRepresentativeTable: React.FC<SalesRepresentativeTableProps> = ({
               <TableBody>
                 {salesRepresentativesList.length > 0 ? (
                   salesRepresentativesList.map((user: any, index: number) => (
-                    <TableRow key={user?.id}>
-                      <TableCell className="px-5 py-4 text-start">
+                    <TableRow key={user?.id} className={`${TABLE_RAW_CLASS} mb-2`}>
+                      <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
                         <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
                           {(currentPage - 1) * ITEM_PER_PAGE + index + 1}
                         </span>
                       </TableCell>
-                      <TableCell className="px-5 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                      <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
                         <span className="uppercase">
                           {`${user.firstName||""} ${user.lastName||""}`}
                         </span>
                       </TableCell>
-                      <TableCell className="px-5 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                      <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
                         <span >
                           {`${user.email||""}`}
                         </span>
                       </TableCell>
-                      <TableCell className="px-5 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                      <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
                     
                           {`${user.phone||""}`}
                       
                       </TableCell>
-                      <TableCell className="px-5 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+                      <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
                         {user.commission ? `${user.commission} %` : "N/A"}
                       </TableCell>
 
-                      <TableCell className="px-5 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+                      <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
                         <div className="flex items-center flex-nowrap gap-3">
                           <button
-                            className="flex items-center cur "
+                            className={`${TABLE_ACTION_BUTTON_CLASS}`}
                             onClick={() => {
                               setEditUserData(user);
                               setShowAddEditModal(true);
                             }}
                           >
-                            <FiEdit className="text-xl mr-1" />
+    
                             Edit
                           </button>
                           <button
-                            className="flex items-center"
+                            className={`${TABLE_ACTION_BUTTON_CLASS}`}
                             onClick={() => {
                               confirmDelete(user?.id);
                             }}
                           >
-                            <RiDeleteBin6Line className="text-xl mr-1" />
                             Delete
                           </button>
                         </div>
@@ -196,7 +196,7 @@ const SalesRepresentativeTable: React.FC<SalesRepresentativeTableProps> = ({
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell className="text-center py-6 text-gray-500">
+                    <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
                       No sales representative found.
                     </TableCell>
                   </TableRow>

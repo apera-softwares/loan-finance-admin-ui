@@ -15,10 +15,14 @@ import Pagination from "../tables/Pagination";
 import { Toaster } from "react-hot-toast";
 import { FiUser } from "react-icons/fi";
 import UserAddEditModal from "../user/UserAddEditModal";
+import { TABLE_ACTION_BUTTON_CLASS,TABLE_CELL_HEADER_CLASS, TABLE_CELL_REGULAR_CLASS, TABLE_HEADER_CLASS, TABLE_RAW_CLASS } from "@/constant/constantClassName";
+
 const USDollar = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
 });
+
+
 interface ReferralTableProps {
     searchText: string;
 }
@@ -96,68 +100,68 @@ const ReferralTable: React.FC<ReferralTableProps> = ({ searchText }) => {
                         <Spinner />
                     ) : (
                         <Table>
-                            <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
+                            <TableHeader className={`${TABLE_HEADER_CLASS}`}>
                                 <TableRow>
-                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">S.No</TableCell>
-                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Name</TableCell>
-                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Email</TableCell>
-                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Phone Number</TableCell>
-                                    <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Amount Required</TableCell>
-                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Business Revenue</TableCell>
-                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Business Tenure</TableCell>
-                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Credit Score</TableCell>
+                                    <TableCell isHeader className={`${TABLE_CELL_HEADER_CLASS}`}>S.No</TableCell>
+                                    <TableCell isHeader className={`${TABLE_CELL_HEADER_CLASS}`}>Name</TableCell>
+                                    <TableCell isHeader className={`${TABLE_CELL_HEADER_CLASS}`}>Email</TableCell>
+                                    <TableCell isHeader className={`${TABLE_CELL_HEADER_CLASS}`}>Phone Number</TableCell>
+                                    <TableCell isHeader className={`${TABLE_CELL_HEADER_CLASS}`}>Amount Required</TableCell>
+                                     <TableCell isHeader className={`${TABLE_CELL_HEADER_CLASS}`}>Business Revenue</TableCell>
+                                     <TableCell isHeader className={`${TABLE_CELL_HEADER_CLASS}`}>Business Tenure</TableCell>
+                                     <TableCell isHeader className={`${TABLE_CELL_HEADER_CLASS}`}>Credit Score</TableCell>
                                      
-                                     <TableCell isHeader className="px-5 py-3 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400">Action</TableCell>
+                                     <TableCell isHeader className={`${TABLE_CELL_HEADER_CLASS}`}>Action</TableCell>
                         
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 {referralList.length > 0 ? (
                                     referralList.map((item: any, index) => (
-                                        <TableRow key={item?.id}>
-                                            <TableCell className="px-5 py-4 text-start">
+                                        <TableRow key={item?.id} className={`${TABLE_RAW_CLASS}`}>
+                                            <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
                                                 <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
                                                   {(currentPage - 1) * ITEM_PER_PAGE + index + 1}
                                                 </span>
                                             </TableCell>
-                                            <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                                            <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
                                                 <span style={{textTransform: 'capitalize'}}>
                                              {
                                                 `${item?.firstName||""} ${item?.lastName||""}`
                                              }</span>
                                             </TableCell>
-                                            <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                                            <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
                                                 {item?.email||""}
                                             </TableCell>
-                                            <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+                                            <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
                                                   {
                                                 `${item?.phone||""}`
                                              }
                                             </TableCell>
-                                            <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                                            <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
                                               {USDollar.format(`${item?.amountNeeded ||""}`)}
                                             </TableCell>
-                                             <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+                                             <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
 
                                                  {USDollar.format(`${item?.annualRevenue ||""}`)}
                                               
                                             </TableCell>
-                                             <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+                                             <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
 
                                                  {`${item?.timeInBusiness ||""}`}
                                               
                                             </TableCell>
-                                             <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+                                             <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
 
                                                  {`${item?.creditScore ||""}`}
                                               
                                             </TableCell>   
                                             <TableCell>
-                                                <div className="flex items-center gap-1 cursor-pointer text-xs" onClick={() => {
+                                                <button className={`${TABLE_ACTION_BUTTON_CLASS}`} onClick={() => {
                                                     setEditUserData(item);
                                                     setIsModalOpen(true);
                                                     }}>
-                                                    <FiUser className="h-5 w-5 " />Create User </div>
+                                                    <FiUser className="h-5 w-5 " /><span className="text-xs font-normal">Create User</span> </button>
                                              </TableCell>                                          
                                         
                                         </TableRow>
@@ -165,7 +169,7 @@ const ReferralTable: React.FC<ReferralTableProps> = ({ searchText }) => {
                                     ))
                                 ) : (
                                     <TableRow>
-                                        <TableCell className="text-center py-6 text-gray-500">
+                                        <TableCell className={`${TABLE_ACTION_BUTTON_CLASS}`}>
                                             No referrals found.
                                         </TableCell>
                                     </TableRow>

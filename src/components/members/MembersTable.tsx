@@ -11,6 +11,7 @@ import Spinner from "../common/Spinner";
 import Pagination from "../tables/Pagination";
 import { BACKEND_API } from "@/api";
 import axios from "axios";
+import { TABLE_CELL_HEADER_CLASS, TABLE_CELL_REGULAR_CLASS, TABLE_HEADER_CLASS, TABLE_RAW_CLASS } from "@/constant/constantClassName";
 
 
 interface MembersTableProps {
@@ -83,29 +84,29 @@ const MembersTable: React.FC<MembersTableProps> = ({
             <Spinner />
           ) : (
             <Table>
-              <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
+              <TableHeader className={`${TABLE_HEADER_CLASS}`}>
                 <TableRow>
                   <TableCell
                     isHeader
-                    className="px-5 py-4 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400"
+                    className={`${TABLE_CELL_HEADER_CLASS}`}
                   >
                     S.No
                   </TableCell>
                   <TableCell
                     isHeader
-                    className="px-5 py-4 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400"
+                    className={`${TABLE_CELL_HEADER_CLASS}`}
                   >
                     Name
                   </TableCell>
                   <TableCell
                     isHeader
-                    className="px-5 py-4 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400"
+                    className={`${TABLE_CELL_HEADER_CLASS}`}
                   >
                     Email
                   </TableCell>
                   <TableCell
                     isHeader
-                    className="px-5 py-4 font-medium text-[#1F1C3B] text-start text-theme-sm dark:text-gray-400"
+                    className={`${TABLE_CELL_HEADER_CLASS}`}
                   >
                     Phone
                   </TableCell>
@@ -115,23 +116,23 @@ const MembersTable: React.FC<MembersTableProps> = ({
               <TableBody>
                 {members.length > 0 ? (
                   members.map((member: any, index: number) => (
-                    <TableRow key={member?.id}>
-                      <TableCell className="px-5 py-4 text-start">
+                    <TableRow key={member?.id} className={`${TABLE_RAW_CLASS}`}>
+                      <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
                         <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
                           {(currentPage - 1) * ITEM_PER_PAGE + index + 1}
                         </span>
                       </TableCell>
-                      <TableCell className="px-5 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                      <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
                         <span className="uppercase">
                           {`${member?.user?.firstName||""} ${member?.user?.lastName||""}`}
                         </span>
                       </TableCell>
-                      <TableCell className="px-5 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                      <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
                         <span >
                           {`${member?.user?.email||""}`}
                         </span>
                       </TableCell>
-                      <TableCell className="px-5 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                      <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
                     
                           {`${member?.user?.phone||""}`}
                       
@@ -141,7 +142,7 @@ const MembersTable: React.FC<MembersTableProps> = ({
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell className="text-center py-6 text-gray-500">
+                    <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
                       No members found.
                     </TableCell>
                   </TableRow>

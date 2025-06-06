@@ -1,5 +1,5 @@
-import { Montserrat } from 'next/font/google';
 import './globals.css';
+import { Poppins } from "next/font/google";
 import { SidebarProvider } from '@/context/SidebarContext';
 import { ThemeProvider } from '@/context/ThemeContext';
 import ReduxProvider from '@/lib/redux/provider';
@@ -13,8 +13,10 @@ export const metadata: Metadata = {
   description: "Admin Dashboard",
 };
 
-const montserrat = Montserrat({
+const poppins = Poppins({
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
 });
 
 export default function RootLayout({
@@ -25,7 +27,7 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${montserrat.className} dark:bg-gray-900`}
+      <body className={`${poppins.className} dark:bg-gray-900`}
         data-new-gr-c-s-check-loaded="14.1235.0"
         data-gr-ext-installed=""
         cz-shortcut-listen="true"
