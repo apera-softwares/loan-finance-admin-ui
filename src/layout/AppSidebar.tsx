@@ -7,7 +7,7 @@ import { useSidebar } from "../context/SidebarContext";
 import {
   BoxCubeIcon,
   ChevronDownIcon,
-  // GridIcon,
+  GridIcon,
   HorizontaLDots,
   // ListIcon,
   // PageIcon,
@@ -16,9 +16,9 @@ import {
   // TableIcon,
   Graph,
   // Send,
-  // Users,
+  Users,
   CoinHand,
-  AudioSetting,
+  //AudioSetting,
 } from "../icons/index";
 import Logo from '../assets/logo/logo.png'
 import { TbLogout2 } from "react-icons/tb";
@@ -28,6 +28,7 @@ import { resetUserProfile } from "@/lib/redux/slices/loginPersonProfile";
 import LogoutConfirmationModal from "@/components/common/LogoutConfirmationModal";
 import { LANDING_PAGE_URL } from "@/api";
 import { Roles } from "@/constant/roles";
+import { setPageTitle } from "@/lib/redux/slices/appSlice";
 
 type NavItem = {
   name: string;
@@ -40,18 +41,17 @@ const navItems: NavItem[] = [
   {
     icon: <Graph />,
     name: "Dashboard",
-    // subItems: [{ name: "Ecommerce", path: "/", pro: false }],
     path: "/",
 
   },
 
   {
-    icon: <AudioSetting />,
+    icon: <Users />,
     name: "User Management",
     path: "/user-management",
   },
     {
-    icon: <CoinHand />,
+    icon: <GridIcon />,
     name: "Applications",
     path: "/applications",
   },
@@ -66,11 +66,10 @@ const userNavMenu: NavItem[] = [
   {
     icon: <Graph />,
     name: "Dashboard",
-    // subItems: [{ name: "Ecommerce", path: "/", pro: false }],
     path: "/",
   },
     {
-    icon: <Graph />,
+    icon: <CoinHand />,
     name: "Withdrawal Request",
     path: "/withdrawal-request",
 
@@ -81,18 +80,17 @@ const salesRepNavMenu: NavItem[] = [
   {
     icon: <Graph />,
     name: "Dashboard",
-    // subItems: [{ name: "Ecommerce", path: "/", pro: false }],
     path: "/",
 
   },
   {
-    icon: <Graph />,
+    icon: <Users />,
     name: "Members",
     path: "/members",
 
   },
   {
-    icon: <Graph />,
+    icon: <CoinHand />,
     name: "Withdrawal Request",
     path: "/withdrawal-request",
 
@@ -136,10 +134,9 @@ const AppSidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const [isLogoutConfirmModalOpen, setIsLogoutConfirmModalOpen] = useState<boolean>(false);
   //const { userProfile } = useAppSelector((state) => state.userProfile);
-  const loggedUser = useAppSelector((state)=>state.user.user);
-
-  const pathname = usePathname();
   const dispatch = useAppDispatch();
+  const loggedUser = useAppSelector((state)=>state.user.user);
+  const pathname = usePathname();
 
   const renderMenuItems = (
     navItems: NavItem[],
@@ -147,7 +144,9 @@ const AppSidebar: React.FC = () => {
   ) => (
     <ul className="flex flex-col gap-4">
       {navItems.map((nav, index) => (
-        <li key={nav.name} className="">
+        <li key={nav.name} className="" onClick={()=>{
+          dispatch(setPageTitle(nav.name))
+        }}>
           {nav.subItems ? (
             <button
               onClick={() => handleSubmenuToggle(index, menuType)}
@@ -351,13 +350,13 @@ const AppSidebar: React.FC = () => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <div
-        className={` h-auto py-8 flex   ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
-          }`}
+        className={` h-auto py-8 flex   ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-center"
+          } border-b border-[#F2F2F2] mb-6 `}
       >
         <Link href="/">
           {isExpanded || isHovered || isMobileOpen ? (
             <>
-             <h2 className="text-xl md:text-2xl font-bold">Lending Square</h2>
+             <h2 className="text-xl font-semibold text-primary">Lending Square</h2>
             </>
           ) : (
             <Image

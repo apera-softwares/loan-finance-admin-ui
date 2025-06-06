@@ -11,10 +11,9 @@ import { useAppSelector } from "@/lib/redux/hooks";
 const AppHeader: React.FC = () => {
 
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
-
   const { isMobileOpen, toggleSidebar, toggleMobileSidebar } = useSidebar();
-
   const { userProfile } = useAppSelector((state) => state.userProfile);
+  const {pageTitle} = useAppSelector((state)=>state.app)
 
   const handleToggle = () => {
     if (window.innerWidth >= 1024) {
@@ -48,7 +47,7 @@ const AppHeader: React.FC = () => {
   return (
     <header className="sticky top-0 flex w-full bg-white z-9999 shadow-xs">
       <div className="flex flex-col items-center justify-between grow lg:flex-row lg:px-6">
-        <div className="flex items-center justify-between w-full gap-2 px-4 py-3 border-b border-gray-200 dark:border-gray-800 sm:gap-4 lg:justify-normal  lg:px-0 lg:py-4 border">
+        <div className="flex items-center justify-between w-full gap-2 px-4 py-3 border-b border-gray-200  dark:border-gray-800 sm:gap-4 lg:justify-normal  lg:border-b-0 lg:px-0 lg:py-4 ">
           <button
             className="items-center justify-center w-10 h-10 text-gray-500 border-gray-200 rounded-lg z-99999 dark:border-gray-800 flex lg:hidden dark:text-gray-400 lg:h-11 lg:w-11 lg:border"
             onClick={handleToggle}
@@ -88,8 +87,8 @@ const AppHeader: React.FC = () => {
           </button>
 
        
-          <h1  className=" lg:hidden text-lg md:text-xl font-semibold">
-            Page Title
+          <h1  className=" lg:hidden text-lg sm:text-xl font-medium">
+            {pageTitle||""}
           </h1>
 
           <button
@@ -112,9 +111,9 @@ const AppHeader: React.FC = () => {
             </svg>
           </button>
 
-          <div className="w-1/3 hidden lg:block">
-            <h1  className=" text-lg md:text-xl font-semibold">
-            Page Title
+          <div className=" hidden lg:block">
+            <h1  className=" text-lg sm:text-xl font-medium">
+               {pageTitle||""}
           </h1>
           </div>
       
@@ -122,7 +121,7 @@ const AppHeader: React.FC = () => {
         </div>
         <div
           className={`${isApplicationMenuOpen ? "flex" : "hidden"
-            } items-center justify-between w-full gap-4 px-4 py-4 lg:flex shadow-theme-md lg:justify-end lg:px-0 lg:shadow-none border `}
+            } items-center justify-between w-full gap-4 px-4 py-4 lg:flex shadow-theme-md lg:justify-end lg:px-0 lg:shadow-none `}
         >
           <div className="flex items-center">
             {/* <!-- Dark Mode Toggler --> */}
@@ -149,7 +148,7 @@ const AppHeader: React.FC = () => {
                     </svg>
                   </span>
                   <input
-                    value={""}
+                    ref={inputRef}
                     type="text"
                     placeholder="Search here..."
                     className="dark:bg-dark-900 h-10 w-full xl:w-[430px] rounded-full bg-[#F5F6FA] py-2.5 pl-12 pr-10 text-sm text-[#464E5F]  placeholder:text-[#464E5F] border-[#D5D5D5] focus:border-[#B3B3B3] outline-none  dark:border-gray-800 dark:bg-gray-900  dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-gray-500  transition-all duration-300"
