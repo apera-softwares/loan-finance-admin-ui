@@ -15,7 +15,7 @@ import Pagination from "../tables/Pagination";
 import { Toaster } from "react-hot-toast";
 import { FiUser } from "react-icons/fi";
 import UserAddEditModal from "../user/UserAddEditModal";
-import { TABLE_ACTION_BUTTON_CLASS,TABLE_CELL_HEADER_CLASS, TABLE_CELL_REGULAR_CLASS, TABLE_HEADER_CLASS, TABLE_RAW_CLASS } from "@/constant/constantClassName";
+import { TABLE_CLASS,TABLE_ACTION_BUTTON_CLASS,TABLE_CELL_HEADER_CLASS, TABLE_CELL_REGULAR_CLASS, TABLE_HEADER_CLASS, TABLE_RAW_CLASS } from "@/constant/constantClassName";
 
 const USDollar = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -91,17 +91,18 @@ const ReferralTable: React.FC<ReferralTableProps> = ({ searchText }) => {
     // };
 
     return (
-        <div className="w-full overflow-hidden rounded-xl bg-white dark:bg-white/[0.03] shadow-md">
-            <div className="w-full overflow-x-auto">
+        <div className="w-full">
+            <div className="w-full overflow-hidden rounded-t-[14px]">
+                   <div className="w-full overflow-x-auto">
                 <Toaster />
 
                 <div className="w-full max-w-[900px]">
                     {loading ? (
                         <Spinner />
                     ) : (
-                        <Table>
-                            <TableHeader className={`${TABLE_HEADER_CLASS}`}>
-                                <TableRow>
+                        <Table className={`${TABLE_CLASS}`}>
+                            <TableHeader >
+                                <TableRow className={`${TABLE_HEADER_CLASS}`}>
                                     <TableCell isHeader className={`${TABLE_CELL_HEADER_CLASS}`}>S.No</TableCell>
                                     <TableCell isHeader className={`${TABLE_CELL_HEADER_CLASS}`}>Name</TableCell>
                                     <TableCell isHeader className={`${TABLE_CELL_HEADER_CLASS}`}>Email</TableCell>
@@ -179,8 +180,11 @@ const ReferralTable: React.FC<ReferralTableProps> = ({ searchText }) => {
                     )}
                 </div>
             </div>
-            <div className=" w-full flex justify-end px-4 py-6 ">
-                <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+            </div>
+            <div className=" w-full  px-3 py-5 ">
+              {
+                totalPages > 0 && (  <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />)
+              }
             </div>
            { isModalOpen && <UserAddEditModal isOpen={isModalOpen} closeModal={() => {
                 setIsModalOpen(false)
