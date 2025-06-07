@@ -29,7 +29,7 @@ const Badge: React.FC<BadgeProps> = ({
   children,
 }) => {
   const baseStyles =
-    "inline-flex items-center px-2.5 py-0.5 justify-center gap-1 rounded-full font-medium";
+    "inline-flex items-center px-4 py-1 justify-center gap-1 rounded font-medium";
 
   // Define size styles
   const sizeStyles = {
@@ -41,15 +41,15 @@ const Badge: React.FC<BadgeProps> = ({
   const variants = {
     light: {
       primary:
-        "bg-primary/20 text-primary dark:bg-primary/15 dark:text-primary",
+        "bg-indigo-50 text-indigo-500 dark:bg-primary/15 dark:text-primary",
       success:
-        "bg-success-50 text-success-600 dark:bg-success-500/15 dark:text-success-500",
+        "bg-success-50 text-success-500 dark:bg-success-500/15 dark:text-success-500",
       error:
-        "bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500",
+        "bg-error-50 text-error-500 dark:bg-error-500/15 dark:text-error-500",
       warning:
-        "bg-warning-50 text-warning-600 dark:bg-warning-500/15 dark:text-orange-400",
+        "bg-warning-50 text-warning-500 dark:bg-warning-500/15 dark:text-orange-400",
       info: "bg-blue-light-50 text-blue-light-500 dark:bg-blue-light-500/15 dark:text-blue-light-500",
-      light: "bg-gray-100 text-gray-700 dark:bg-white/5 dark:text-white/80",
+      light: "bg-gray-100 text-gray-600 dark:bg-white/5 dark:text-white/80",
       dark: "bg-gray-500 text-white dark:bg-white/5 dark:text-white",
     },
     solid: {
