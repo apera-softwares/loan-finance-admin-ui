@@ -208,7 +208,7 @@ const SalesRepresentativeTable: React.FC<SalesRepresentativeTableProps> = ({
         </div>
       </div>
       </div>
-      <div className=" w-full  px-3 py-5">
+      <div className=" w-full  md:px-3 py-5">
         {totalPages > 0 && (
           <Pagination
             currentPage={currentPage}

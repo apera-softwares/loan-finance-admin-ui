@@ -298,28 +298,27 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
             onClose={() => {
             handleModalClose();
             }}
-            className="max-w-[800px] p-6 lg:p-10 pt-10 "
+            className="max-w-[800px] px-6 py-10 lg:px-10 "
         >
             {/* <Toaster /> */}
 
             <div className="w-full">
-                <div className="w-full flex items-center mb-6">
+                <div className="w-full flex items-center mb-6 md:mb-8">
                     <span className="bg-primary p-1  flex justify-center items-center rounded-full">
                         <Users1 />
                     </span>
-                    <div className="ml-4 w-4/5">
+                    <div className="ml-4 w-full">
                         <h5 className="font-semibold text-gray-800 text-xl sm:text-2xl lg:text-3xl dark:text-white/90">
                             {
                                
-                                type==='add' ? "Create  User" : "Edit User"
+                                type==='add' ? "Create  User" : "Update User"
                             }
                         </h5>
                     </div>
                 </div>
 
                 <div className="w-full">
-                    <div className="max-h-[400px] overflow-y-auto space-y-6">
-
+                    <div className="max-h-[320px] overflow-y-auto ">
                         <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6">
                             <div className="w-full ">
                                 <label className={MODAL_INPUT_LABEL_CLASS}>
@@ -587,18 +586,19 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
 
                         </div>
                     </div>
-                    <div className="flex items-center justify-end w-full gap-3 mt-8">
+                    <div className="flex items-center justify-center sm:justify-end w-full gap-3 mt-8 lg:mt-10">
+                      <Button size="sm" variant="outline" onClick={() => {
+                        handleModalClose();
+                      
+                    }}>
+                        Cancel
+                    </Button> 
                     <Button size="sm" className="" onClick={type==="add" ? handleAddUser:handleEdit}>
                         {
                             type==="add" ? "Create User" : "Update User"
                         }
                     </Button>
-                    <Button size="sm" variant="outline" onClick={() => {
-                        handleModalClose();
-                      
-                    }}>
-                        Cancel
-                    </Button>
+            
                     </div>
                 </div>
 

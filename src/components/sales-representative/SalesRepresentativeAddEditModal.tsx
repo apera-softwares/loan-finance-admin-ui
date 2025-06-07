@@ -157,11 +157,11 @@ const SalesRepresentativeAddEditModal: React.FC<
       <Toaster />
 
       <div className="w-full">
-        <div className="w-full flex items-center mb-6">
+        <div className="w-full flex items-center mb-6 md:mb-8">
           <span className="bg-primary p-1  flex justify-center items-center rounded-full">
             <Users1 />
           </span>
-          <div className="ml-4 w-4/5">
+          <div className="ml-4 w-full">
             <h5 className="font-semibold text-gray-800 text-xl sm:text-2xl lg:text-3xl dark:text-white/90">
               {type === "add"
                 ? "Create Sales Representative"
@@ -171,7 +171,7 @@ const SalesRepresentativeAddEditModal: React.FC<
         </div>
 
         <div className="w-full">
-          <div className="max-h-[400px] overflow-y-auto space-y-6">
+          <div className="max-h-[400px] overflow-y-auto ">
             <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="w-full ">
                 <label className={MODAL_INPUT_LABEL_CLASS}>First Name</label>
@@ -272,10 +272,7 @@ const SalesRepresentativeAddEditModal: React.FC<
               </div>
             </div>
           </div>
-          <div className="flex items-center justify-end w-full gap-3 mt-8">
-            <Button size="sm" onClick={type === "add" ? handleAdd : handleEdit}>
-              {type === "add" ? "Create" : "Update"}
-            </Button>
+          <div className="flex items-center justify-center sm:justify-end w-full gap-3 mt-8 lg:mt-10">
             <Button
               size="sm"
               variant="outline"
@@ -284,6 +281,9 @@ const SalesRepresentativeAddEditModal: React.FC<
               }}
             >
               Cancel
+            </Button>
+              <Button size="sm" onClick={type === "add" ? handleAdd : handleEdit}>
+              {type === "add" ? "Create User" : "Update User"}
             </Button>
           </div>
         </div>
