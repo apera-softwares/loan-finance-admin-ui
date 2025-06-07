@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import {
     Table,
@@ -6,7 +7,7 @@ import {
     TableHeader,
     TableRow,
 } from "../ui/table";
-// import Badge from "../ui/badge/Badge";
+import Badge from "../ui/badge/Badge";
 // import { FiEdit } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/redux/store";
@@ -64,6 +65,23 @@ const UserTable: React.FC<UserTableProps> = ({ searchText,isCreateUserModalOpen}
         setCurrentPage(page);
     };
 
+function mapStatusToVariant(
+  status: string
+): "primary" | "success" | "error" | "warning" | "info" {
+  switch (status.toUpperCase()) {
+    case "PENDING":
+      return "warning";
+    case "APPROVED":
+      return "primary";
+    case "FUNDED":
+      return "success";
+    case "REJECTED":
+      return "error";
+    default:
+      return "info";
+  }
+}
+
     return (
         <div className="w-full">
             <div className="w-full overflow-hidden rounded-t-[14px]">
@@ -119,7 +137,10 @@ const UserTable: React.FC<UserTableProps> = ({ searchText,isCreateUserModalOpen}
                                                 <span style={{textTransform: 'capitalize'}}>{`${user?.UserDetails?.[0]?.salesRep?.firstName||""} ${user?.UserDetails?.[0]?.salesRep?.lastName||""}`} </span>
                                             </TableCell>
                                             <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
-                                                {`${user?.UserDetails?.[0]?.status||""}`}
+                                               
+                                                <Badge size="sm" color={mapStatusToVariant(`${user?.UserDetails?.[0]?.status||""}`)} >
+                                                     {`${user?.UserDetails?.[0]?.status||""}`}
+                                                </Badge>
                                             </TableCell>
                                            
                                                 <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
@@ -149,7 +170,7 @@ const UserTable: React.FC<UserTableProps> = ({ searchText,isCreateUserModalOpen}
                 </div>
             </div>
             </div>
-            <div className=" w-full px-3 py-5">
+            <div className=" w-full md:px-3 py-5">
                 {
                    totalPages > 0 && (  <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />)
                 }

@@ -14,11 +14,15 @@ import {
   PieChartIcon,
   PlugInIcon,
   // TableIcon,
-  Graph,
+  // Graph,
   // Send,
-  Users,
+  // Users,
   CoinHand,
   //AudioSetting,
+  Home,
+  User,
+  // Grid,
+  Stats,
 } from "../icons/index";
 import Logo from '../assets/logo/logo.png'
 import { TbLogout2 } from "react-icons/tb";
@@ -39,14 +43,14 @@ type NavItem = {
 
 const navItems: NavItem[] = [
   {
-    icon: <Graph />,
+    icon: <Home />,
     name: "Dashboard",
     path: "/",
 
   },
 
   {
-    icon: <Users />,
+    icon: <User />,
     name: "User Management",
     path: "/user-management",
   },
@@ -56,7 +60,7 @@ const navItems: NavItem[] = [
     path: "/applications",
   },
   {
-    icon: <CoinHand />,
+    icon: <Stats />,
     name: "Sales Representative",
     path: "/sales-reps",
   },
@@ -64,7 +68,7 @@ const navItems: NavItem[] = [
 
 const userNavMenu: NavItem[] = [
   {
-    icon: <Graph />,
+    icon: <Home />,
     name: "Dashboard",
     path: "/",
   },
@@ -78,13 +82,13 @@ const userNavMenu: NavItem[] = [
 
 const salesRepNavMenu: NavItem[] = [
   {
-    icon: <Graph />,
+    icon: <Home />,
     name: "Dashboard",
     path: "/",
 
   },
   {
-    icon: <Users />,
+    icon: <User />,
     name: "Members",
     path: "/members",
 
@@ -350,13 +354,26 @@ const AppSidebar: React.FC = () => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <div
-        className={` h-auto py-8 flex   ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-center"
+        className={` h-auto py-6 md:py-8 flex   ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-center"
           } border-b border-[#F2F2F2] mb-6 `}
       >
         <Link href="/">
           {isExpanded || isHovered || isMobileOpen ? (
-            <>
-             <h2 className="text-xl font-semibold text-primary">Lending Square</h2>
+           <>
+              <Image
+                className="dark:hidden"
+                src={Logo}
+                alt="Logo"
+                width={202}
+                height={56}
+              />
+              <Image
+                className="hidden dark:block"
+                src={Logo}
+                alt="Logo"
+                width={202}
+                height={56}
+              />
             </>
           ) : (
             <Image

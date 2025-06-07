@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   title:
     "Lending Square",
   description: "Admin Dashboard",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 const poppins = Poppins({

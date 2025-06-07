@@ -1,15 +1,15 @@
 "use client";
 import React from "react";
 import Badge from "../ui/badge/Badge";
-import { BoxIconLine, GroupIcon, DollarLineIcon } from "@/icons";
+import { ApplicationPendingIcon,ApplicationApprovedIcon,ApplicationFundedIcon } from "@/icons";
 
 export const EcommerceMetrics = () => {
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 md:gap-6">
       {/* <!-- Metric Item Start --> */}
       <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
-        <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-xl dark:bg-gray-800">
-          <GroupIcon className="text-gray-800 size-6 dark:text-white/90" />
+        <div className="flex items-center justify-center w-16 h-16 lg:w-20 lg:h-20 bg-[#8280FF]/20 rounded-2xl lg:rounded-3xl dark:bg-gray-800">
+          <ApplicationPendingIcon />
         </div>
 
         <div className="flex items-end justify-between mt-5">
@@ -33,8 +33,8 @@ export const EcommerceMetrics = () => {
 
       {/* <!-- Metric Item Start --> */}
       <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
-        <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-xl dark:bg-gray-800">
-          <BoxIconLine className="text-gray-800 dark:text-white/90" />
+        <div className="flex items-center justify-center w-16 h-16 lg:w-20 lg:h-20 bg-[#FEC53D]/20 rounded-2xl lg:rounded-3xl dark:bg-gray-800">
+          <ApplicationApprovedIcon  />
         </div>
         <div className="flex items-end justify-between mt-5">
           <div>
@@ -57,8 +57,8 @@ export const EcommerceMetrics = () => {
       {/* <!-- Metric Item End --> */}
 
       <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
-        <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-xl dark:bg-gray-800">
-          <DollarLineIcon className="text-gray-800 dark:text-white/90" />
+        <div className="flex items-center justify-center w-16 h-16 lg:w-20 lg:h-20 bg-[#4AD991]/20 rounded-2xl lg:rounded-3xl dark:bg-gray-800  ">
+          <ApplicationFundedIcon  />
         </div>
         <div className="flex items-end justify-between mt-5">
           <div>

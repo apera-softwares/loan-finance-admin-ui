@@ -55,9 +55,17 @@ import Graph from "./Graph.svg";
 import Send from "./Send.svg";
 import Users from "./Users.svg";
 import Users1 from "./Users1.svg";
-import CoinHand from "./coin-hand.svg"
-import Substract from "./Subtract.svg"
-import AudioSetting from "./audio-settings.svg"
+import CoinHand from "./coin-hand.svg";
+import Substract from "./Subtract.svg";
+import AudioSetting from "./audio-settings.svg";
+import Home from "./home.svg";
+import User from "./user.svg";
+import Stats from "./states.svg";
+import Grid from "./applications.svg";
+import ApplicationPendingIcon from "./Application-Icon-1.svg";
+import ApplicationApprovedIcon from "./Application-Icon-2.svg";
+import ApplicationFundedIcon from "./Application-Icon-3.svg";
+import UserProfile from "./user-profile.svg";
 
 export {
   DownloadIcon,
@@ -120,4 +128,13 @@ export {
   CoinHand,
   Substract,
   AudioSetting,
+  Home,
+  User,
+  Stats,
+  Grid,
+  ApplicationPendingIcon,
+  ApplicationApprovedIcon,
+  ApplicationFundedIcon,
+  UserProfile,
+
 };
