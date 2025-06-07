@@ -92,7 +92,7 @@ const ReferralTable: React.FC<ReferralTableProps> = ({ searchText }) => {
 
     return (
         <div className="w-full">
-            <div className="w-full overflow-hidden rounded-t-[14px] dark:bg-white/[0.03]">
+            <div className="w-full overflow-hidden rounded-t-[14px]">
                    <div className="w-full overflow-x-auto">
                 <Toaster />
 
@@ -181,7 +181,7 @@ const ReferralTable: React.FC<ReferralTableProps> = ({ searchText }) => {
                 </div>
             </div>
             </div>
-            <div className=" w-full flex justify-end px-3 py-5 ">
+            <div className=" w-full  px-3 py-5 ">
               {
                 totalPages > 0 && (  <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />)
               }
