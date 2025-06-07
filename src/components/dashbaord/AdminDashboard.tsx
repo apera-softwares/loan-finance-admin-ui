@@ -1,11 +1,16 @@
 "use client";
 import React from "react";
-import {EcommerceMetrics} from '../ecommerce/EcommerceMetrics'
+import DashboardApplicationsStats from "./DashboardApplicationsStats";
 
 export const AdminDashboard = () => {
     return (
         <div className="w-full">
-            <EcommerceMetrics/>
+            <div className="w-full">
+                <DashboardApplicationsStats/>
+            </div>
+            <div className="">
+                
+            </div>
 
         </div>
     );
