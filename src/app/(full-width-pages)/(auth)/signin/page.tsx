@@ -98,9 +98,9 @@ export default function Login() {
   };
 
   return (
-    <div className="w-full ">
+    <div className="w-full relative overflow-hidden ">
       <div className="w-full  flex  justify-center items-center     py-14 lg:py-20 ">
-        <div className="w-full max-w-lg mx-auto  border border-[#AEAEAE]  rounded-2xl px-6 lg:px-12 py-12 md:py-20 shadow-lg   ">
+        <div className="relative w-full max-w-lg mx-auto bg-white/60 md:bg-white/90  border border-[#AEAEAE]  rounded-2xl px-6 md:px-10 lg:px-12 py-10 sm:py-12 md:py-14 lg:py-20 shadow-lg   ">
           <div className="w-full ">
             <div className="w-full mb-8 text-[#202224] ">
               <h2 className=" text-center  text-2xl md:text-3xl font-semibold  mb-4">
@@ -172,8 +172,24 @@ export default function Login() {
                     </span>
                 </div> */}
           </div>
+
+          {/* innner bubbles start */}
+          <div className=" absolute left-0 sm:-left-28 bottom-2 w-20 h-20 -z-20  rotate-180 bg-blue-500 rounded-full shadow-[inset_-31px_-32px_97.5px_0px_rgba(255,255,255,0.61)]" />
+          <div className="absolute -left-28 bottom-2 -z-10 w-48 h-48 rotate-180 opacity-50 bg-slate-100 rounded-full shadow-[inset_-31px_-32px_81.0999984741211px_0px_rgba(67,121,238,0.21)]" />
+
+          <div className=" absolute top-28  -right-20 -z-20 w-44 h-44 lg:w-52 lg:h-52 origin-top-left rotate-[-21.66deg] bg-blue-500 rounded-full shadow-[inset_-31px_-32px_97.5px_0px_rgba(255,255,255,0.61)]" />
+
+          <div className="absolute top-1/2 right-0 -z-10 w-60 h-60 lg:w-[400px] lg:h-[400px] transform -translate-y-1/2 translate-x-1/2 rotate-[-21.66deg] opacity-50 bg-slate-100 rounded-full shadow-[inset_-31px_-32px_81.0999984741211px_0px_rgba(67,121,238,0.21)]" />
+           {/* innner bubbles start */}
         </div>
       </div>
+
+        {/* outer bubbles start */}
+      <div className="absolute top-14  w-72 h-72 -z-10 transform -translate-x-1/2 rotate-[-21.66deg] opacity-50 bg-slate-100 rounded-full shadow-[inset_-31px_-32px_81.0999984741211px_0px_rgba(67,121,238,0.21)]" />
+      <div className="hidden lg:block absolute bottom-0 right-0 -z-10  w-64 h-52 transform translate-y-1/2 translate-x-20  rotate-[-21.66deg] opacity-50 bg-slate-100 rounded-full shadow-[inset_-31px_-32px_81.0999984741211px_0px_rgba(67,121,238,0.21)]" />
+
+        {/* outer bubbles end */}
+
     </div>
   );
 }
