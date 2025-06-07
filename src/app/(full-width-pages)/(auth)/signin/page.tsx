@@ -99,8 +99,8 @@ export default function Login() {
 
   return (
     <div className="w-full relative overflow-hidden ">
-      <div className="w-full  flex  justify-center items-center     py-14 lg:py-20 ">
-        <div className="relative w-full max-w-md lg:max-w-lg mx-auto bg-white/60 md:bg-white/90  border border-[#AEAEAE]  rounded-2xl px-6 md:px-10 lg:px-12 py-8 sm:py-10 md:py-12 lg:py-14 shadow-lg   ">
+      <div className="w-full  flex  justify-center items-center    py-12 md:py-16  lg:py-20 ">
+        <div className="relative w-full max-w-md lg:max-w-lg mx-auto bg-white/60 md:bg-white/90  border border-[#AEAEAE]  rounded-2xl px-6 md:px-10 lg:px-12 py-12 md:py-16 lg:py-20 shadow-lg   ">
           <div className="w-full ">
             <div className="w-full mb-8 text-[#202224] ">
               <h2 className=" text-center  text-2xl md:text-3xl font-semibold  mb-4">
