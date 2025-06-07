@@ -29,7 +29,7 @@ const Badge: React.FC<BadgeProps> = ({
   children,
 }) => {
   const baseStyles =
-    "inline-flex items-center px-4 py-1 justify-center gap-1 rounded font-medium";
+    " w-24 inline-flex items-center px-4 py-1 justify-center gap-1 rounded font-medium";
 
   // Define size styles
   const sizeStyles = {
