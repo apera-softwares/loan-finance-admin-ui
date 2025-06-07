@@ -9,7 +9,7 @@ export const AdminDashboard = () => {
             <div className="w-full mb-8 lg:mb-9">
                 <DashboardApplicationsStats/>
             </div>
-            <div className="">
+            <div className="w-full">
                 <StatisticsChart/>
                 
             </div>
