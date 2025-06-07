@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Button from "../ui/button/Button";
 import { Modal } from "../ui/modal";
-import { Users1 } from "../../icons/index";
+import { UserProfile } from "../../icons/index";
 import {MODAL_FORM_INPUT_CLASS,MODAL_INPUT_LABEL_CLASS, REQUIRED_ERROR } from "@/constant/constantClassName";
 import { createSalesRepresentative,updateSalesRepresentative } from "@/lib/redux/slices/salesRepresentativeSlice";
 import { useDispatch } from "react-redux";
@@ -158,10 +158,10 @@ const SalesRepresentativeAddEditModal: React.FC<
 
       <div className="w-full">
         <div className="w-full flex items-center mb-6 md:mb-8">
-          <span className="bg-primary p-1  flex justify-center items-center rounded-full">
-            <Users1 />
+          <span className="flex justify-center items-center rounded-full">
+            <UserProfile />
           </span>
-          <div className="ml-4 w-full">
+          <div className="ml-4 md:ml-6 w-full">
             <h5 className="font-semibold text-gray-800 text-xl sm:text-2xl lg:text-3xl dark:text-white/90">
               {type === "add"
                 ? "Create Sales Representative"
