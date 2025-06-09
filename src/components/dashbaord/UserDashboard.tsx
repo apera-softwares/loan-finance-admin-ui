@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import { REQUIRED_ERROR } from "@/constant/constantClassName";
 import Button from "@/components/ui/button/Button";
 import { BACKEND_API } from "@/api";
@@ -25,8 +26,7 @@ const UserDashboard = () => {
   const loggedInUserProfile = useAppSelector(
     (state) => state.userProfile.userProfile
   );
-  const [amount, setAmount] = useState<string>("");
-  const [ammountError, setAmountError] = useState("");
+  //const [amount, setAmount] = useState<string>("");
   const [formData, setFormData] = useState({
     bankAccountNumber:
       loggedInUserProfile?.UserDetails?.[0]?.bankAccountNumber || "",
@@ -97,67 +97,67 @@ const UserDashboard = () => {
     }
   };
 
-  const handleWithdrawFund = async () => {
-    try {
-      if (!validateAmount()) return;
-      const token = loggedInUser?.token;
-      const payload = {
-        amount: parseFloat(amount) || 0,
-      };
+  // const handleWithdrawFund = async () => {
+  //   try {
+  //     if (!validateAmount()) return;
+  //     const token = loggedInUser?.token;
+  //     const payload = {
+  //       amount: parseFloat(amount) || 0,
+  //     };
 
-      const response = await axios.put(
-        `${BACKEND_API}user/available-credit/withdraw`,
-        payload,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-            "ngrok-skip-browser-warning": "true",
-          },
-        }
-      );
-      console.log("resonse of fund withdraw", response);
-      dispatch(getUserProfile());
-      toast.success("Fund widhdraw successfully");
-      setAmount("");
-    } catch (error) {
-      console.log("error while withdraw fund", error);
+  //     const response = await axios.put(
+  //       `${BACKEND_API}user/available-credit/withdraw`,
+  //       payload,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //           "Content-Type": "application/json",
+  //           "ngrok-skip-browser-warning": "true",
+  //         },
+  //       }
+  //     );
+  //     console.log("resonse of fund withdraw", response);
+  //     dispatch(getUserProfile());
+  //     toast.success("Fund widhdraw successfully");
+  //     setAmount("");
+  //   } catch (error) {
+  //     console.log("error while withdraw fund", error);
 
-      if (axios.isAxiosError(error)) {
-        if (error.response) {
-          toast.error(error.response.data.message || "Failed to withdraw fund");
-        } else {
-          toast.error("Failed to withdraw fund");
-        }
-      } else {
-        toast.error("Failed to withdraw fund");
-      }
-    }
-  };
+  //     if (axios.isAxiosError(error)) {
+  //       if (error.response) {
+  //         toast.error(error.response.data.message || "Failed to withdraw fund");
+  //       } else {
+  //         toast.error("Failed to withdraw fund");
+  //       }
+  //     } else {
+  //       toast.error("Failed to withdraw fund");
+  //     }
+  //   }
+  // };
 
-  function validateAmount() {
-    const numericAmount = parseInt(amount);
-    const availableCredit =
-      loggedInUserProfile?.UserDetails?.[0]?.availableCredit || 0;
+  // function validateAmount() {
+  //   const numericAmount = parseInt(amount);
+  //   const availableCredit =
+  //     loggedInUserProfile?.UserDetails?.[0]?.availableCredit || 0;
 
-    if (!amount.trim()) {
-      setAmountError("Enter amount");
-      return false;
-    }
+  //   if (!amount.trim()) {
+  //     setAmountError("Enter amount");
+  //     return false;
+  //   }
 
-    if (numericAmount <= 0) {
-      setAmountError("Amount must be greater than zero ");
-      return false;
-    }
+  //   if (numericAmount <= 0) {
+  //     setAmountError("Amount must be greater than zero ");
+  //     return false;
+  //   }
 
-    if (numericAmount > availableCredit) {
-      setAmountError("Amount cannot exceed available credit.");
-      return false;
-    }
+  //   if (numericAmount > availableCredit) {
+  //     setAmountError("Amount cannot exceed available credit.");
+  //     return false;
+  //   }
 
-    setAmountError("");
-    return true;
-  }
+  //   setAmountError("");
+  //   return true;
+  // }
 
   const handleToggleEdit = () => {
     setIsEditMode(!isEditMode);
@@ -169,7 +169,7 @@ const UserDashboard = () => {
         <div className="w-full flex gap-8 ">
           <div className="max-w-xl p-6 bg-white rounded-xl border border-gray-200 shadow-lg shrink-0 ">
             <div className="w-full grid grid-cols-2  gap-x-10  gap-y-8 ">
-              <div className="w-full  flex flex-col ">
+              <div className="w-full  flex flex-col  ">
                 <h5 className="text-base font-bold">Available Credit</h5>
                 <span className="text-base font-semibold text-gray-600 ">
                   {" "}
@@ -181,7 +181,7 @@ const UserDashboard = () => {
                   )}
                 </span>
               </div>
-              <div className="w-full  flex flex-col ">
+              <div className="w-full  flex flex-col  ">
                 <h5 className="text-base font-bold">Utilized Credit</h5>
                 <span className="text-base font-semibold text-gray-600 ">
                   {" "}
@@ -192,7 +192,7 @@ const UserDashboard = () => {
                   )}
                 </span>
               </div>
-              <div className="w-full  flex flex-col ">
+              <div className="w-full  flex flex-col  ">
                 <h5 className="text-base font-bold">Interest Rate</h5>
                 <span className="text-base font-semibold text-gray-600 ">
                   {loggedInUserProfile?.UserDetails?.[0]?.interestRate != null
@@ -200,7 +200,7 @@ const UserDashboard = () => {
                     : "N/A"}
                 </span>
               </div>
-              <div className="w-full  flex flex-col">
+              <div className="w-full  flex flex-col ">
                 <h5 className="text-base font-bold">
                   Assigned Sales Representive
                 </h5>
@@ -216,33 +216,14 @@ const UserDashboard = () => {
                   }`}
                 </span>
               </div>
-            </div>
-          </div>
-          <div className="max-w-sm p-6 bg-white rounded-xl border border-gray-200 shadow-lg shrink-0 ">
-            <div className="w-full mb-6">
-              <label className="block w-full text-base font-bold mb-1">
-                Withdraw Fund
-              </label>
-              <input
-                type="text"
-                placeholder="Enter amount"
-                className="w-40 h-10 px-2 border-b border-gray-200 focus:border-gray-300   outline-none transition-all duration-500 "
-                value={amount}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  // Allow only digits (optional: allow empty string too)
-                  if (/^\d*$/.test(value)) {
-                    setAmount(value);
-                  }
-                }}
-              />
-              <span className="block text-red-500 text-sm">{ammountError}</span>
-            </div>
 
-            <Button size="sm" onClick={handleWithdrawFund}>
-              Withdraw Now
-            </Button>
+              <div className="w-full col-span-2   ">
+                 <Link  href="request-withdrawal" className="  inline-block  bg-primary hover:bg-primary text-center text-white px-4 py-2 rounded-md transition-all duration-500 no-underline cursor-pointer">Select Loan Amount</Link>
+             
+              </div>
+            </div>
           </div>
+
         </div>
       </div>
 
