@@ -52,7 +52,7 @@ const MembersTable: React.FC<MembersTableProps> = ({
     setLoading(true);
     const token = loggedInUser?.token;
     const response = await axios.get(
-      `${BACKEND_API}sales-reps/getSalesRepMembers/${loggedInUser?.userId}?page=${page}&limit=5&name${searchText}`,
+      `${BACKEND_API}sales-reps/getSalesRepMembers/${loggedInUser?.userId}?page=${page}&limit=5&name=${searchText}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

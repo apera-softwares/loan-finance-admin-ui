@@ -2,11 +2,13 @@ import { createSlice,PayloadAction } from "@reduxjs/toolkit";
 
 interface AppState {
   pageTitle:string;
+  searchText:string;
 
 }
 
 const initialState: AppState = {
-    pageTitle:"Dashboard"
+    pageTitle:"Dashboard",
+    searchText:"",
 };
 
 const appSlice = createSlice({
@@ -17,11 +19,14 @@ const appSlice = createSlice({
     setPageTitle: (state, action: PayloadAction<string>) => {
       state.pageTitle = action.payload;
     },
+    setSearchText: (state, action: PayloadAction<string>) => {
+      state.searchText = action.payload;
+    },
 
   },
 
 });
 
-export const {setPageTitle} = appSlice.actions;
+export const {setPageTitle,setSearchText} = appSlice.actions;
 
 export default appSlice.reducer;
