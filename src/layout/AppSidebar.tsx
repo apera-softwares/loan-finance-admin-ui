@@ -32,7 +32,7 @@ import { resetUserProfile } from "@/lib/redux/slices/loginPersonProfile";
 import LogoutConfirmationModal from "@/components/common/LogoutConfirmationModal";
 import { LANDING_PAGE_URL } from "@/api";
 import { Roles } from "@/constant/roles";
-import { setPageTitle } from "@/lib/redux/slices/appSlice";
+import { setPageTitle,setSearchText } from "@/lib/redux/slices/appSlice";
 
 type NavItem = {
   name: string;
@@ -149,7 +149,8 @@ const AppSidebar: React.FC = () => {
     <ul className="flex flex-col gap-4">
       {navItems.map((nav, index) => (
         <li key={nav.name} className="" onClick={()=>{
-          dispatch(setPageTitle(nav.name))
+          dispatch(setPageTitle(nav.name));
+          dispatch(setSearchText(""));
         }}>
           {nav.subItems ? (
             <button

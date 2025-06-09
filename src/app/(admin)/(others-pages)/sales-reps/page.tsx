@@ -3,17 +3,19 @@ import React, { useState } from "react";
 import { Toaster } from "react-hot-toast";
 import SalesRepresentativeTable from "@/components/sales-representative/SalesRepresentativeTable";
 import SalesRepresentativeAddEditModal from "@/components/sales-representative/SalesRepresentativeAddEditModal";
+import { useAppSelector } from "@/lib/redux/hooks";
 
 export default function SalesReps() {
+
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [SearchInput] = useState("");
+  const {searchText} = useAppSelector((state)=>state.app);
 
   return (
     <div className="w-full ">
       <Toaster />
       <div className="w-full">
         <SalesRepresentativeTable
-          searchText={SearchInput}
+          searchText={searchText}
           isCreateUserModalOpen={isModalOpen}
         />
         <div className="w-full flex items-center justify-end mt-8 md:mt-12 ">

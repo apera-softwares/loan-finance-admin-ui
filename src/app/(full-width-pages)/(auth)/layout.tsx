@@ -8,13 +8,13 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="relative p-6  z-1 dark:bg- sm:p-0">
+    <div className="relative p-6  z-1 dark:bg- sm:p-0 bg-[#F3F6FB]">
       <ThemeProvider>
           {children}
           <Toaster
-  position="top-center"
-  reverseOrder={false}
-/>
+        position="top-center"
+        reverseOrder={false}
+     />
          
       </ThemeProvider>
     </div>

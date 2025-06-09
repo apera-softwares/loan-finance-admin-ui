@@ -2,7 +2,8 @@
 import UserDropdown from "@/components/header/UserDropdown";
 import { useSidebar } from "@/context/SidebarContext";
 import React, { useState, useEffect, useRef } from "react";
-import { useAppSelector } from "@/lib/redux/hooks";
+import { useAppSelector,useAppDispatch } from "@/lib/redux/hooks";
+import { setSearchText } from "@/lib/redux/slices/appSlice";
 //import Image from "next/image";
 //import Link from "next/link";
 //import NotificationDropdown from "@/components/header/NotificationDropdown";
@@ -12,7 +13,8 @@ const AppHeader: React.FC = () => {
 
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
   const { isMobileOpen, toggleSidebar, toggleMobileSidebar } = useSidebar();
-  const {pageTitle} = useAppSelector((state)=>state.app)
+  const {pageTitle,searchText} = useAppSelector((state)=>state.app);
+  const dispatch = useAppDispatch();
 
   const handleToggle = () => {
     if (window.innerWidth >= 1024) {
@@ -151,6 +153,8 @@ const AppHeader: React.FC = () => {
                     type="text"
                     placeholder="Search here..."
                     className="dark:bg-dark-900 h-10 w-full xl:w-[430px] rounded-full bg-[#F5F6FA] py-2.5 pl-12 pr-10 text-sm text-[#464E5F]  placeholder:text-[#464E5F] border-[#D5D5D5] focus:border-[#B3B3B3] outline-none  dark:border-gray-800 dark:bg-gray-900  dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-gray-500  transition-all duration-300"
+                    value={searchText}
+                    onChange={(e)=>dispatch(setSearchText(e.target.value))}
                   />
 
                 </div>
