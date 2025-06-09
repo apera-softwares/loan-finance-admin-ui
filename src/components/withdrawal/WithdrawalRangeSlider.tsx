@@ -1,0 +1,67 @@
+"use client";
+import React, { useState } from "react";
+
+type WithdrawalRangeSliderProps = {
+  maxAmount: number;
+  onChange?: (value: number) => void;
+};
+
+export default function WithdrawalRangeSlider({
+  maxAmount,
+  onChange,
+}: WithdrawalRangeSliderProps) {
+  const [value, setValue] = useState<number>(0);
+
+  const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = Number(e.target.value);
+    setValue(newValue);
+    onChange?.(newValue);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let newValue = Number(e.target.value);
+
+    if (isNaN(newValue)) newValue = 0;
+    newValue = Math.max(0, Math.min(maxAmount, newValue));
+
+    setValue(newValue);
+    onChange?.(newValue);
+  };
+
+  return (
+    <div className="flex flex-col space-y-5 w-full bg-white py-4 ">
+      <label className="font-semibold text-gray-700  mb-3">
+        Select Loan Amount
+      </label>
+
+      {/* Full-width Input Box */}
+      <input
+        type="number"
+        min={0}
+        max={maxAmount}
+        value={value}
+        onChange={handleInputChange}
+        className=" rounded px-4 py-2 w-full text-lg font-medium   border border-gray-200 focus:border-gray-300 outline-none"
+        placeholder="Enter amount"
+      />
+
+      {/* Full-width Slider */}
+      <div className="w-full flex flex-col space-y-2">
+        <input
+          type="range"
+          min={0}
+          max={maxAmount}
+          value={value}
+          onChange={handleSliderChange}
+          className="w-full appearance-none h-2 bg-blue-200 rounded-lg outline-none"
+        />
+
+        {/* Min / Max Labels below */}
+        <div className="flex justify-between text-sm text-gray-600 px-1">
+          <span>₹0</span>
+          <span>₹{maxAmount}</span>
+        </div>
+      </div>
+    </div>
+  );
+}
