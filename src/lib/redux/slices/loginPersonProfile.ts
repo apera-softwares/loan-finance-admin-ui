@@ -17,7 +17,6 @@ export const getUserProfile = createAsyncThunk(
      },
       });
       const response = request.data.user;
-      console.log(response, "User Profile response");
 
       return response;
     } catch (error: any) {

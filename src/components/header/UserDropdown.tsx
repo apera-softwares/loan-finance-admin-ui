@@ -19,7 +19,6 @@ export default function UserDropdown() {
   const { userProfile } = useAppSelector((state) => state.userProfile);
   const dispatch = useAppDispatch();
 
-  console.log(userProfile, "user pofile")
 
 
   useEffect(() => {

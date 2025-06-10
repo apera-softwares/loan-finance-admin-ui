@@ -64,6 +64,11 @@ const navItems: NavItem[] = [
     name: "Sales Representative",
     path: "/sales-reps",
   },
+  {
+    icon: <CoinHand />,
+    name: "Withdrawal Request",
+    path: "/withdrawal-request",
+  },
 ];
 
 const userNavMenu: NavItem[] = [
@@ -76,7 +81,6 @@ const userNavMenu: NavItem[] = [
     icon: <CoinHand />,
     name: "Withdrawal Request",
     path: "/withdrawal-request",
-
   },
     {
     icon: <CoinHand />,
@@ -361,7 +365,7 @@ const AppSidebar: React.FC = () => {
     >
       <div
         className={` h-auto py-6 md:py-8 flex   ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-center"
-          } border-b border-[#F2F2F2] mb-6 `}
+          } border-b border-[#F2F2F2] mb-4 md:mb-6  `}
       >
         <Link href="/">
           {isExpanded || isHovered || isMobileOpen ? (

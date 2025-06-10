@@ -1,11 +1,11 @@
 "use client";
 import React,{useState} from "react";
-import { Toaster } from "react-hot-toast";
-// import axios from 'axios';
+import { useRouter } from "next/navigation";
+import toast,{ Toaster } from "react-hot-toast";
 import WithdrawalRangeSlider from "@/components/withdrawal/WithdrawalRangeSlider";
-import { useAppSelector } from "@/lib/redux/hooks";
+import { useAppSelector,useAppDispatch } from "@/lib/redux/hooks";
 import SelectLoanTerm from "@/components/withdrawal/SelectLoanTerm";
-// import { BACKEND_API } from "@/api";
+import { createWithdrawal } from "@/lib/redux/slices/withdrawalSlice";
 
 const loanTerms = [
             { id: 1, months: 6, title: "6 Month" },
@@ -15,6 +15,7 @@ const loanTerms = [
 
 export default function RequestWithdrawal() {
 
+  const dispatch = useAppDispatch();
   const {userProfile} = useAppSelector((state)=>state.userProfile);
   const loggedInUser = useAppSelector((state)=>state.user.user);
   const maxLimit =userProfile?.UserDetails?.[0]?.availableCredit||0;
@@ -22,59 +23,71 @@ export default function RequestWithdrawal() {
   const [principal, setPrincipal] = useState<number>(0);
   const [selectedLoanTerms,setSelectedLoanTerm] = useState<any>(null);
   console.log(loggedInUser);
+  const[loading,setLoading]= useState<boolean>(false);
+  const router = useRouter();
+
+  const handleSubmitWithdrawalRequest = async () => {
+
+    try {
+      setLoading(true);
+      const payload = {
+        amount:principal,
+        emiDurationMonths:selectedLoanTerms.months
+      };
+
+      await dispatch(createWithdrawal(payload)).unwrap();
+      toast.success('Withdrawal request created successfully');
+      
+      router.push("/withdrawal-request");
+
+    } catch (error: any) {
+      console.error("Error while creating  withdrawal request:", error);
+      toast.error(
+        typeof error === "string"
+          ? error
+          : "Failed to create withdrawal request"
+      );
+    } finally {
+      setLoading(false);
+      handleClear();
+    }
+  };
 
 
-//  const handleSubmitLoanRequest= async()=> {
-//   try {
-
-//      const loanData = {
-//       principal:"",
-//       loanTerms:"",
-//      };
-//     const token = loggedInUser.token;
-//     const response = await axios.post(
-//       `${BACKEND_API}`,
-//       loanData,
-//       {
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//           'Content-Type': 'application/json',
-//         },
-//       }
-//     );
-
-//     console.log('Loan request submitted successfully:', response.data);
-   
-//   } catch (error: any) {
-    
-//   }
- 
-   
-// }
-
+  const handleClear = ()=>{
+    setPrincipal(0);
+    setSelectedLoanTerm(null);
+  }
   
   return (
     <div className="w-full ">
       <Toaster />
       <div className="w-full max-w-2xl mx-auto">
         <div className="w-full mb-6">
-          <WithdrawalRangeSlider maxAmount={maxLimit} onChange={(value:number)=> setPrincipal(Number(value))}/>
+          <WithdrawalRangeSlider maxAmount={maxLimit} value={principal} onChange={(value:number)=> setPrincipal(Number(value))}/>
         </div>
         <div className="w-full mb-8">
           <div className="w-full mb-4">
               <h2 className=" font-semibold">Select Loan Term</h2>
           </div>
+
           <SelectLoanTerm
+            loanTerms={loanTerms}
             principal={principal}
             interestRate={interestRate}
+            selectedLoanTermId={selectedLoanTerms ? selectedLoanTerms.id : null }
             onSelect={(loanTerm:any)=>setSelectedLoanTerm(loanTerm)}
-            cards={loanTerms}
           />
 
         </div>
         <div className="w-full flex items-center justify-center">
           {
-            selectedLoanTerms && ( <button className=" mx-auto px-6 py-2 bg-primary hover:bg-primary-hover text-white font-medium rounded-lg cursor-pointer transition-all duration-500 ">Submit Loan Request</button>)
+            selectedLoanTerms && ( <button className=" mx-auto px-6 py-2.5 bg-primary hover:bg-primary-hover disabled:bg-primary/70 text-white font-medium rounded-lg cursor-pointer transition-all duration-500 " 
+              disabled={loading}
+              onClick={handleSubmitWithdrawalRequest}
+              >
+                Submit Loan Request
+              </button>)
           }
          
         </div>
