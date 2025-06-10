@@ -74,14 +74,14 @@ const WithdrawalRequestsTable: React.FC<WithdrawalRequestsTableProps> = ({
       setTotalPages(res?.lastPage || 0);
     } catch (error: any) {
       setTotalPages(0);
+      setCurrentPage(1);
       console.log(error?.message || "Failed to fetch withdrawals");
     }
   };
 
     const handleUpdateWithdrawalReqStatus = async (item: any, status: string) => {
-    console.log("passed data while updating status", item, status);
-    setUpdatingWithdrawalReqId(item?.id);
 
+    setUpdatingWithdrawalReqId(item?.id);
 
     try {
       
@@ -117,7 +117,9 @@ const WithdrawalRequestsTable: React.FC<WithdrawalRequestsTableProps> = ({
         return "primary";
       case "FUNDED":
         return "success";
-      case "REJECTED":
+      case "CANCELED":
+        return "error";
+      case "DECLINED":
         return "error";
       default:
         return "info";

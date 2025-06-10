@@ -36,7 +36,8 @@ export default function RequestWithdrawal() {
       };
 
       await dispatch(createWithdrawal(payload)).unwrap();
-      toast.success('withdrawal request created successfully');
+      toast.success('Withdrawal request created successfully');
+      
       router.push("/withdrawal-request");
 
     } catch (error: any) {
@@ -48,26 +49,34 @@ export default function RequestWithdrawal() {
       );
     } finally {
       setLoading(false);
+      handleClear();
     }
   };
 
+
+  const handleClear = ()=>{
+    setPrincipal(0);
+    setSelectedLoanTerm(null);
+  }
   
   return (
     <div className="w-full ">
       <Toaster />
       <div className="w-full max-w-2xl mx-auto">
         <div className="w-full mb-6">
-          <WithdrawalRangeSlider maxAmount={maxLimit} onChange={(value:number)=> setPrincipal(Number(value))}/>
+          <WithdrawalRangeSlider maxAmount={maxLimit} value={principal} onChange={(value:number)=> setPrincipal(Number(value))}/>
         </div>
         <div className="w-full mb-8">
           <div className="w-full mb-4">
               <h2 className=" font-semibold">Select Loan Term</h2>
           </div>
+
           <SelectLoanTerm
+            loanTerms={loanTerms}
             principal={principal}
             interestRate={interestRate}
+            selectedLoanTermId={selectedLoanTerms ? selectedLoanTerms.id : null }
             onSelect={(loanTerm:any)=>setSelectedLoanTerm(loanTerm)}
-            cards={loanTerms}
           />
 
         </div>

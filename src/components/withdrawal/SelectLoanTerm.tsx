@@ -2,59 +2,59 @@
 import React, { useState } from "react";
 import { calculateAmortizationRow } from "./calculateAmortizationRow"; 
 
-export type CardData = {
+export type LoanTermOptions = {
   id: number;
   title: string; 
   months: number; 
 };
 
 type SelectableCardListProps = {
-  cards: CardData[];
+  loanTerms: LoanTermOptions[];
   principal: number;
   interestRate: number;
-  onSelect:(loanTerm:(CardData|null))=>void;
+  selectedLoanTermId:number|null;
+  onSelect:(loanTerm:(LoanTermOptions|null))=>void;
 };
 
 
 export default function SelectLoanTerm({
-  cards,
+  loanTerms,
   principal,
   interestRate,
+  selectedLoanTermId,
   onSelect
 }: SelectableCardListProps) {
-  const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
 
-  const toggleCard = (card:CardData) => {
-    if (selectedCardId === card.id) {
-      setSelectedCardId(null); 
+
+  const toggleCard = (loanTermData:LoanTermOptions) => {
+    if (selectedLoanTermId === loanTermData.id) {
       onSelect(null);
     } else {
-      setSelectedCardId(card.id); 
-      onSelect(card);
+      onSelect(loanTermData);
     }
   };
 
   return (
     <div className="w-full space-y-4">
-      {cards.map((card) => {
-        const isSelected = selectedCardId === card.id;
+      {loanTerms.map((loanTerm) => {
+        const isSelected = selectedLoanTermId === loanTerm.id;
         const amortizationRows = isSelected
-          ? calculateAmortizationRow(principal, interestRate, card.months)
+          ? calculateAmortizationRow(principal, interestRate, loanTerm.months)
           : [];
 
         return (
           <div
-            key={card.id}
+            key={loanTerm.id}
             className={`border rounded-lg overflow-hidden transition-all duration-500 ${
               isSelected
                 ? "bg-white border-primary shadow-lg"
                 : "bg-white hover:shadow-lg"
             }`}
           >
-            {/* Card Header */}
+          
             <div
               className="flex items-center justify-between p-6 cursor-pointer"
-              onClick={() => toggleCard(card)}
+              onClick={() => toggleCard(loanTerm)}
             >
               {/* Radio Button like */}
               <div className="flex items-center space-x-2">
@@ -68,11 +68,10 @@ export default function SelectLoanTerm({
                   )}
                 </div>
                 <span className="font-semibold text-gray-800">
-                  {card.title}
+                  {loanTerm.title}
                 </span>
               </div>
 
-              {/* Summary */}
               <div className="text-right space-y-1 text-sm text-gray-700">
                 <div>{`Total Cost : $${principal}`}</div>
               </div>

@@ -3,7 +3,8 @@ import React, { useState } from "react";
 
 type WithdrawalRangeSliderProps = {
   maxAmount: number;
-  onChange?: (value: number) => void;
+  value:number;
+  onChange: (value: number) => void;
 };
 
 const USDollar = new Intl.NumberFormat('en-US', {
@@ -13,14 +14,14 @@ const USDollar = new Intl.NumberFormat('en-US', {
 
 export default function WithdrawalRangeSlider({
   maxAmount,
+  value,
   onChange,
 }: WithdrawalRangeSliderProps) {
-  const [value, setValue] = useState<number>(0);
+
 
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = Number(e.target.value);
-    setValue(newValue);
-    onChange?.(newValue);
+    onChange(newValue);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,8 +30,7 @@ export default function WithdrawalRangeSlider({
     if (isNaN(newValue)) newValue = 0;
     newValue = Math.max(0, Math.min(maxAmount, newValue));
 
-    setValue(newValue);
-    onChange?.(newValue);
+    onChange(newValue);
   };
 
   return (
@@ -39,7 +39,6 @@ export default function WithdrawalRangeSlider({
         Select Loan Amount
       </label>
 
-      {/* Full-width Input Box */}
       <input
         type="number"
         min={0}
@@ -50,7 +49,7 @@ export default function WithdrawalRangeSlider({
         placeholder="Enter amount"
       />
 
-      {/* Full-width Slider */}
+      {/* Slider */}
       <div className="w-full flex flex-col space-y-2">
         <input
           type="range"
@@ -61,7 +60,7 @@ export default function WithdrawalRangeSlider({
           className="w-full appearance-none h-2 bg-blue-200 rounded-lg outline-none"
         />
 
-        {/* Min / Max Labels below */}
+        {/* Min / Max Labels  */}
         <div className="flex justify-between text-sm text-gray-600 px-1">
           <span>{USDollar.format(`0`)}</span>
           <span>{USDollar.format(`${maxAmount||0}`)}</span>
