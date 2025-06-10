@@ -82,7 +82,7 @@ const WithdrawalRequestsTable: React.FC<WithdrawalRequestsTableProps> = ({
     const handleUpdateWithdrawalReqStatus = async (item: any, status: string) => {
 
     setUpdatingWithdrawalReqId(item?.id);
-
+    setStatusUpdateLoading(true);
     try {
       
       const payload = {
@@ -222,7 +222,7 @@ const WithdrawalRequestsTable: React.FC<WithdrawalRequestsTableProps> = ({
                             <div className="flex items-center">
                               <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
                             </div>
-                          ) : (
+                          ) : withdrawReqItem.status !== "FUNDED" ? (
                             <div className="relative">
                                 <select
                                   value={withdrawReqItem?.status}
@@ -248,6 +248,14 @@ const WithdrawalRequestsTable: React.FC<WithdrawalRequestsTableProps> = ({
                                 <FaAngleDown className=" " />
                               </div>
                             </div>
+                          ):( <Badge
+                            size="sm"
+                            color={mapStatusToVariant(
+                              `${withdrawReqItem?.status || ""}`
+                            )}
+                          >
+                            {`${withdrawReqItem?.status || ""}`}
+                          </Badge>
                           )}
                         </TableCell>
                         )}
