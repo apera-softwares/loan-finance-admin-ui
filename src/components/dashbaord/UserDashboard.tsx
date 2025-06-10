@@ -1,12 +1,14 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
+// import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { REQUIRED_ERROR } from "@/constant/constantClassName";
 import Button from "@/components/ui/button/Button";
 import { BACKEND_API } from "@/api";
 import axios from "axios";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { getUserProfile } from "@/lib/redux/slices/loginPersonProfile";
+import { setPageTitle } from "@/lib/redux/slices/appSlice";
 import { FiEdit } from "react-icons/fi";
 
 import toast, { Toaster } from "react-hot-toast";
@@ -26,6 +28,7 @@ const UserDashboard = () => {
   const loggedInUserProfile = useAppSelector(
     (state) => state.userProfile.userProfile
   );
+  const router = useRouter();
   //const [amount, setAmount] = useState<string>("");
   const [formData, setFormData] = useState({
     bankAccountNumber:
@@ -167,11 +170,11 @@ const UserDashboard = () => {
         <Toaster/>
       <div className="w-full  mb-20 ">
         <div className="w-full flex gap-8 ">
-          <div className="max-w-xl p-6 bg-white rounded-xl border border-gray-200 shadow-lg shrink-0 ">
-            <div className="w-full grid grid-cols-2  gap-x-10  gap-y-8 ">
+          <div className="w-full max-w-xl p-6 bg-white rounded-xl border border-gray-200 shadow-md shrink-0 ">
+            <div className="w-full grid grid-cols-1 md:grid-cols-2  gap-x-10  gap-y-6 md:gap-y-8 ">
               <div className="w-full  flex flex-col  ">
-                <h5 className="text-base font-bold">Available Credit</h5>
-                <span className="text-base font-semibold text-gray-600 ">
+                <h5 className="text-base font-semibold">Available Credit</h5>
+                <span className="text-base font-medium text-gray-600 ">
                   {" "}
                   {USDollar.format(
                     `${
@@ -182,8 +185,8 @@ const UserDashboard = () => {
                 </span>
               </div>
               <div className="w-full  flex flex-col  ">
-                <h5 className="text-base font-bold">Utilized Credit</h5>
-                <span className="text-base font-semibold text-gray-600 ">
+                <h5 className="text-base font-semibold">Utilized Credit</h5>
+                <span className="text-base font-medium text-gray-600 ">
                   {" "}
                   {USDollar.format(
                     `${
@@ -193,20 +196,20 @@ const UserDashboard = () => {
                 </span>
               </div>
               <div className="w-full  flex flex-col  ">
-                <h5 className="text-base font-bold">Interest Rate</h5>
-                <span className="text-base font-semibold text-gray-600 ">
+                <h5 className="text-base font-semibold">Interest Rate</h5>
+                <span className="text-base font-medium text-gray-600 ">
                   {loggedInUserProfile?.UserDetails?.[0]?.interestRate != null
                     ? `${loggedInUserProfile.UserDetails[0].interestRate}%`
                     : "N/A"}
                 </span>
               </div>
               <div className="w-full  flex flex-col ">
-                <h5 className="text-base font-bold">
+                <h5 className="text-base font-semibold">
                   Assigned Sales Representive
                 </h5>
 
                 <span
-                  className="text-base font-semibold text-gray-600 "
+                  className="text-base font-medium text-gray-600 "
                   style={{ textTransform: "capitalize" }}
                 >
                   {" "}
@@ -217,8 +220,14 @@ const UserDashboard = () => {
                 </span>
               </div>
 
-              <div className="w-full col-span-2   ">
-                 <Link  href="request-withdrawal" className="  inline-block  bg-primary hover:bg-primary text-center text-white px-4 py-2 rounded-md transition-all duration-500 no-underline cursor-pointer">Select Loan Amount</Link>
+              <div className="w-full col-span-1 md:col-span-2   ">
+                 <button  className="  inline-block  bg-primary hover:bg-primary text-center text-white px-4 py-2 rounded-md transition-all duration-500 no-underline cursor-pointer"
+                 onClick={()=>{
+                  dispatch(setPageTitle("Request Loan"));
+                  router.push("/request-withdrawal");
+
+                 }}
+                 >Select Loan Amount</button>
              
               </div>
             </div>
@@ -232,7 +241,7 @@ const UserDashboard = () => {
       <div className="w-full  max-w-xl">
         <div className="w-full flex  items-start sm:items-center justify-between gap-6 mb-6 ">
           <h1
-            className=" text-xl sm:text-2xl  font-semibold text-gray-800 dark:text-white/90"
+            className=" text-xl   font-medium text-gray-800 dark:text-white/90"
             x-text="pageName"
           >
             Update Bank Details
