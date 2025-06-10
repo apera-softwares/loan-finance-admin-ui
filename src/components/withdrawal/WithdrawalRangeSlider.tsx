@@ -6,6 +6,11 @@ type WithdrawalRangeSliderProps = {
   onChange?: (value: number) => void;
 };
 
+const USDollar = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+});
+
 export default function WithdrawalRangeSlider({
   maxAmount,
   onChange,
@@ -29,7 +34,7 @@ export default function WithdrawalRangeSlider({
   };
 
   return (
-    <div className="flex flex-col space-y-5 w-full bg-white py-4 ">
+    <div className="flex flex-col space-y-5 w-full bg-white p-6 rounded-lg border ">
       <label className="font-semibold text-gray-700  mb-3">
         Select Loan Amount
       </label>
@@ -41,7 +46,7 @@ export default function WithdrawalRangeSlider({
         max={maxAmount}
         value={value}
         onChange={handleInputChange}
-        className=" rounded px-4 py-2 w-full text-lg font-medium   border border-gray-200 focus:border-gray-300 outline-none"
+        className=" rounded-md px-4 py-2 w-full text-gray-500 text-lg font-medium   border border-gray-200 focus:border-gray-300 outline-none"
         placeholder="Enter amount"
       />
 
@@ -58,8 +63,8 @@ export default function WithdrawalRangeSlider({
 
         {/* Min / Max Labels below */}
         <div className="flex justify-between text-sm text-gray-600 px-1">
-          <span>₹0</span>
-          <span>₹{maxAmount}</span>
+          <span>{USDollar.format(`0`)}</span>
+          <span>{USDollar.format(`${maxAmount||0}`)}</span>
         </div>
       </div>
     </div>

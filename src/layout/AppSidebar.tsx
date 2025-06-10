@@ -78,6 +78,11 @@ const userNavMenu: NavItem[] = [
     path: "/withdrawal-request",
 
   },
+    {
+    icon: <CoinHand />,
+    name: "Request Loan",
+    path: "/request-withdrawal",
+  },
 ];
 
 const salesRepNavMenu: NavItem[] = [

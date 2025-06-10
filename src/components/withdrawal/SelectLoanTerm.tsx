@@ -1,33 +1,36 @@
 "use client";
 import React, { useState } from "react";
-
-export type CardDetail = {
-  date: string;
-  principal: number;
-  fees: number;
-  totalDue: number;
-};
+import { calculateAmortizationRow } from "./calculateAmortizationRow"; 
 
 export type CardData = {
   id: number;
-  title?: string; // optional
-  totalFees: number;
-  totalCost: number;
-  details: CardDetail[];
+  title: string; 
+  months: number; 
 };
 
 type SelectableCardListProps = {
   cards: CardData[];
+  principal: number;
+  interestRate: number;
+  onSelect:(loanTerm:(CardData|null))=>void;
 };
 
-export default function SelectLoanTerm({ cards }: SelectableCardListProps) {
+
+export default function SelectLoanTerm({
+  cards,
+  principal,
+  interestRate,
+  onSelect
+}: SelectableCardListProps) {
   const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
 
-  const toggleCard = (id: number) => {
-    if (selectedCardId === id) {
-      setSelectedCardId(null); // Deselect
+  const toggleCard = (card:CardData) => {
+    if (selectedCardId === card.id) {
+      setSelectedCardId(null); 
+      onSelect(null);
     } else {
-      setSelectedCardId(id); // Select
+      setSelectedCardId(card.id); 
+      onSelect(card);
     }
   };
 
@@ -35,95 +38,83 @@ export default function SelectLoanTerm({ cards }: SelectableCardListProps) {
     <div className="w-full space-y-4">
       {cards.map((card) => {
         const isSelected = selectedCardId === card.id;
+        const amortizationRows = isSelected
+          ? calculateAmortizationRow(principal, interestRate, card.months)
+          : [];
+
         return (
           <div
             key={card.id}
             className={`border rounded-lg overflow-hidden transition-all duration-500 ${
-              isSelected ? "bg-blue-50 border-blue-500 shadow-lg" : "bg-white hover:bg-blue-50 hover:shadow-lg"
+              isSelected
+                ? "bg-white border-primary shadow-lg"
+                : "bg-white hover:shadow-lg"
             }`}
           >
             {/* Card Header */}
             <div
               className="flex items-center justify-between p-6 cursor-pointer"
-              onClick={() => toggleCard(card.id)}
+              onClick={() => toggleCard(card)}
             >
               {/* Radio Button like */}
               <div className="flex items-center space-x-2">
                 <div
                   className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors duration-300 ${
-                    isSelected ? "border-blue-600" : "border-gray-400"
+                    isSelected ? "border-primary" : "border-gray-400"
                   }`}
                 >
                   {isSelected && (
-                    <div className="w-3 h-3 bg-blue-600 rounded-full"></div>
+                    <div className="w-3 h-3 bg-primary rounded-full"></div>
                   )}
                 </div>
                 <span className="font-semibold text-gray-800">
-                  {card.title ? card.title : `Select Plan ${card.id}`}
+                  {card.title}
                 </span>
               </div>
 
-              {/* Total Fees / Cost Summary */}
+              {/* Summary */}
               <div className="text-right space-y-1 text-sm text-gray-700">
-                <div>Total Fees: ₹{card.totalFees}</div>
-                <div>Total Cost: ₹{card.totalCost}</div>
+                <div>{`Total Cost : $${principal}`}</div>
               </div>
             </div>
 
             {/* Collapsible Table */}
             {isSelected && (
-              <div className="p-6  bg-white animate-fade-in ">
-               <div className="w-full mb-4">
-                <h2 className=""> Repayment Schedule</h2>
-
-               </div>
-               <div className="w-full ">
-                 <table className="w-full text-sm text-left border-collapse ">
-                  <thead>
-                    <tr className="text-gray-700 border-b">
-                      <th className="py-2 px-2">Date</th>
-                      <th className="py-2 px-2">Principal</th>
-                      <th className="py-2 px-2">Fees</th>
-                      <th className="py-2 px-2">Total Due</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {card.details.map((row, index) => (
-                      <tr
-                        key={index}
-                        className="border-b last:border-none text-gray-800"
-                      >
-                        <td className="py-2 px-2">{row.date}</td>
-                        <td className="py-2 px-2">₹{row.principal}</td>
-                        <td className="py-2 px-2">₹{row.fees}</td>
-                        <td className="py-2 px-2">₹{row.totalDue}</td>
+              <div className="px-6 pb-6 bg-white animate-fade-in">
+                <div className="w-full mb-6">
+                  <h2 className="font-medium">Repayment Schedule</h2>
+                </div>
+                <div className="w-full overflow-x-auto">
+                  <table className="w-full text-sm text-left border-collapse ">
+                    <thead>
+                      <tr className="text-gray-700 border-b">
+                        <th className="py-2 px-2">Payment</th>
+                        <th className="py-2 px-2">Interest</th>
+                        <th className="py-2 px-2">Principal</th>
+                        <th className="py-2 px-2">Balance</th>
                       </tr>
-                    ))}
-                    {/* Total Row */}
-                    <tr className="font-semibold text-gray-900">
-                      <td className="py-2 px-2">Total</td>
-                      <td className="py-2 px-2">
-                        ₹
-                        {card.details.reduce(
-                          (sum, row) => sum + row.principal,
-                          0
-                        )}
-                      </td>
-                      <td className="py-2 px-2">
-                        ₹
-                        {card.details.reduce((sum, row) => sum + row.fees, 0)}
-                      </td>
-                      <td className="py-2 px-2">
-                        ₹
-                        {card.details.reduce(
-                          (sum, row) => sum + row.totalDue,
-                          0
-                        )}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-               </div>
+                    </thead>
+                    <tbody>
+                      {amortizationRows.map((row) => (
+                        <tr
+                          key={row.paymentNumber}
+                          className="border-b last:border-none text-gray-800"
+                        >
+                          <td className="py-2 px-2">{row.paymentNumber}</td>
+                          <td className="py-2 px-2">
+                            ${row.interest.toFixed(2)}
+                          </td>
+                          <td className="py-2 px-2">
+                            ${row.principalPayment.toFixed(2)}
+                          </td>
+                          <td className="py-2 px-2">
+                            ${row.remainingBalance.toFixed(2)}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             )}
           </div>
@@ -132,5 +123,3 @@ export default function SelectLoanTerm({ cards }: SelectableCardListProps) {
     </div>
   );
 }
-
-
