@@ -8,6 +8,7 @@ import memberManagementReducer from './slices/membersSlice'
 import referralReducer from "./slices/referralSlice"
 import salesRepresentativeReducer from "./slices/salesRepresentativeSlice";
 import appReducer from "./slices/appSlice";
+import withdrawalReducer from "./slices/withdrawalSlice";
 
 
 
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   memberManagement:memberManagementReducer,
   referral:referralReducer,
   salesRepresentative:salesRepresentativeReducer,
+  withdrawal:withdrawalReducer,
 })
 
 export type RootReducer = ReturnType<typeof rootReducer> ;

@@ -1,11 +1,11 @@
 "use client";
 import React,{useState} from "react";
-import { Toaster } from "react-hot-toast";
-// import axios from 'axios';
+import { useRouter } from "next/navigation";
+import toast,{ Toaster } from "react-hot-toast";
 import WithdrawalRangeSlider from "@/components/withdrawal/WithdrawalRangeSlider";
-import { useAppSelector } from "@/lib/redux/hooks";
+import { useAppSelector,useAppDispatch } from "@/lib/redux/hooks";
 import SelectLoanTerm from "@/components/withdrawal/SelectLoanTerm";
-// import { BACKEND_API } from "@/api";
+import { createWithdrawal } from "@/lib/redux/slices/withdrawalSlice";
 
 const loanTerms = [
             { id: 1, months: 6, title: "6 Month" },
@@ -15,6 +15,7 @@ const loanTerms = [
 
 export default function RequestWithdrawal() {
 
+  const dispatch = useAppDispatch();
   const {userProfile} = useAppSelector((state)=>state.userProfile);
   const loggedInUser = useAppSelector((state)=>state.user.user);
   const maxLimit =userProfile?.UserDetails?.[0]?.availableCredit||0;
@@ -22,35 +23,33 @@ export default function RequestWithdrawal() {
   const [principal, setPrincipal] = useState<number>(0);
   const [selectedLoanTerms,setSelectedLoanTerm] = useState<any>(null);
   console.log(loggedInUser);
+  const[loading,setLoading]= useState<boolean>(false);
+  const router = useRouter();
 
+  const handleSubmitWithdrawalRequest = async () => {
 
-//  const handleSubmitLoanRequest= async()=> {
-//   try {
+    try {
+      setLoading(true);
+      const payload = {
+        amount:principal,
+        emiDurationMonths:selectedLoanTerms.months
+      };
 
-//      const loanData = {
-//       principal:"",
-//       loanTerms:"",
-//      };
-//     const token = loggedInUser.token;
-//     const response = await axios.post(
-//       `${BACKEND_API}`,
-//       loanData,
-//       {
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//           'Content-Type': 'application/json',
-//         },
-//       }
-//     );
+      await dispatch(createWithdrawal(payload)).unwrap();
+      toast.success('withdrawal request created successfully');
+      router.push("/withdrawal-request");
 
-//     console.log('Loan request submitted successfully:', response.data);
-   
-//   } catch (error: any) {
-    
-//   }
- 
-   
-// }
+    } catch (error: any) {
+      console.error("Error while creating  withdrawal request:", error);
+      toast.error(
+        typeof error === "string"
+          ? error
+          : "Failed to create withdrawal request"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   
   return (
@@ -74,7 +73,12 @@ export default function RequestWithdrawal() {
         </div>
         <div className="w-full flex items-center justify-center">
           {
-            selectedLoanTerms && ( <button className=" mx-auto px-6 py-2 bg-primary hover:bg-primary-hover text-white font-medium rounded-lg cursor-pointer transition-all duration-500 ">Submit Loan Request</button>)
+            selectedLoanTerms && ( <button className=" mx-auto px-6 py-2.5 bg-primary hover:bg-primary-hover disabled:bg-primary/70 text-white font-medium rounded-lg cursor-pointer transition-all duration-500 " 
+              disabled={loading}
+              onClick={handleSubmitWithdrawalRequest}
+              >
+                Submit Loan Request
+              </button>)
           }
          
         </div>
