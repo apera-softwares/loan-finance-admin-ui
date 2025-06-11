@@ -7,7 +7,7 @@ import { MODAL_FORM_INPUT_CLASS,MODAL_INPUT_LABEL_CLASS, REQUIRED_ERROR } from "
 import Select from "../form/Select";
 import { CreateUser, UpdateUser } from "@/lib/redux/slices/userManagementSlice";
 import { useAppDispatch,useAppSelector } from "@/lib/redux/hooks";
-import toast from "react-hot-toast";
+import toast,{Toaster} from "react-hot-toast";
 import axios from "axios";
 import { BACKEND_API } from "@/api";
 import { Roles } from "@/constant/roles";
@@ -210,7 +210,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                 }
             } else {
                 console.log("Failed to Update User:", res.payload || "Unknown error");
-                toast.error("Failed to Update user");
+                 toast.error(res.payload||"Something went wrong");
 
             }
         });
@@ -244,7 +244,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
                 }
             } else {
                 console.log("Failed to Create user:", res.payload || "Unknown error");
-                toast.error("Failed to Create user");
+                toast.error(res.payload||"Something went wrong");
             }
         });
     }
@@ -300,7 +300,7 @@ const UserAddEditModal: React.FC<UserAddEditModalProps> = ({ isOpen, closeModal,
             }}
             className="max-w-[800px] px-6 py-10 lg:px-10 "
         >
-            {/* <Toaster /> */}
+            <Toaster />
 
             <div className="w-full">
                 <div className="w-full flex items-center mb-6 md:mb-8">

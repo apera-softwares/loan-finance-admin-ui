@@ -66,6 +66,7 @@ import ApplicationPendingIcon from "./Application-Icon-1.svg";
 import ApplicationApprovedIcon from "./Application-Icon-2.svg";
 import ApplicationFundedIcon from "./Application-Icon-3.svg";
 import UserProfile from "./user-profile.svg";
+import CreateUser from "./createUser.svg"
 
 export {
   DownloadIcon,
@@ -136,5 +137,5 @@ export {
   ApplicationApprovedIcon,
   ApplicationFundedIcon,
   UserProfile,
-
+  CreateUser,
 };
