@@ -83,7 +83,8 @@ export default function SelectLoanTerm({
                 <div className="w-full mb-6">
                   <h2 className="font-medium">Repayment Schedule</h2>
                 </div>
-                <div className="w-full overflow-x-auto">
+                {
+                  amortizationRows.length > 0 ? (   <div className="w-full overflow-x-auto">
                   <table className="w-full text-sm text-left border-collapse ">
                     <thead>
                       <tr className="text-gray-700 border-b">
@@ -91,6 +92,7 @@ export default function SelectLoanTerm({
                         <th className="py-2 px-2">Interest</th>
                         <th className="py-2 px-2">Principal</th>
                         <th className="py-2 px-2">Balance</th>
+                  
                       </tr>
                     </thead>
                     <tbody>
@@ -111,9 +113,25 @@ export default function SelectLoanTerm({
                           </td>
                         </tr>
                       ))}
+
+                      {/* totals */}
+                      <tr className="font-semibold text-gray-900 border-t">
+                      <td className="py-2 px-2">Total</td>
+                      <td className="py-2 px-2">
+                      ${amortizationRows.reduce((sum, r) => sum + r.interest, 0).toFixed(2)}
+                      </td>
+                      <td className="py-2 px-2">
+                      ${amortizationRows.reduce((sum, r) => sum + r.principalPayment, 0).toFixed(2)}
+                      </td>
+                      <td className="py-2 px-2">
+                      ${amortizationRows[amortizationRows.length - 1]?.remainingBalance.toFixed(2) || "0.00"}
+                      </td>
+                      </tr>
                     </tbody>
                   </table>
-                </div>
+                </div>) : (  <p className="text-sm text-gray-500">No repayment data found.</p>)
+                }
+             
               </div>
             )}
           </div>
