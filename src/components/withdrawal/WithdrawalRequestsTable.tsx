@@ -8,6 +8,7 @@ import {
 } from "../ui/table";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { fetchWithdrawals,updateWithdrawal } from "@/lib/redux/slices/withdrawalSlice";
+import {getUserProfile} from "@/lib/redux/slices/loginPersonProfile";
 import Spinner from "../common/Spinner";
 import Pagination from "../tables/Pagination";
 import toast, { Toaster } from "react-hot-toast";
@@ -93,6 +94,9 @@ const WithdrawalRequestsTable: React.FC<WithdrawalRequestsTableProps> = ({
       await dispatch(updateWithdrawal(payload)).unwrap();
       toast.success("Update  status successfully");
       getWithdrawalRequests(currentPage);
+      if(status==="FUNDED"){
+        dispatch(getUserProfile());
+      }
     } catch (error: any) {
       console.log("Error while update withdraw req status:", error);
       const errorMessage =

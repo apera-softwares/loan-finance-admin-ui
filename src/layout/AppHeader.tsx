@@ -1,4 +1,5 @@
 "use client";
+import { usePathname } from "next/navigation";
 import UserDropdown from "@/components/header/UserDropdown";
 import { useSidebar } from "@/context/SidebarContext";
 import React, { useState, useEffect, useRef } from "react";
@@ -8,6 +9,7 @@ import { setSearchText } from "@/lib/redux/slices/appSlice";
 //import Link from "next/link";
 //import NotificationDropdown from "@/components/header/NotificationDropdown";
 //import Logo from '../assets/logo/logo.png'
+import { shouldHideSearchBar } from "@/utils/searchBarHiddenRoutes";
 
 const AppHeader: React.FC = () => {
 
@@ -15,6 +17,8 @@ const AppHeader: React.FC = () => {
   const { isMobileOpen, toggleSidebar, toggleMobileSidebar } = useSidebar();
   const {pageTitle,searchText} = useAppSelector((state)=>state.app);
   const dispatch = useAppDispatch();
+  const pathname = usePathname();
+  const isSearchBarVisible = !shouldHideSearchBar(pathname);
 
   const handleToggle = () => {
     if (window.innerWidth >= 1024) {
@@ -48,7 +52,7 @@ const AppHeader: React.FC = () => {
   return (
     <header className="sticky top-0 flex w-full bg-white z-9999 shadow-xs">
       <div className="flex flex-col items-center justify-between grow lg:flex-row lg:px-6">
-        <div className="flex items-center justify-between w-full gap-2 px-4 py-3 border-b border-gray-200  dark:border-gray-800 sm:gap-4 lg:justify-normal  lg:border-b-0 lg:px-0 lg:py-4 ">
+        <div className="flex items-center justify-between w-full gap-2 px-4 py-3 border-b border-gray-200  dark:border-gray-800 sm:gap-4 lg:justify-normal  lg:border-b-0 lg:px-0 lg:py-5 ">
           <button
             className="items-center justify-center w-10 h-10 text-gray-500 border-gray-200 rounded-lg z-99999 dark:border-gray-800 flex lg:hidden dark:text-gray-400 lg:h-11 lg:w-11 lg:border"
             onClick={handleToggle}
@@ -128,7 +132,7 @@ const AppHeader: React.FC = () => {
             {/* <!-- Dark Mode Toggler --> */}
             {/* <ThemeToggleButton /> */}
             {/* <!-- Dark Mode Toggler --> */}
-            <div className="">
+            <div className={`${isSearchBarVisible ? "block":"hidden"} `}>
               <form>
                 <div className="relative ">
                   <span className="absolute -translate-y-1/2 left-4 top-1/2 pointer-events-none">
