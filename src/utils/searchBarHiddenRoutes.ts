@@ -1,5 +1,5 @@
 
-export const searchBarHiddenRoutes = ["/","/request-withdrawal"];
+export const searchBarHiddenRoutes = ["/","/request-withdrawal","/profile"];
 
 export function shouldHideSearchBar(pathname: string): boolean {
 
