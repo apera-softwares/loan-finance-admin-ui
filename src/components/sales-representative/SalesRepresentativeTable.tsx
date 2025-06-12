@@ -34,7 +34,7 @@ const SalesRepresentativeTable: React.FC<SalesRepresentativeTableProps> = ({
   const [totalPages, setTotalPages] = useState(0);
   const [showAddEditModal, setShowAddEditModal] = useState(false);
   const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false);
-  const [editUserData, setEditUserData] = useState<any | null>(null);
+  const [selectedSalesRepData, setSelectedSalesRepData] = useState<any>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
 
@@ -176,7 +176,7 @@ const SalesRepresentativeTable: React.FC<SalesRepresentativeTableProps> = ({
                           <button
                             className={`${TABLE_ACTION_BUTTON_CLASS}`}
                             onClick={() => {
-                              setEditUserData(user);
+                              setSelectedSalesRepData(user);
                               setShowAddEditModal(true);
                             }}
                           >
@@ -236,8 +236,9 @@ const SalesRepresentativeTable: React.FC<SalesRepresentativeTableProps> = ({
         isOpen={showAddEditModal}
         closeModal={() => {
           setShowAddEditModal(false);
+          setSelectedSalesRepData(null);
         }}
-        userData={editUserData}
+        salesRepData={selectedSalesRepData}
         type="update"
       />
       <DeleteConfirmModal
