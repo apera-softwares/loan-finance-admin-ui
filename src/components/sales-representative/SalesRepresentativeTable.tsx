@@ -144,7 +144,7 @@ const SalesRepresentativeTable: React.FC<SalesRepresentativeTableProps> = ({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {salesRepresentativesList.length > 0 ? (
+                {salesRepresentativesList && salesRepresentativesList.length > 0 ? (
                   salesRepresentativesList.map((user: any, index: number) => (
                     <TableRow key={user?.id} className={`${TABLE_RAW_CLASS}`}>
                       <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
@@ -196,9 +196,24 @@ const SalesRepresentativeTable: React.FC<SalesRepresentativeTableProps> = ({
                     </TableRow>
                   ))
                 ) : (
-                  <TableRow>
+                  <TableRow className={`${TABLE_RAW_CLASS}`} >
                     <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
                       No sales representative found.
+                    </TableCell>
+                    <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
+                      {``}
+                    </TableCell>
+                    <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
+                      {``}
+                    </TableCell>
+                    <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
+                      {``}
+                    </TableCell>
+                    <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
+                      {``}
+                    </TableCell>
+                    <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
+                      {``}
                     </TableCell>
                   </TableRow>
                 )}
