@@ -13,7 +13,7 @@ import toast,{Toaster} from "react-hot-toast";
 interface SalesRepresentativeAddEditModalProps {
   isOpen: boolean;
   closeModal: () => void;
-  userData?: any;
+  salesRepData?: any;
   type?: string;
 }
 
@@ -29,7 +29,7 @@ interface FormData {
 
 const SalesRepresentativeAddEditModal: React.FC<
   SalesRepresentativeAddEditModalProps
-> = ({ isOpen, closeModal, userData, type }) => {
+> = ({ isOpen, closeModal, salesRepData, type }) => {
   const dispatch = useDispatch<AppDispatch>();
   const [formData, setFormData] = useState<FormData>({
     id: "",
@@ -51,24 +51,91 @@ const SalesRepresentativeAddEditModal: React.FC<
   });
 
   useEffect(() => {
-    if (userData) {
+    if (salesRepData) {
       setFormData({
-           id: userData?.id||"",
-           firstName:userData.firstName||"",
-           lastName:userData.lastName||"",
-           email:userData.email||"",
-           phone:userData.phone||"",
-           commission: userData?.commission || "",
+           id: salesRepData?.id||"",
+           firstName:salesRepData.firstName||"",
+           lastName:salesRepData.lastName||"",
+           email:salesRepData.email||"",
+           phone:salesRepData.phone||"",
+           commission: salesRepData?.commission || "",
       });
     }
-  }, [userData, isOpen]);
+  }, [salesRepData, isOpen]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+
+    const validateFormData = () => {
+    let isValidData = true;
+    const tempErrors = { ...errors };
+
+    // const nameRegex = /^[A-Za-z]+(-[A-Za-z]+)*$/;;
+    // Validate firstName
+    if (formData.firstName.trim() === "") {
+      tempErrors.firstName = "First name is required";
+      isValidData = false;
+    } else {
+      tempErrors.firstName = "";
+    }
+
+    // Validate lastName
+    if (formData.lastName.trim() === "") {
+      tempErrors.lastName = "Last name is required";
+      isValidData = false;
+    } else {
+      tempErrors.lastName = "";
+    }
+
+    // Validate email
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (formData.email.trim() === "") {
+      tempErrors.email = "Email is required";
+      isValidData = false;
+    } else if (!emailRegex?.test(formData.email)) {
+      tempErrors.email = "Please enter a valid email";
+      isValidData = false;
+    } else {
+      tempErrors.email = "";
+    }
+
+    // Validate phone
+    if (formData.phone.trim() === "") {
+      tempErrors.phone = "Phone number is required";
+      isValidData = false;
+    } else if (formData.phone.length < 10) {
+      tempErrors.phone = "Please enter a valid phone number";
+      isValidData = false;
+    } else {
+      tempErrors.phone = "";
+    }
+
+    if (type === "add") {
+      // validate password
+      if (formData?.password?.trim() === "") {
+        tempErrors.password = "Password is required";
+        isValidData = false;
+      } else { 
+        tempErrors.password = "";
+      }
+    }
+
+    if (formData.commission?.trim() === "") {
+        tempErrors.commission = "Commission is required";
+        isValidData = false;
+    } else { 
+        tempErrors.commission = "";
+    }
+
+    setErrors(tempErrors);
+    return isValidData;
+  };
+
   const handleAdd = async () => {
+    if(!validateFormData()) return ;
     try {
       const addPayload = {
         firstName:formData.firstName,
@@ -95,9 +162,11 @@ const SalesRepresentativeAddEditModal: React.FC<
   };
 
   const handleEdit = async () => {
+
+    if(!validateFormData()) return ;
     try {
       const editPayload = {
-        id: userData?.id,
+        id: salesRepData?.id,
         firstName:formData.firstName,
         lastName:formData.lastName,
         email:formData.email,
@@ -171,7 +240,7 @@ const SalesRepresentativeAddEditModal: React.FC<
         </div>
 
         <div className="w-full">
-          <div className="max-h-[400px] overflow-y-auto ">
+          <div className=" max-h-[320px] overflow-y-auto  ">
             <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="w-full ">
                 <label className={MODAL_INPUT_LABEL_CLASS}>First Name</label>
