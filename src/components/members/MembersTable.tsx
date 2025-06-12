@@ -142,9 +142,18 @@ const MembersTable: React.FC<MembersTableProps> = ({
                     </TableRow>
                   ))
                 ) : (
-                  <TableRow>
+                  <TableRow className={`${TABLE_RAW_CLASS}`}>
                     <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
                       No members found.
+                    </TableCell>
+                    <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
+                      {``}
+                    </TableCell>
+                    <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
+                      {``}
+                    </TableCell>
+                    <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
+                      {``}
                     </TableCell>
                   </TableRow>
                 )}

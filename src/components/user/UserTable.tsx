@@ -158,9 +158,36 @@ function mapStatusToVariant(
 
                                     ))
                                 ) : (
-                                    <TableRow>
+                                    <TableRow className={`${TABLE_RAW_CLASS}`}>
                                         <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
                                             No users found.
+                                        </TableCell>
+                                        <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
+                                           {``}
+                                        </TableCell>
+                                        <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
+                                           {``}
+                                        </TableCell>
+                                        <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
+                                           {``}
+                                        </TableCell>
+                                        <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
+                                           {``}
+                                        </TableCell>
+                                        <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
+                                           {``}
+                                        </TableCell>
+                                        <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
+                                           {``}
+                                        </TableCell>
+                                        <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
+                                           {``}
+                                        </TableCell>
+                                        <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
+                                           {``}
+                                        </TableCell>
+                                        <TableCell className={`${TABLE_CELL_REGULAR_CLASS}`}>
+                                           {``}
                                         </TableCell>
                                     </TableRow>
                                 )}

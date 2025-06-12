@@ -66,7 +66,9 @@ export default function RequestWithdrawal() {
         <div className="w-full mb-6">
           <WithdrawalRangeSlider maxAmount={maxLimit} value={principal} onChange={(value:number)=> setPrincipal(Number(value))}/>
         </div>
-        <div className="w-full mb-8">
+
+        {
+          principal > 0 && (  <div className="w-full mb-8">
           <div className="w-full mb-4">
               <h2 className=" font-semibold">Select Loan Term</h2>
           </div>
@@ -79,7 +81,9 @@ export default function RequestWithdrawal() {
             onSelect={(loanTerm:any)=>setSelectedLoanTerm(loanTerm)}
           />
 
-        </div>
+        </div>)
+        }
+      
         <div className="w-full flex items-center justify-center">
           {
             selectedLoanTerms && ( <button className=" mx-auto px-6 py-2.5 bg-primary hover:bg-primary-hover disabled:bg-primary/70 text-white font-medium rounded-lg cursor-pointer transition-all duration-500 " 
