@@ -16,13 +16,13 @@ export default function UserInfoCard() {
             Personal Information
           </h4>
 
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-7 2xl:gap-x-32">
+          <div className="grid grid-cols-1 gap-5 lg:grid-cols-2 lg:gap-x-8 2xl:gap-x-32">
             <div>
               <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
                 First Name
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                {userProfile?.firstName}
+                {userProfile?.firstName||""}
               </p>
             </div>
 
@@ -31,7 +31,7 @@ export default function UserInfoCard() {
                 Last Name
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                {userProfile?.lastName}
+                {userProfile?.lastName||""}
               </p>
             </div>
 
@@ -40,7 +40,7 @@ export default function UserInfoCard() {
                 Email address
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                {userProfile?.email}
+                {userProfile?.email||""}
               </p>
             </div>
 
@@ -49,7 +49,7 @@ export default function UserInfoCard() {
                 Phone
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                +09 363 398 46
+                 {userProfile?.phone||""}
               </p>
             </div>
 
@@ -58,7 +58,7 @@ export default function UserInfoCard() {
                 Role
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                {userProfile?.role}
+                {userProfile?.role||""}
               </p>
             </div>
           </div>
