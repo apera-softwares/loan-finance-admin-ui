@@ -2,7 +2,7 @@
 import React from "react";
 import { useAppSelector } from "@/lib/redux/hooks";
 import { AdminDashboard } from "@/components/dashbaord/AdminDashboard";
-import SalesRepDashboard from "@/components/dashbaord/SalesResDashboard";
+import SalesRepDashboard from "@/components/dashbaord/SalesRepDashboard";
 import UserDashboard from "@/components/dashbaord/UserDashboard";
 import { Roles } from "@/constant/roles";
 
