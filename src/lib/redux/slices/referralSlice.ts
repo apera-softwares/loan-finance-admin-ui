@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { BACKEND_API } from "@/api";
 
-// Create Product
+// Create Referral
 export const createReferral = createAsyncThunk(
   "referral/createReferral",
   async (data: any, thunkAPI) => {
@@ -10,9 +10,10 @@ export const createReferral = createAsyncThunk(
       const state: any = thunkAPI.getState();
       const token = state.user?.user?.token;
       const response = await axios.post(`${BACKEND_API}lead`, data, {
-        headers: { Authorization: `Bearer ${token}`, 
-       'ngrok-skip-browser-warning': 'true',
-     },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "ngrok-skip-browser-warning": "true",
+        },
       });
       return response.data;
     } catch (error: any) {
@@ -30,29 +31,54 @@ export const fetchReferrals = createAsyncThunk(
     try {
       const state: any = thunkAPI.getState();
       const token = state.user?.user?.token;
-   
-      const {page,limit,searchQuery}= params;
-    
+
+      const { page, limit, searchQuery } = params;
+
       const queryParams = new URLSearchParams({
-          page: String(page),
-          limit: String(limit),
+        page: String(page),
+        limit: String(limit),
       });
 
       if (searchQuery) {
-      queryParams.append("name", searchQuery);
+        queryParams.append("name", searchQuery);
       }
 
       const response = await axios.get(
         `${BACKEND_API}lead?${queryParams.toString()}`,
         {
-          headers: { Authorization: `Bearer ${token}`,   'ngrok-skip-browser-warning': 'true', },
-          
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "ngrok-skip-browser-warning": "true",
+          },
         }
       );
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(
-        error.response?.data?.message || "Failed to fetch product catalogs"
+        error.response?.data?.message || "Failed to fetch referrals"
+      );
+    }
+  }
+);
+// Fetch referral by id
+export const fetchReferralById = createAsyncThunk(
+  "referral/fetchReferralById",
+  async (id: string, thunkAPI) => {
+    try {
+
+      const state: any = thunkAPI.getState();
+      const token = state.user?.user?.token;
+
+      const response = await axios.get(`${BACKEND_API}lead/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "ngrok-skip-browser-warning": "true",
+        },
+      });
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Failed to fetch referral by id"
       );
     }
   }
@@ -67,7 +93,10 @@ export const updateReferral = createAsyncThunk(
       const token = state.user?.user?.token;
 
       const response = await axios.put(`${BACKEND_API}lead/${id}`, data, {
-        headers: { Authorization: `Bearer ${token}`,  'ngrok-skip-browser-warning': 'true', },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "ngrok-skip-browser-warning": "true",
+        },
       });
 
       return response.data;
@@ -88,11 +117,14 @@ export const deleteReferral = createAsyncThunk(
       const token = state.user?.user?.token;
 
       const response = await axios.delete(`${BACKEND_API}lead/${id}`, {
-        headers: { Authorization: `Bearer ${token}`,   'ngrok-skip-browser-warning': 'true', },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "ngrok-skip-browser-warning": "true",
+        },
       });
-      console.log(response,"delete response")
+      console.log(response, "delete response");
 
-      return id ; 
+      return id;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(
         error.response?.data?.message || "Failed to delete product catalog"
@@ -101,15 +133,16 @@ export const deleteReferral = createAsyncThunk(
   }
 );
 
-
 interface ReferralSliceState {
   referralList: any[];
+  referralDetails: any | null;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: ReferralSliceState = {
   referralList: [],
+  referralDetails: null,
   loading: false,
   error: null,
 };
@@ -148,6 +181,24 @@ const productCatalogSlice = createSlice({
       .addCase(fetchReferrals.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+      });
+
+    // Fetch single referral by ID
+    builder
+      .addCase(fetchReferralById.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.referralDetails = null;
+      })
+      .addCase(fetchReferralById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.referralDetails = action.payload.data;
+        state.error = null;
+      })
+      .addCase(fetchReferralById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+        state.referralDetails = null;
       });
 
     // Update

@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
     Table,
     TableBody,
@@ -16,6 +17,7 @@ import ViewApplicationDetailsModal from "./ViewApplicationDetailsModal";
 import UserAddEditModal from "../user/UserAddEditModal";
 import { CreateUser } from "@/icons";
 import { TABLE_CLASS,TABLE_ACTION_BUTTON_CLASS,TABLE_CELL_HEADER_CLASS, TABLE_CELL_REGULAR_CLASS, TABLE_HEADER_CLASS, TABLE_RAW_CLASS } from "@/constant/constantClassName";
+import { setPageTitle } from "@/lib/redux/slices/appSlice";
 
 const USDollar = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -31,7 +33,8 @@ interface ApplicationsTableProps {
 const ApplicationsTable : React.FC<ApplicationsTableProps> = ({ searchText }) => {
     const ITEM_PER_PAGE = 5;
     const dispatch = useAppDispatch();
-    const {referralList,loading} = useAppSelector((state)=>state.referral)
+    const {referralList,loading} = useAppSelector((state)=>state.referral);
+    const router  = useRouter();
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [showApplicationDetailsModal,setShowApplicationDetailsModal] = useState<boolean>(false);
@@ -76,8 +79,11 @@ const ApplicationsTable : React.FC<ApplicationsTableProps> = ({ searchText }) =>
 
     const handleViewApplicationDetails = (applicationData:any)=>{
 
-        setSelectedApplication(applicationData);
-        setShowApplicationDetailsModal(true);
+        // setSelectedApplication(applicationData);
+        // setShowApplicationDetailsModal(true);
+        dispatch(setPageTitle("Application Details"));
+        router.push(`/applications/${applicationData?.id}`);
+
     }
 
 
