@@ -9,7 +9,6 @@ export default function UserMetaCard() {
   const {userProfile} = useAppSelector((state)=>state.userProfile)
   const [showUpdateProfileModal,setShowUpdateProfileModal]=useState<boolean>(false);
 
-  console.log("user profile in meta card",userProfile);
 
   return (
       <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
@@ -19,7 +18,7 @@ export default function UserMetaCard() {
               <Image
                 width={80}
                 height={80}
-                src="/images/user/default-profile.jpg"
+                src="/assets/images/user/default-profile.jpg"
                 alt="user"
               />
             </div>
