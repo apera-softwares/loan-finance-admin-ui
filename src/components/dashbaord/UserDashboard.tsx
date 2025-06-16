@@ -12,14 +12,15 @@ import { setPageTitle } from "@/lib/redux/slices/appSlice";
 import { FiEdit } from "react-icons/fi";
 
 import toast, { Toaster } from "react-hot-toast";
+import ConnectWithBankCard from "../misc/ConnectWithBankCard";
 
 const FORM_INPUT_CLASS =
   "w-full h-10 text-base bg-white border-b border-gray-200 focus:border-gray-300  text-gray-600 outline-none   transition-all duration-500 ";
 const FORM_INPUT_LABEL = " block w-full  text-sm font-medium text-gray-600";
 
-const USDollar = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
+const USDollar = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
 });
 
 const UserDashboard = () => {
@@ -100,145 +101,74 @@ const UserDashboard = () => {
     }
   };
 
-  // const handleWithdrawFund = async () => {
-  //   try {
-  //     if (!validateAmount()) return;
-  //     const token = loggedInUser?.token;
-  //     const payload = {
-  //       amount: parseFloat(amount) || 0,
-  //     };
-
-  //     const response = await axios.put(
-  //       `${BACKEND_API}user/available-credit/withdraw`,
-  //       payload,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //           "Content-Type": "application/json",
-  //           "ngrok-skip-browser-warning": "true",
-  //         },
-  //       }
-  //     );
-  //     console.log("resonse of fund withdraw", response);
-  //     dispatch(getUserProfile());
-  //     toast.success("Fund widhdraw successfully");
-  //     setAmount("");
-  //   } catch (error) {
-  //     console.log("error while withdraw fund", error);
-
-  //     if (axios.isAxiosError(error)) {
-  //       if (error.response) {
-  //         toast.error(error.response.data.message || "Failed to withdraw fund");
-  //       } else {
-  //         toast.error("Failed to withdraw fund");
-  //       }
-  //     } else {
-  //       toast.error("Failed to withdraw fund");
-  //     }
-  //   }
-  // };
-
-  // function validateAmount() {
-  //   const numericAmount = parseInt(amount);
-  //   const availableCredit =
-  //     loggedInUserProfile?.UserDetails?.[0]?.availableCredit || 0;
-
-  //   if (!amount.trim()) {
-  //     setAmountError("Enter amount");
-  //     return false;
-  //   }
-
-  //   if (numericAmount <= 0) {
-  //     setAmountError("Amount must be greater than zero ");
-  //     return false;
-  //   }
-
-  //   if (numericAmount > availableCredit) {
-  //     setAmountError("Amount cannot exceed available credit.");
-  //     return false;
-  //   }
-
-  //   setAmountError("");
-  //   return true;
-  // }
-
   const handleToggleEdit = () => {
     setIsEditMode(!isEditMode);
   };
+
   return (
     <div className="w-full">
-        <Toaster/>
-      <div className="w-full  mb-20 ">
-        <div className="w-full flex gap-8 ">
-          <div className="w-full max-w-xl p-6 bg-white rounded-xl border border-gray-200 shadow-md shrink-0 ">
-            <div className="w-full grid grid-cols-1 md:grid-cols-2  gap-x-10  gap-y-6 md:gap-y-8 ">
-              <div className="w-full  flex flex-col  ">
-                <h5 className="text-base font-semibold">Available Credit</h5>
-                <span className="text-base font-medium text-gray-600 ">
-                  {" "}
-                  {USDollar.format(
-                    `${
-                      loggedInUserProfile?.UserDetails?.[0]?.availableCredit ||
-                      "0"
-                    }`
-                  )}
-                </span>
-              </div>
-              <div className="w-full  flex flex-col  ">
-                <h5 className="text-base font-semibold">Utilized Credit</h5>
-                <span className="text-base font-medium text-gray-600 ">
-                  {" "}
-                  {USDollar.format(
-                    `${
-                      loggedInUserProfile?.UserDetails?.[0]?.utilizedCredit || 0
-                    }`
-                  )}
-                </span>
-              </div>
-              <div className="w-full  flex flex-col  ">
-                <h5 className="text-base font-semibold">Interest Rate</h5>
-                <span className="text-base font-medium text-gray-600 ">
-                  {loggedInUserProfile?.UserDetails?.[0]?.interestRate != null
-                    ? `${loggedInUserProfile.UserDetails[0].interestRate}%`
-                    : "N/A"}
-                </span>
-              </div>
-              <div className="w-full  flex flex-col ">
-                <h5 className="text-base font-semibold">
-                  Assigned Sales Representive
-                </h5>
+      <Toaster />
 
-                <span
-                  className="text-base font-medium text-gray-600 "
-                  style={{ textTransform: "capitalize" }}
-                >
-                  {" "}
-                  {`${
-                    loggedInUserProfile?.UserDetails?.[0]?.assignedSalesRep ||
-                    "NA"
-                  }`}
-                </span>
-              </div>
+      <div className="w-full max-w-xl p-6 mb-10 md:mb-16 bg-white rounded-xl border border-gray-200 shadow-md shrink-0 ">
+        <div className="w-full grid grid-cols-1 md:grid-cols-2  gap-x-10  gap-y-6 md:gap-y-8 ">
+          <div className="w-full  flex flex-col  ">
+            <h5 className="text-base font-semibold">Available Credit</h5>
+            <span className="text-base font-medium text-gray-600 ">
+              {" "}
+              {USDollar.format(
+                `${
+                  loggedInUserProfile?.UserDetails?.[0]?.availableCredit || "0"
+                }`
+              )}
+            </span>
+          </div>
+          <div className="w-full  flex flex-col  ">
+            <h5 className="text-base font-semibold">Utilized Credit</h5>
+            <span className="text-base font-medium text-gray-600 ">
+              {" "}
+              {USDollar.format(
+                `${loggedInUserProfile?.UserDetails?.[0]?.utilizedCredit || 0}`
+              )}
+            </span>
+          </div>
+          <div className="w-full  flex flex-col  ">
+            <h5 className="text-base font-semibold">Interest Rate</h5>
+            <span className="text-base font-medium text-gray-600 ">
+              {loggedInUserProfile?.UserDetails?.[0]?.interestRate != null
+                ? `${loggedInUserProfile.UserDetails[0].interestRate}%`
+                : "N/A"}
+            </span>
+          </div>
+          <div className="w-full  flex flex-col ">
+            <h5 className="text-base font-semibold">
+              Assigned Sales Representive
+            </h5>
 
-              <div className="w-full col-span-1 md:col-span-2   ">
-                 <button  className="  inline-block  bg-primary hover:bg-primary text-center text-white px-4 py-2 rounded-md transition-all duration-500 no-underline cursor-pointer"
-                 onClick={()=>{
-                  dispatch(setPageTitle("Request Loan"));
-                  router.push("/request-withdrawal");
-
-                 }}
-                 >Select Loan Amount</button>
-             
-              </div>
-            </div>
+            <span
+              className="text-base font-medium text-gray-600 "
+              style={{ textTransform: "capitalize" }}
+            >
+              {" "}
+              {`${
+                loggedInUserProfile?.UserDetails?.[0]?.assignedSalesRep || "NA"
+              }`}
+            </span>
           </div>
 
+          <div className="w-full col-span-1 md:col-span-2   ">
+            <button
+              className="  inline-block  bg-primary hover:bg-primary text-center text-white px-4 py-2 rounded-md transition-all duration-500 no-underline cursor-pointer"
+              onClick={() => {
+                dispatch(setPageTitle("Request Loan"));
+                router.push("/request-withdrawal");
+              }}
+            >
+              Select Loan Amount
+            </button>
+          </div>
         </div>
       </div>
-
-      {/* add or edit product form */}
-
-      <div className="w-full  max-w-xl">
+      <div className="w-full max-w-xl mb-10 md:mb-16">
         <div className="w-full flex  items-start sm:items-center justify-between gap-6 mb-6 ">
           <h1
             className=" text-xl   font-medium text-gray-800 dark:text-white/90"
@@ -295,6 +225,7 @@ const UserDashboard = () => {
           </div>
         </div>
       </div>
+      <ConnectWithBankCard />
     </div>
   );
 };
