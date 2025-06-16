@@ -25,7 +25,6 @@ const USDollar = new Intl.NumberFormat("en-US", {
 
 const UserDashboard = () => {
   const dispatch = useAppDispatch();
-  const loggedInUser = useAppSelector((state) => state.user.user);
   const loggedInUserProfile = useAppSelector(
     (state) => state.userProfile.userProfile
   );
@@ -37,6 +36,9 @@ const UserDashboard = () => {
     routingNumber: loggedInUserProfile?.UserDetails?.[0]?.routingNumber || "",
   });
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
+  const [authAccountDetails, setAuthAccountDetails] = useState<any>(null);
+  const loggedInUser = useAppSelector((state) => state.user.user);
+  const { userProfile } = useAppSelector((state) => state.userProfile);
 
   useEffect(() => {
     setFormData({
@@ -45,6 +47,11 @@ const UserDashboard = () => {
       routingNumber: loggedInUserProfile?.UserDetails?.[0]?.routingNumber || "",
     });
   }, [isEditMode]);
+
+  useEffect(() => {
+    if (!userProfile?.accountConnectedWithPlaid) return;
+    fetchAuthAccountDetails(userProfile?.UserDetails?.[0]?.AccessToken);
+  }, [userProfile]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -101,6 +108,29 @@ const UserDashboard = () => {
     }
   };
 
+  async function fetchAuthAccountDetails(accessToken: string) {
+    try {
+      const response = await axios.get(
+        `${BACKEND_API}api/auth?access_token=${encodeURIComponent(
+          accessToken
+        )}`,
+        {
+          headers: {
+            "ngrok-skip-browser-warning": "true",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${loggedInUser?.token}`,
+          },
+        }
+      );
+
+      const authData = response.data;
+      console.log("auth data", authData);
+      setAuthAccountDetails(authData);
+    } catch (error) {
+      console.error("Error fetching auth data", error);
+    }
+  }
+
   const handleToggleEdit = () => {
     setIsEditMode(!isEditMode);
   };
@@ -108,129 +138,157 @@ const UserDashboard = () => {
   return (
     <div className="w-full">
       <Toaster />
-      
-      <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4 border mb-10 md:mb-16 ">
-      <div className="w-full max-w-xl p-6  bg-white rounded-xl border border-gray-200 shadow-md shrink-0 ">
-        <div className="w-full grid grid-cols-1 md:grid-cols-2  gap-x-10  gap-y-6 md:gap-y-8 ">
-          <div className="w-full  flex flex-col  ">
-            <h5 className="text-base font-semibold">Available Credit</h5>
-            <span className="text-base font-medium text-gray-600 ">
-              {" "}
-              {USDollar.format(
-                `${
-                  loggedInUserProfile?.UserDetails?.[0]?.availableCredit || "0"
-                }`
-              )}
-            </span>
-          </div>
-          <div className="w-full  flex flex-col  ">
-            <h5 className="text-base font-semibold">Utilized Credit</h5>
-            <span className="text-base font-medium text-gray-600 ">
-              {" "}
-              {USDollar.format(
-                `${loggedInUserProfile?.UserDetails?.[0]?.utilizedCredit || 0}`
-              )}
-            </span>
-          </div>
-          <div className="w-full  flex flex-col  ">
-            <h5 className="text-base font-semibold">Interest Rate</h5>
-            <span className="text-base font-medium text-gray-600 ">
-              {loggedInUserProfile?.UserDetails?.[0]?.interestRate != null
-                ? `${loggedInUserProfile.UserDetails[0].interestRate}%`
-                : "N/A"}
-            </span>
-          </div>
-          <div className="w-full  flex flex-col ">
-            <h5 className="text-base font-semibold">
-              Assigned Sales Representive
-            </h5>
 
-            <span
-              className="text-base font-medium text-gray-600 "
-              style={{ textTransform: "capitalize" }}
+      <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-4  mb-10 md:mb-16 ">
+        <div className="w-full max-w-xl p-6  bg-white rounded-xl border border-gray-200 shadow-md shrink-0 ">
+          <div className="w-full grid grid-cols-1 md:grid-cols-2  gap-x-10  gap-y-6 md:gap-y-8 ">
+            <div className="w-full  flex flex-col  ">
+              <h5 className="text-base font-semibold">Available Credit</h5>
+              <span className="text-base font-medium text-gray-600 ">
+                {" "}
+                {USDollar.format(
+                  `${
+                    loggedInUserProfile?.UserDetails?.[0]?.availableCredit ||
+                    "0"
+                  }`
+                )}
+              </span>
+            </div>
+            <div className="w-full  flex flex-col  ">
+              <h5 className="text-base font-semibold">Utilized Credit</h5>
+              <span className="text-base font-medium text-gray-600 ">
+                {" "}
+                {USDollar.format(
+                  `${
+                    loggedInUserProfile?.UserDetails?.[0]?.utilizedCredit || 0
+                  }`
+                )}
+              </span>
+            </div>
+            <div className="w-full  flex flex-col  ">
+              <h5 className="text-base font-semibold">Interest Rate</h5>
+              <span className="text-base font-medium text-gray-600 ">
+                {loggedInUserProfile?.UserDetails?.[0]?.interestRate != null
+                  ? `${loggedInUserProfile.UserDetails[0].interestRate}%`
+                  : "N/A"}
+              </span>
+            </div>
+            <div className="w-full  flex flex-col ">
+              <h5 className="text-base font-semibold">
+                Assigned Sales Representive
+              </h5>
+
+              <span
+                className="text-base font-medium text-gray-600 "
+                style={{ textTransform: "capitalize" }}
+              >
+                {" "}
+                {`${
+                  loggedInUserProfile?.UserDetails?.[0]?.assignedSalesRep ||
+                  "NA"
+                }`}
+              </span>
+            </div>
+
+            <div className="w-full col-span-1 md:col-span-2   ">
+              <button
+                className="  inline-block  bg-primary hover:bg-primary text-center text-white px-4 py-2 rounded-md transition-all duration-500 no-underline cursor-pointer"
+                onClick={() => {
+                  dispatch(setPageTitle("Request Loan"));
+                  router.push("/request-withdrawal");
+                }}
+              >
+                Select Loan Amount
+              </button>
+            </div>
+          </div>
+        </div>
+        <ConnectWithBankCard />
+      </div>
+
+      <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-4 ">
+        <div className="w-full max-w-xl">
+          <div className="w-full flex items-center gap-6 mb-6 ">
+            <h1
+              className=" text-xl   font-medium text-gray-800 dark:text-white/90"
+              x-text="pageName"
             >
-              {" "}
-              {`${
-                loggedInUserProfile?.UserDetails?.[0]?.assignedSalesRep || "NA"
-              }`}
-            </span>
+              Auth Account Details
+            </h1>
           </div>
-
-          <div className="w-full col-span-1 md:col-span-2   ">
+          <div className="w-full h-auto  bg-white border border-gray-200 px-6 py-8 rounded-xl shadow-md ">
+            <div className="w-full  flex flex-col pb-2 border-b border-gray-200 text-gray-600 mb-6  ">
+              <h5 className="text-sm font-medium mb-1 ">Account Number</h5>
+              <span className="text-base font-medium text-gray-600 ">
+                {authAccountDetails?.numbers?.ach?.[0]?.account || "NA"}
+              </span>
+            </div>
+            <div className="w-full  flex flex-col pb-2 border-b border-gray-200 text-gray-600 mb-6  ">
+              <h5 className="text-sm font-medium mb-1 ">Routing Number</h5>
+              <span className="text-base font-medium text-gray-600 ">
+                {authAccountDetails?.numbers?.ach?.[0]?.routing || "NA"}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="w-full max-w-xl">
+          <div className="w-full flex  items-start sm:items-center justify-between gap-6 mb-6 ">
+            <h1
+              className=" text-xl   font-medium text-gray-800 dark:text-white/90"
+              x-text="pageName"
+            >
+              Update Bank Details
+            </h1>
             <button
-              className="  inline-block  bg-primary hover:bg-primary text-center text-white px-4 py-2 rounded-md transition-all duration-500 no-underline cursor-pointer"
-              onClick={() => {
-                dispatch(setPageTitle("Request Loan"));
-                router.push("/request-withdrawal");
-              }}
+              onClick={handleToggleEdit}
+              className="flex items-center flex-nowrap gap text-gray-800 text-base font-medium  "
             >
-              Select Loan Amount
+              <FiEdit className=" mr-1.5  " />
+              Edit
             </button>
           </div>
-        </div>
-      </div>
-            <ConnectWithBankCard />
-        
-      </div>
+          <div className="w-full  bg-white border border-gray-200 px-6 py-8 rounded-xl shadow-md ">
+            <div className="w-full mb-8">
+              <label className={FORM_INPUT_LABEL}>Bank Account Number</label>
+              <input
+                type="text"
+                name="bankAccountNumber"
+                readOnly={!isEditMode}
+                placeholder={
+                  loggedInUserProfile?.UserDetails?.[0]?.bankAccountNumber || ""
+                }
+                value={formData.bankAccountNumber}
+                onChange={handleInputChange}
+                className={FORM_INPUT_CLASS}
+              />
+              <span className={REQUIRED_ERROR}></span>
+            </div>
+            <div className="w-full">
+              <label className={FORM_INPUT_LABEL}>Routing Number</label>
+              <input
+                type="text"
+                name="routingNumber"
+                placeholder={
+                  loggedInUserProfile?.UserDetails?.[0]?.routingNumber || ""
+                }
+                readOnly={!isEditMode}
+                value={formData.routingNumber}
+                onChange={handleInputChange}
+                className={FORM_INPUT_CLASS}
+              />
+              <span className={REQUIRED_ERROR}></span>
+            </div>
 
-      <div className="w-full max-w-xl mb-10 md:mb-16">
-        <div className="w-full flex  items-start sm:items-center justify-between gap-6 mb-6 ">
-          <h1
-            className=" text-xl   font-medium text-gray-800 dark:text-white/90"
-            x-text="pageName"
-          >
-            Update Bank Details
-          </h1>
-          <button
-            onClick={handleToggleEdit}
-            className="flex items-center flex-nowrap gap text-gray-800 text-base font-medium  "
-          >
-            <FiEdit className=" mr-1.5  " />
-            Edit
-          </button>
-        </div>
-        <div className="w-full  bg-white border border-gray-200 px-6 py-8 rounded-xl shadow-md ">
-          <div className="w-full mb-8">
-            <label className={FORM_INPUT_LABEL}>Bank Account Number</label>
-            <input
-              type="text"
-              name="bankAccountNumber"
-              readOnly={!isEditMode}
-              placeholder={
-                loggedInUserProfile?.UserDetails?.[0]?.bankAccountNumber || ""
-              }
-              value={formData.bankAccountNumber}
-              onChange={handleInputChange}
-              className={FORM_INPUT_CLASS}
-            />
-            <span className={REQUIRED_ERROR}></span>
-          </div>
-          <div className="w-full">
-            <label className={FORM_INPUT_LABEL}>Routing Number</label>
-            <input
-              type="text"
-              name="routingNumber"
-              placeholder={
-                loggedInUserProfile?.UserDetails?.[0]?.routingNumber || ""
-              }
-              readOnly={!isEditMode}
-              value={formData.routingNumber}
-              onChange={handleInputChange}
-              className={FORM_INPUT_CLASS}
-            />
-            <span className={REQUIRED_ERROR}></span>
-          </div>
-
-          <div className="flex items-center justify-end w-full gap-3 mt-8">
-            {isEditMode && (
-              <Button size="sm" onClick={handleSubmitBankdDetails}>
-                Update
-              </Button>
-            )}
+            <div className="flex items-center justify-end w-full gap-3 mt-8">
+              {isEditMode && (
+                <Button size="sm" onClick={handleSubmitBankdDetails}>
+                  Update
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       </div>
-
     </div>
   );
 };
