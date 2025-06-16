@@ -109,7 +109,7 @@ const UserDashboard = () => {
     <div className="w-full">
       <Toaster />
 
-      <div className="w-full md:max-w-xl p-6 mb-10 md:mb-16 bg-white rounded-xl border border-gray-200 shadow-md shrink-0 ">
+      <div className="w-full max-w-xl p-6 mb-10 md:mb-16 bg-white rounded-xl border border-gray-200 shadow-md shrink-0 ">
         <div className="w-full grid grid-cols-1 md:grid-cols-2  gap-x-10  gap-y-6 md:gap-y-8 ">
           <div className="w-full  flex flex-col  ">
             <h5 className="text-base font-semibold">Available Credit</h5>
@@ -168,7 +168,7 @@ const UserDashboard = () => {
           </div>
         </div>
       </div>
-      <div className="w-full md:max-w-xl mb-10 md:mb-16">
+      <div className="w-full max-w-xl mb-10 md:mb-16">
         <div className="w-full flex  items-start sm:items-center justify-between gap-6 mb-6 ">
           <h1
             className=" text-xl   font-medium text-gray-800 dark:text-white/90"

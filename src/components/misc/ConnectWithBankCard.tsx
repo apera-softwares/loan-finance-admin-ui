@@ -1,33 +1,17 @@
 'use client'
-import { BACKEND_API } from '@/api'
-import { useEffect, useState } from 'react'
+import { BACKEND_API } from '@/api';
+import { useEffect, useState } from 'react';
 import { usePlaidLink } from 'react-plaid-link';
+import axios from 'axios';
 
-export default function ConnectWithBankCard() {
-  const [linkToken, setLinkToken] = useState();
-  const [publicToken, setPublicToken] = useState();
-  const [account, setAccount] = useState();
+export default function SuccessPage() {
+  const [linkToken, setLinkToken] = useState<string>("")
+  const [publicToken, setPublicToken] = useState<string>("")
+  //const [account, setAccount] = useState();
 
   useEffect(() => {
-    async function fetchToken() {
-      try {
-        const response = await fetch(`${BACKEND_API}api/create_link_token`, {
-          method: 'POST',
-          headers: {
-            'ngrok-skip-browser-warning': 'true',
-            'Content-Type': 'application/json',
-          },
-        })
-
-        const data = await response.json()
-        console.log(data, 'fetch link token data')
-        setLinkToken(data.link_token)
-      } catch (error) {
-        console.error('Error fetching link token:', error)
-      }
-    }
-
-    fetchToken()
+    getInfo();
+    createAndFetchLinkToken()
   }, [])
 
   const { open, ready } = usePlaidLink({
@@ -39,88 +23,110 @@ export default function ConnectWithBankCard() {
     },
   })
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const exchangeRes = await fetch(
-          `${BACKEND_API}api/exchange_public_token
-`,
-          {
-            method: 'POST',
-            headers: {
-              'ngrok-skip-browser-warning': 'true',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ public_token: publicToken }),
-          },
-        )
+useEffect(() => {
+  if (!publicToken) return;
+  fetchData();
+}, [publicToken]);
 
-        const exchangeData = await exchangeRes.json()
-        console.log('accessToken', exchangeData)
-
-        const InfoRes = await fetch(`${BACKEND_API}api/info`, {
-          method: 'POST',
-          headers: {
-            'ngrok-skip-browser-warning': 'true',
-            'Content-Type': 'application/json',
-          },
-        })
-
-        if (!InfoRes.ok) {
-          throw new Error(`HTTP error! status: ${InfoRes.status}`)
-        }
-
-        const infoData = await InfoRes.json()
-        console.log('Info data', infoData)
-
-        const authRes = await fetch(
-          `${BACKEND_API}api/auth?access_token=${encodeURIComponent(exchangeData.accessToken)}`,
-          {
-            method: 'GET',
-            headers: {
-              'ngrok-skip-browser-warning': 'true',
-              'Content-Type': 'application/json',
-            },
-          },
-        )
-
-        if (!authRes.ok) {
-          throw new Error(`HTTP error! status: ${authRes.status}`)
-        }
-
-        const authData = await authRes.json()
-        console.log('auth data', authData)
-
-        // transitions data api
-
-        const transitionRes = await fetch(
-          `${BACKEND_API}api/transactions?access_token=${encodeURIComponent(exchangeData.accessToken)}`,
-          {
-            method: 'GET',
-            headers: {
-              'ngrok-skip-browser-warning': 'true',
-              'Content-Type': 'application/json',
-            },
-          },
-        )
-
-        if (!transitionRes.ok) {
-          throw new Error(`HTTP error! status: ${transitionRes.status}`)
-        }
-
-        const transitionData = await transitionRes.json()
-        console.log('Transion data', transitionData)
-      } catch (error) {
-        console.error('Error fetching data:', error)
-      }
+   async function fetchData(){
+    try {
+      const exchangeData = await exchangePublicToken();
+      const transactionData = await fetchTransactions(exchangeData.accessToken);
+      console.log("transation data",transactionData);
+      
+    } catch (err) {
+      console.error('Failed to fetch transactions', err);
     }
+  };
 
-    fetchData()
-  }, [publicToken])
+async function fetchTransactions(accessToken: string) {
+  try {
+    const response = await axios.get(
+      `${BACKEND_API}api/transactions?access_token=${encodeURIComponent(accessToken)}`,
+      {
+        headers: {
+          'ngrok-skip-browser-warning': 'true',
+          'Content-Type': 'application/json',
+        },
+      }
+    );
 
+    const transactionData = response.data;
+    console.log('Transaction data', transactionData);
+    return transactionData;
+  } catch (error) {
+    console.error('Error fetching transactions:', error);
+    throw error;
+  }
+}
+
+async function exchangePublicToken() {
+  try {
+    const payload = { public_token: publicToken };
+    const response = await axios.post(
+      `${BACKEND_API}api/exchange_public_token`,
+      payload,
+      {
+        headers: {
+          'ngrok-skip-browser-warning': 'true',
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    const exchangeData = response.data;
+    console.log('accessToken', exchangeData);
+    return exchangeData;
+  } catch (error) {
+    console.error('Error exchanging public token:', error);
+    throw error;
+  }
+}
+
+async function createAndFetchLinkToken() {
+  try {
+    const payload = {};
+    const response = await axios.post(
+      `${BACKEND_API}api/create_link_token`,
+      payload,
+      {
+        headers: {
+          'ngrok-skip-browser-warning': 'true',
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    const data = response.data;
+    console.log(data, 'fetch link token data');
+    setLinkToken(data.link_token);
+  } catch (error) {
+    console.error('Error fetching link token:', error);
+  }
+}
+
+  async function getInfo() {
+  try {
+    const payload = {};
+    const response = await axios.post(
+      `${BACKEND_API}api/info`,
+      payload, 
+      {
+        headers: {
+          'ngrok-skip-browser-warning': 'true',
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    const data = response.data;
+    console.log(data, '/api/info');
+  } catch (error) {
+    console.error('Error fetching link token:', error);
+  }
+}
   return (
-
-        <div className="w-full bg-white md:max-w-xl rounded-lg border border-green-500 p-6 text-center shadow-md ">
+        <div className="w-full max-w-xl rounded-lg border border-green-500 p-6 text-center shadow-md ">
           <h2 className="mb-2 text-2xl font-semibold text-green-600">Business Bank Statements</h2>
 
           <p className="mb-6 text-gray-700">
