@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { useAppSelector } from "@/lib/redux/hooks";
+import StaticDropdown from "../common/StaticDropdown";
 
 const LABEL = "text-sm  text-gray-500 mb-2";
 const CONTENT = "text-sm font-medium text-gray-800";
@@ -66,28 +67,46 @@ const BusinessDetailsCard = () => {
         </div>
         <div className={`${CONTAINER_CLASS}`}>
           <p className={`${LABEL}`}>Amount Needed</p>
-          <p className={`${CONTENT}`}>{`${
-            applicationData?.amountNeeded|| "NA"
-          }`}</p>
+          <p className={`${CONTENT}`}>
+            {applicationData?.amountNeeded ? `$${
+            applicationData?.amountNeeded || "NA"
+          }`:"NA"}
+          </p>
         </div>
+        {applicationData?.planUsageOfFund?.length > 0 && (
+          <div className={`${CONTAINER_CLASS}`}>
+            <p className={`${LABEL}`}>Plan Usage Of Fund</p>
+            <StaticDropdown
+              options={[
+                "View plan usage of fund",
+                ...applicationData?.planUsageOfFund.map(
+                  (plan: any) => `${plan}`
+                ),
+              ]}
+            />
+          </div>
+        )}
         <div className={`${CONTAINER_CLASS}`}>
           <p className={`${LABEL}`}>Annual Revenue</p>
-          <p className={`${CONTENT}`}>{`${
+          <p className={`${CONTENT}`}>
+            {applicationData?.annualRevenue ? `$${
             applicationData?.annualRevenue || "NA"
-          }`}</p>
+          }`:"NA"}</p>
         </div>
 
         <div className={`${CONTAINER_CLASS}`}>
           <p className={`${LABEL}`}>Business Revenue Of Last 12 Months</p>
-          <p className={`${CONTENT}`}>{`${
+          <p className={`${CONTENT}`}>
+            {applicationData?.revenueLast12Months ? `$${
             applicationData?.revenueLast12Months || "NA"
-          }`}</p>
+          }`:"NA"}</p>
         </div>
         <div className={`${CONTAINER_CLASS}`}>
           <p className={`${LABEL}`}>Business Expensess Of Last 12 Months</p>
-          <p className={`${CONTENT}`}>{`${
+          <p className={`${CONTENT}`}>
+            {applicationData?.expensesLast12Months ? `$${
             applicationData?.expensesLast12Months || "NA"
-          }`}</p>
+          }`:"NA"}</p>
         </div>
         <div className={`${CONTAINER_CLASS}`}>
           <p className={`${LABEL}`}>Tax Indentification</p>
@@ -114,24 +133,33 @@ const BusinessDetailsCard = () => {
             {applicationData?.hasOutstandingDebt ? "YES" : "NO"}
           </p>
         </div>
+
+        {applicationData?.hasOutstandingDebt && (
+          <div className={`${CONTAINER_CLASS}`}>
+            <p className={`${LABEL}`}>Outstanding Debts</p>
+            <StaticDropdown
+              options={
+                applicationData?.leadOutstandingDebt?.length > 0
+                  ? [
+                      "View outstatning debts",
+                      ...applicationData?.leadOutstandingDebt.map(
+                        (debt: any) =>
+                          `${debt?.nameOfLender} $ ${debt?.remainingBalance}`
+                      ),
+                    ]
+                  : []
+              }
+            />
+          </div>
+        )}
+
         <div className={`${CONTAINER_CLASS}`}>
           <p className={`${LABEL}`}>Address</p>
           <p className={`${CONTENT}`}>{`${
             applicationData?.ownerAddress || "NA"
           }`}</p>
         </div>
-        {/* <div className={`${CONTAINER_CLASS}`}>
-          <p className={`${LABEL}`}>City</p>
-          <p className={`${CONTENT}`}>{`${
-            applicationData?.jobTitle || "NA"
-          }`}</p>
-        </div>
-        <div className={`${CONTAINER_CLASS}`}>
-          <p className={`${LABEL}`}>State</p>
-          <p className={`${CONTENT}`}>{`${
-            applicationData?.jobTitle || "NA"
-          }`}</p>
-        </div> */}
+
 
         <div className={`${CONTAINER_CLASS}`}>
           <p className={`${LABEL}`}>Zipcode</p>
