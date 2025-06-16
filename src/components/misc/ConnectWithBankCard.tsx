@@ -3,11 +3,13 @@ import { BACKEND_API } from '@/api';
 import { useEffect, useState } from 'react';
 import { usePlaidLink } from 'react-plaid-link';
 import axios from 'axios';
+import { useAppSelector } from '@/lib/redux/hooks';
 
 export default function SuccessPage() {
   const [linkToken, setLinkToken] = useState<string>("")
   const [publicToken, setPublicToken] = useState<string>("")
   //const [account, setAccount] = useState();
+  const {user:loggedInUser} = useAppSelector((state)=>state.user);
 
   useEffect(() => {
     getInfo();
@@ -47,6 +49,7 @@ async function fetchTransactions(accessToken: string) {
         headers: {
           'ngrok-skip-browser-warning': 'true',
           'Content-Type': 'application/json',
+          'Authorization':`Bearer ${loggedInUser?.token}`,
         },
       }
     );
@@ -70,6 +73,7 @@ async function exchangePublicToken() {
         headers: {
           'ngrok-skip-browser-warning': 'true',
           'Content-Type': 'application/json',
+          'Authorization':`Bearer ${loggedInUser?.token}`,
         },
       }
     );
@@ -93,6 +97,7 @@ async function createAndFetchLinkToken() {
         headers: {
           'ngrok-skip-browser-warning': 'true',
           'Content-Type': 'application/json',
+          'Authorization':`Bearer ${loggedInUser?.token}`,
         },
       }
     );
@@ -115,6 +120,7 @@ async function createAndFetchLinkToken() {
         headers: {
           'ngrok-skip-browser-warning': 'true',
           'Content-Type': 'application/json',
+          'Authorization':`Bearer ${loggedInUser?.token}`,          
         },
       }
     );
@@ -126,8 +132,8 @@ async function createAndFetchLinkToken() {
   }
 }
   return (
-        <div className="w-full max-w-xl rounded-lg border border-green-500 p-6 text-center shadow-md ">
-          <h2 className="mb-2 text-2xl font-semibold text-green-600">Business Bank Statements</h2>
+        <div className="w-full max-w-xl bg-white rounded-xl border border-gray-200 p-6 text-center shadow-md ">
+          <h2 className="mb-4 text-xl font-semibold text-green-600">Business Bank Statements</h2>
 
           <p className="mb-6 text-gray-700">
             We partner with <strong>PLAID</strong> to verify your business activity and assess your eligibility for
@@ -135,7 +141,7 @@ async function createAndFetchLinkToken() {
           </p>
 
           <button
-            className="rounded-full bg-[#4c4cd6] px-6 py-2 font-semibold text-white transition hover:bg-[#3b3bb5]"
+            className="rounded-full bg-primary px-6 py-2 font-medium text-white  hover:bg-primary-hover transition-all duration-300 "
             onClick={() => open()}
             disabled={!ready}>
             Connect Now
