@@ -136,7 +136,7 @@ export default function SuccessPage() {
   console.log("user profile", userProfile);
   return (
     <div className="w-full max-w-xl bg-white rounded-xl border border-gray-200 px-6 py-8 text-center shadow-md ">
-      <h2 className="mb-4 text-xl font-semibold text-green-600">
+      <h2 className="mb-4 text-xl font-semibold ">
         Business Bank Statements
       </h2>
 
@@ -147,12 +147,12 @@ export default function SuccessPage() {
       </p>
 
       {userProfile?.accountConnectedWithPlaid ? (
-        <span className="rounded-full bg-green-600 px-6 py-2 font-medium text-white  ">
+        <span className="rounded-md bg-green-600 px-6 py-2 font-medium text-white  ">
           Connected
         </span>
       ) : (
         <button
-          className="rounded-full bg-primary px-6 py-2 font-medium text-white  hover:bg-primary-hover transition-all duration-300 "
+          className="rounded-md bg-primary px-6 py-2 font-medium text-white  hover:bg-primary-hover transition-all duration-300 "
           onClick={() => open()}
           disabled={!ready}
         >

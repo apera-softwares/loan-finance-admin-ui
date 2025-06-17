@@ -25,6 +25,7 @@ import {
   Stats,
 } from '../icons/index';
 import Logo from '../assets/logo/logo.png';
+import LogoCollapse from '../assets/logo/logo-collapse.png';
 import { TbLogout2 } from 'react-icons/tb';
 import { IoIosArrowBack } from 'react-icons/io';
 
@@ -145,8 +146,7 @@ const othersItems: NavItem[] = [
 ];
 
 const AppSidebar: React.FC = () => {
-  const { isExpanded, isMobileOpen, isHovered, toggleSidebar, toggleMobileSidebar } =
-    useSidebar();
+  const { isExpanded, isMobileOpen, isHovered, toggleSidebar, toggleMobileSidebar } = useSidebar();
   const [isLogoutConfirmModalOpen, setIsLogoutConfirmModalOpen] = useState<boolean>(false);
   //const { userProfile } = useAppSelector((state) => state.userProfile);
   const dispatch = useAppDispatch();
@@ -367,22 +367,32 @@ const AppSidebar: React.FC = () => {
       // onMouseEnter={() => !isExpanded && setIsHovered(true)}
       // onMouseLeave={() => setIsHovered(false)}
     >
-      <button className="absolute top-24 right-0 hidden lg:flex h-7 w-7 translate-x-1/2 items-center justify-center rounded-lg border bg-white" onClick={handleToggle}>
-        <IoIosArrowBack className={` transition-all duration-300 ${isExpanded ? "rotate-0":"rotate-180"} `}/>
+      <button
+        className={`absolute ${isExpanded ? 'top-[108px]' : 'top-[86px]'} right-0 hidden h-7 w-7 translate-x-1/2 items-center justify-center rounded-lg border bg-white lg:flex`}
+        onClick={handleToggle}
+      >
+        <IoIosArrowBack
+          className={`transition-all duration-300 ${isExpanded ? 'rotate-0' : 'rotate-180'} `}
+        />
       </button>
       <div
         className={`flex h-auto py-6 md:py-8 ${
           !isExpanded && !isHovered ? 'lg:justify-center' : 'justify-center'
         } mb-4 border-b border-[#F2F2F2] md:mb-6`}
       >
-        <Link href="/">
+        <Link
+          href="/"
+          onClick={() => {
+            dispatch(setPageTitle('Dashboard'));
+          }}
+        >
           {isExpanded || isHovered || isMobileOpen ? (
             <>
               <Image className="dark:hidden" src={Logo} alt="Logo" width={202} height={56} />
               <Image className="hidden dark:block" src={Logo} alt="Logo" width={202} height={56} />
             </>
           ) : (
-            <Image src={Logo} alt="Logo" width={32} height={32} />
+            <Image src={LogoCollapse} alt="Logo" width={32} height={32} />
           )}
         </Link>
       </div>
