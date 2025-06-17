@@ -1,9 +1,9 @@
-"use client";
-import React, { useEffect, useRef, useState, useCallback } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { usePathname } from "next/navigation";
-import { useSidebar } from "../context/SidebarContext";
+'use client';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { usePathname } from 'next/navigation';
+import { useSidebar } from '../context/SidebarContext';
 import {
   BoxCubeIcon,
   ChevronDownIcon,
@@ -23,16 +23,19 @@ import {
   User,
   // Grid,
   Stats,
-} from "../icons/index";
-import Logo from '../assets/logo/logo.png'
-import { TbLogout2 } from "react-icons/tb";
-import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
-import { logout } from "@/lib/redux/slices/userSlice";
-import { resetUserProfile } from "@/lib/redux/slices/loginPersonProfile";
-import LogoutConfirmationModal from "@/components/common/LogoutConfirmationModal";
-import { LANDING_PAGE_URL } from "@/api";
-import { Roles } from "@/constant/roles";
-import { setPageTitle,setSearchText } from "@/lib/redux/slices/appSlice";
+} from '../icons/index';
+import Logo from '../assets/logo/logo.png';
+import LogoCollapse from '../assets/logo/logo-collapse.png';
+import { TbLogout2 } from 'react-icons/tb';
+import { IoIosArrowBack } from 'react-icons/io';
+
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import { logout } from '@/lib/redux/slices/userSlice';
+import { resetUserProfile } from '@/lib/redux/slices/loginPersonProfile';
+import LogoutConfirmationModal from '@/components/common/LogoutConfirmationModal';
+import { LANDING_PAGE_URL } from '@/api';
+import { Roles } from '@/constant/roles';
+import { setPageTitle, setSearchText } from '@/lib/redux/slices/appSlice';
 
 type NavItem = {
   name: string;
@@ -44,144 +47,140 @@ type NavItem = {
 const navItems: NavItem[] = [
   {
     icon: <Home />,
-    name: "Dashboard",
-    path: "/",
-
+    name: 'Dashboard',
+    path: '/',
   },
 
   {
     icon: <User />,
-    name: "User Management",
-    path: "/user-management",
+    name: 'User Management',
+    path: '/user-management',
   },
-    {
+  {
     icon: <GridIcon />,
-    name: "Applications",
-    path: "/applications",
+    name: 'Applications',
+    path: '/applications',
   },
   {
     icon: <Stats />,
-    name: "Sales Representative",
-    path: "/sales-reps",
+    name: 'Sales Representative',
+    path: '/sales-reps',
   },
   {
     icon: <CoinHand />,
-    name: "Withdrawal Request",
-    path: "/withdrawal-request",
+    name: 'Withdrawal Request',
+    path: '/withdrawal-request',
   },
 ];
 
 const userNavMenu: NavItem[] = [
   {
     icon: <Home />,
-    name: "Dashboard",
-    path: "/",
+    name: 'Dashboard',
+    path: '/',
   },
-    {
+  {
     icon: <CoinHand />,
-    name: "Withdrawal Request",
-    path: "/withdrawal-request",
+    name: 'Withdrawal Request',
+    path: '/withdrawal-request',
   },
-    {
+  {
     icon: <CoinHand />,
-    name: "Request Loan",
-    path: "/request-withdrawal",
+    name: 'Request Loan',
+    path: '/request-withdrawal',
   },
-    {
+  {
     icon: <CoinHand />,
-    name: "Bank Transactions",
-    path: "/bank-transactions",
+    name: 'Bank Transactions',
+    path: '/bank-transactions',
   },
 ];
 
 const salesRepNavMenu: NavItem[] = [
   {
     icon: <Home />,
-    name: "Dashboard",
-    path: "/",
-
+    name: 'Dashboard',
+    path: '/',
   },
   {
     icon: <User />,
-    name: "Members",
-    path: "/members",
-
+    name: 'Members',
+    path: '/members',
   },
   {
     icon: <CoinHand />,
-    name: "Withdrawal Request",
-    path: "/withdrawal-request",
-
+    name: 'Withdrawal Request',
+    path: '/withdrawal-request',
   },
 ];
-
-
 
 const othersItems: NavItem[] = [
   {
     icon: <PieChartIcon />,
-    name: "Charts",
+    name: 'Charts',
     subItems: [
-      { name: "Line Chart", path: "/line-chart", pro: false },
-      { name: "Bar Chart", path: "/bar-chart", pro: false },
+      { name: 'Line Chart', path: '/line-chart', pro: false },
+      { name: 'Bar Chart', path: '/bar-chart', pro: false },
     ],
   },
   {
     icon: <BoxCubeIcon />,
-    name: "UI Elements",
+    name: 'UI Elements',
     subItems: [
-      { name: "Alerts", path: "/alerts", pro: false },
-      { name: "Avatar", path: "/avatars", pro: false },
-      { name: "Badge", path: "/badge", pro: false },
-      { name: "Buttons", path: "/buttons", pro: false },
-      { name: "Images", path: "/images", pro: false },
-      { name: "Videos", path: "/videos", pro: false },
+      { name: 'Alerts', path: '/alerts', pro: false },
+      { name: 'Avatar', path: '/avatars', pro: false },
+      { name: 'Badge', path: '/badge', pro: false },
+      { name: 'Buttons', path: '/buttons', pro: false },
+      { name: 'Images', path: '/images', pro: false },
+      { name: 'Videos', path: '/videos', pro: false },
     ],
   },
   {
     icon: <PlugInIcon />,
-    name: "Authentication",
+    name: 'Authentication',
     subItems: [
-      { name: "Sign In", path: "/signin", pro: false },
-      { name: "Sign Up", path: "/signup", pro: false },
+      { name: 'Sign In', path: '/signin', pro: false },
+      { name: 'Sign Up', path: '/signup', pro: false },
     ],
   },
 ];
 
 const AppSidebar: React.FC = () => {
-  const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
+  const { isExpanded, isMobileOpen, isHovered, toggleSidebar, toggleMobileSidebar } = useSidebar();
   const [isLogoutConfirmModalOpen, setIsLogoutConfirmModalOpen] = useState<boolean>(false);
   //const { userProfile } = useAppSelector((state) => state.userProfile);
   const dispatch = useAppDispatch();
-  const loggedUser = useAppSelector((state)=>state.user.user);
+  const loggedUser = useAppSelector((state) => state.user.user);
   const pathname = usePathname();
 
-  const renderMenuItems = (
-    navItems: NavItem[],
-    menuType: "main" | "others"
-  ) => (
+  const renderMenuItems = (navItems: NavItem[], menuType: 'main' | 'others') => (
     <ul className="flex flex-col gap-4">
       {navItems.map((nav, index) => (
-        <li key={nav.name} className="" onClick={()=>{
-          dispatch(setPageTitle(nav.name));
-          dispatch(setSearchText(""));
-        }}>
+        <li
+          key={nav.name}
+          className=""
+          onClick={() => {
+            dispatch(setPageTitle(nav.name));
+            dispatch(setSearchText(''));
+          }}
+        >
           {nav.subItems ? (
             <button
               onClick={() => handleSubmenuToggle(index, menuType)}
-              className={`menu-item group ${openSubmenu?.type === menuType && openSubmenu?.index === index
-                ? "menu-item-active"
-                : "menu-item-inactive"
-                } cursor-pointer ${!isExpanded && !isHovered
-                  ? "lg:justify-center"
-                  : "lg:justify-start"
-                }`}
+              className={`menu-item group ${
+                openSubmenu?.type === menuType && openSubmenu?.index === index
+                  ? 'menu-item-active'
+                  : 'menu-item-inactive'
+              } cursor-pointer ${
+                !isExpanded && !isHovered ? 'lg:justify-center' : 'lg:justify-start'
+              }`}
             >
               <span
-                className={` ${openSubmenu?.type === menuType && openSubmenu?.index === index
-                  ? "menu-item-icon-active"
-                  : "menu-item-icon-inactive"
-                  }`}
+                className={` ${
+                  openSubmenu?.type === menuType && openSubmenu?.index === index
+                    ? 'menu-item-icon-active'
+                    : 'menu-item-icon-inactive'
+                }`}
               >
                 {nav.icon}
               </span>
@@ -190,11 +189,11 @@ const AppSidebar: React.FC = () => {
               )}
               {(isExpanded || isHovered || isMobileOpen) && (
                 <ChevronDownIcon
-                  className={`ml-auto w-5 h-5 transition-transform duration-200  ${openSubmenu?.type === menuType &&
-                    openSubmenu?.index === index
-                    ? "rotate-180 text-orange-500"
-                    : ""
-                    }`}
+                  className={`ml-auto h-5 w-5 transition-transform duration-200 ${
+                    openSubmenu?.type === menuType && openSubmenu?.index === index
+                      ? 'rotate-180 text-orange-500'
+                      : ''
+                  }`}
                 />
               )}
             </button>
@@ -202,14 +201,14 @@ const AppSidebar: React.FC = () => {
             nav.path && (
               <Link
                 href={nav.path}
-                className={`menu-item group  ${isActive(nav.path) ? "menu-item-active" : "menu-item-inactive"
-                  }`}
+                className={`menu-item group ${
+                  isActive(nav.path) ? 'menu-item-active' : 'menu-item-inactive'
+                }`}
               >
                 <span
-                  className={`${isActive(nav.path)
-                    ? "menu-item-icon-active"
-                    : "menu-item-icon-inactive"
-                    }`}
+                  className={`${
+                    isActive(nav.path) ? 'menu-item-icon-active' : 'menu-item-icon-inactive'
+                  }`}
                 >
                   {nav.icon}
                 </span>
@@ -229,37 +228,40 @@ const AppSidebar: React.FC = () => {
                 height:
                   openSubmenu?.type === menuType && openSubmenu?.index === index
                     ? `${subMenuHeight[`${menuType}-${index}`]}px`
-                    : "0px",
+                    : '0px',
               }}
             >
-              <ul className="mt-2 space-y-1 ml-9">
+              <ul className="mt-2 ml-9 space-y-1">
                 {nav.subItems.map((subItem) => (
                   <li key={subItem.name}>
                     <Link
                       href={subItem.path}
-                      className={`menu-dropdown-item ${isActive(subItem.path)
-                        ? "menu-dropdown-item-active"
-                        : "menu-dropdown-item-inactive"
-                        }`}
+                      className={`menu-dropdown-item ${
+                        isActive(subItem.path)
+                          ? 'menu-dropdown-item-active'
+                          : 'menu-dropdown-item-inactive'
+                      }`}
                     >
                       {subItem.name}
-                      <span className="flex items-center gap-1 ml-auto">
+                      <span className="ml-auto flex items-center gap-1">
                         {subItem.new && (
                           <span
-                            className={`ml-auto ${isActive(subItem.path)
-                              ? "menu-dropdown-badge-active"
-                              : "menu-dropdown-badge-inactive"
-                              } menu-dropdown-badge `}
+                            className={`ml-auto ${
+                              isActive(subItem.path)
+                                ? 'menu-dropdown-badge-active'
+                                : 'menu-dropdown-badge-inactive'
+                            } menu-dropdown-badge`}
                           >
                             new
                           </span>
                         )}
                         {subItem.pro && (
                           <span
-                            className={`ml-auto ${isActive(subItem.path)
-                              ? "menu-dropdown-badge-active"
-                              : "menu-dropdown-badge-inactive"
-                              } menu-dropdown-badge `}
+                            className={`ml-auto ${
+                              isActive(subItem.path)
+                                ? 'menu-dropdown-badge-active'
+                                : 'menu-dropdown-badge-inactive'
+                            } menu-dropdown-badge`}
                           >
                             pro
                           </span>
@@ -277,12 +279,10 @@ const AppSidebar: React.FC = () => {
   );
 
   const [openSubmenu, setOpenSubmenu] = useState<{
-    type: "main" | "others";
+    type: 'main' | 'others';
     index: number;
   } | null>(null);
-  const [subMenuHeight, setSubMenuHeight] = useState<Record<string, number>>(
-    {}
-  );
+  const [subMenuHeight, setSubMenuHeight] = useState<Record<string, number>>({});
   const subMenuRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   // const isActive = (path: string) => path === pathname;
@@ -291,14 +291,14 @@ const AppSidebar: React.FC = () => {
   useEffect(() => {
     // Check if the current path matches any submenu item
     let submenuMatched = false;
-    ["main", "others"].forEach((menuType) => {
-      const items = menuType === "main" ? navItems : othersItems;
+    ['main', 'others'].forEach((menuType) => {
+      const items = menuType === 'main' ? navItems : othersItems;
       items.forEach((nav, index) => {
         if (nav.subItems) {
           nav.subItems.forEach((subItem) => {
             if (isActive(subItem.path)) {
               setOpenSubmenu({
-                type: menuType as "main" | "others",
+                type: menuType as 'main' | 'others',
                 index,
               });
               submenuMatched = true;
@@ -327,13 +327,9 @@ const AppSidebar: React.FC = () => {
     }
   }, [openSubmenu]);
 
-  const handleSubmenuToggle = (index: number, menuType: "main" | "others") => {
+  const handleSubmenuToggle = (index: number, menuType: 'main' | 'others') => {
     setOpenSubmenu((prevOpenSubmenu) => {
-      if (
-        prevOpenSubmenu &&
-        prevOpenSubmenu.type === menuType &&
-        prevOpenSubmenu.index === index
-      ) {
+      if (prevOpenSubmenu && prevOpenSubmenu.type === menuType && prevOpenSubmenu.index === index) {
         return null;
       }
       return { type: menuType, index };
@@ -342,101 +338,103 @@ const AppSidebar: React.FC = () => {
 
   const handleOpenLogoutConfirmationModal = () => {
     setIsLogoutConfirmModalOpen(true);
-  }
+  };
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
+    localStorage.removeItem('user');
     dispatch(logout());
     dispatch(resetUserProfile());
     //alert("Logout")
     // router.replace(LANDING_PAGE_URL)
     window.location.href = LANDING_PAGE_URL;
+  };
 
-  }
+  const handleToggle = () => {
+    if (window.innerWidth >= 1024) {
+      toggleSidebar();
+    } else {
+      toggleMobileSidebar();
+    }
+  };
+
+  
 
   return (
     <aside
-      className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 left-0 bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200 
-        ${isExpanded || isMobileOpen
-          ? "w-[290px]"
-          : isHovered
-            ? "w-[290px]"
-            : "w-[90px]"
-        }
-        ${isMobileOpen ? "translate-x-0" : "-translate-x-full"}
-        lg:translate-x-0`}
-      onMouseEnter={() => !isExpanded && setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      className={`fixed top-0 left-0 z-50 mt-16 flex h-screen flex-col border-r border-gray-200 bg-white px-5 text-gray-900 transition-all duration-300 ease-in-out lg:mt-0 dark:border-gray-800 dark:bg-gray-900 ${
+        isExpanded || isMobileOpen ? 'w-[290px]' : isHovered ? 'w-[290px]' : 'w-[90px]'
+      } ${isMobileOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}
+      // onMouseEnter={() => !isExpanded && setIsHovered(true)}
+      // onMouseLeave={() => setIsHovered(false)}
     >
-      <div
-        className={` h-auto py-6 md:py-8 flex   ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-center"
-          } border-b border-[#F2F2F2] mb-4 md:mb-6  `}
+      <button
+        className={`absolute ${isExpanded ? 'top-[108px]' : 'top-[86px]'} right-0 hidden h-7 w-7 translate-x-1/2 items-center justify-center rounded-lg border bg-white lg:flex`}
+        onClick={handleToggle}
       >
-        <Link href="/">
+        <IoIosArrowBack
+          className={`transition-all duration-300 ${isExpanded ? 'rotate-0' : 'rotate-180'} `}
+        />
+      </button>
+      <div
+        className={`flex h-auto py-6 md:py-8 ${
+          !isExpanded && !isHovered ? 'lg:justify-center' : 'justify-center'
+        } mb-4 border-b border-[#F2F2F2] md:mb-6`}
+      >
+        <Link
+          href="/"
+          onClick={() => {
+            dispatch(setPageTitle('Dashboard'));
+          }}
+        >
           {isExpanded || isHovered || isMobileOpen ? (
-           <>
-              <Image
-                className="dark:hidden"
-                src={Logo}
-                alt="Logo"
-                width={202}
-                height={56}
-              />
-              <Image
-                className="hidden dark:block"
-                src={Logo}
-                alt="Logo"
-                width={202}
-                height={56}
-              />
+            <>
+              <Image className="dark:hidden" src={Logo} alt="Logo" width={202} height={56} />
+              <Image className="hidden dark:block" src={Logo} alt="Logo" width={202} height={56} />
             </>
           ) : (
-            <Image
-              src={Logo}
-              alt="Logo"
-              width={32}
-              height={32}
-            />
+            <Image src={LogoCollapse} alt="Logo" width={32} height={32} />
           )}
         </Link>
       </div>
-      <div className=" h-8/12 flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
+      <div className="no-scrollbar flex h-8/12 flex-col overflow-y-auto duration-300 ease-linear">
         <nav className="mb-6">
           <div className="flex flex-col gap-4">
             <div>
               <h2
-                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${!isExpanded && !isHovered
-                  ? "lg:justify-center"
-                  : "justify-start"
-                  }`}
+                className={`mb-4 flex text-xs leading-[20px] text-gray-400 uppercase ${
+                  !isExpanded && !isHovered ? 'lg:justify-center' : 'justify-start'
+                }`}
               >
-                {isExpanded || isHovered || isMobileOpen ? (
-                  ""
-                ) : (
-                  <HorizontaLDots />
-                )}
+                {isExpanded || isHovered || isMobileOpen ? '' : <HorizontaLDots />}
               </h2>
               {renderMenuItems(
-                loggedUser?.role === Roles.ADMIN ? navItems : loggedUser?.role === Roles.SALES_REP ? salesRepNavMenu : userNavMenu,
-                "main"
+                loggedUser?.role === Roles.ADMIN
+                  ? navItems
+                  : loggedUser?.role === Roles.SALES_REP
+                    ? salesRepNavMenu
+                    : userNavMenu,
+                'main'
               )}
-
             </div>
-
           </div>
         </nav>
-
       </div>
-      <div className="hidden lg:block h-auto mt-auto  w-full py-3 border-t ">
-        <button className="flex items-center gap-2 text-red-600 dark:text-white w-full px-5 py-3 rounded-lg   cursor-pointer " onClick={handleOpenLogoutConfirmationModal}>
-          <TbLogout2 className="w-5 h-5" />
+      <div className="mt-auto hidden h-auto w-full border-t py-3 lg:block">
+        <button
+          className="flex w-full cursor-pointer items-center gap-2 rounded-lg px-5 py-3 text-red-600 dark:text-white"
+          onClick={handleOpenLogoutConfirmationModal}
+        >
+          <TbLogout2 className="h-5 w-5" />
           {(isExpanded || isHovered || isMobileOpen) && <span>Logout</span>}
         </button>
       </div>
-      <LogoutConfirmationModal isOpen={isLogoutConfirmModalOpen} closeModal={() => {
-        setIsLogoutConfirmModalOpen(false);
-
-      }} onLogoutConfirm={handleLogout} />
+      <LogoutConfirmationModal
+        isOpen={isLogoutConfirmModalOpen}
+        closeModal={() => {
+          setIsLogoutConfirmModalOpen(false);
+        }}
+        onLogoutConfirm={handleLogout}
+      />
     </aside>
   );
 };
